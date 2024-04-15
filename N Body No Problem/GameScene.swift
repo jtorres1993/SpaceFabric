@@ -33,8 +33,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     
     var dots = [SKSpriteNode]()
-    let dotSpacing: CGFloat = 40.0  // Space between dots
-    let gridSize: Int = 50          // Number of dots along width and height
+    let dotSpacing: CGFloat = 30.0  // Space between dots
+    let gridSize: Int = 70          // Number of dots along width and height
     var planets = [(position: CGPoint, radius: CGFloat, strength: CGFloat)]()
 
     
@@ -89,19 +89,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsWorld.contactDelegate = self
 
         
-        shipReference = SKSpriteNode.init(texture: nil, color: UIColor.blue, size: CGSize(width: 15, height: 30))
+        shipReference = SKSpriteNode.init(imageNamed: "spaceship")
+        
         shipReference.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 15, height: 30))
         shipReference.physicsBody?.fieldBitMask = PhysicsCategory.gravityStar
         shipReference.physicsBody!.categoryBitMask = PhysicsCategory.player
+        shipReference.physicsBody!.mass = 100
         shipReference.physicsBody?.contactTestBitMask =  PhysicsCategory.gravityStar
-    
         
         screenSizeReference = self.view!.safeAreaLayoutGuide.layoutFrame.size
         
         self.camera = cameraReference
         cameraReference.position.y = screenSizeReference.height / 4
 
-        let background = SKSpriteNode.init(texture: nil, color: UIColor.darkGray, size: CGSize.init(width: self.size.width, height: self.size.height * 3 ))
+        let background = SKSpriteNode.init(texture: nil, color: UIColor.black, size: CGSize.init(width: self.size.width, height: self.size.height * 3 ))
         background.lightingBitMask = 1
         background.zPosition = -1
         self.addChild(background)
@@ -242,7 +243,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         shipReference.physicsBody?.fieldBitMask = PhysicsCategory.none
         shipReference.physicsBody?.isDynamic = false
-        
+        shipReference.run(SKAction.scale(to: 1.0, duration: 0.1))
         
         if let touch = touches.first {
             initialTouchLocation = touch.location(in: self)
@@ -256,6 +257,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 lightNode.falloff = 4.5
                 shipReference.addChild(lightNode)
                 shipHasBeenPlaced = true
+                if let fireParticles = SKEmitterNode(fileNamed: "Smoke") {
+                         // fireParticles.position = CGPoint(x: size.width / 2, y: size.height / 2)
+                    shipReference.addChild(fireParticles)
+                    fireParticles.targetNode = self
+                      }
+                
                 
             }
             
@@ -284,7 +291,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                
                shipReference.physicsBody?.fieldBitMask =  PhysicsCategory.gravityStar
                shipReference.physicsBody?.isDynamic = true
-               
+               shipReference.run(SKAction.scale(to: 0.3, duration: 0.1))
+
                
                
                applyForce(to: shipReference, vector: forceVector)
@@ -292,7 +300,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
        }
     
     func applyForce(to sprite: SKSpriteNode, vector: CGVector) {
-        let impulseVector = CGVector(dx: vector.dx * 0.03, dy: vector.dy * 0.03 ) // Adjust multiplier as needed
+        let multipler = 100.0
+        let impulseVector = CGVector(dx: vector.dx * multipler, dy: vector.dy * multipler ) // Adjust multiplier as needed
        // sprite.physicsBody?.isDynamic = true
         sprite.physicsBody?.applyImpulse(impulseVector)
     }
