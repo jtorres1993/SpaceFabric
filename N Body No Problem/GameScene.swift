@@ -31,19 +31,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var starReference : [SKSpriteNode] = []
     var planetPoints : [(position: CGPoint, radius: CGFloat)] = []
 
-    
+    var earchReference = SKSpriteNode()
     var dots = [SKSpriteNode]()
     let dotSpacing: CGFloat = 30.0  // Space between dots
-    let gridSize: Int = 70          // Number of dots along width and height
+    let gridSize: CGSize = CGSize.init(width: 60, height: 170)          // Number of dots along width and height
     var planets = [(position: CGPoint, radius: CGFloat, strength: CGFloat)]()
 
     
     func setupDots() {
-        for x in 0..<gridSize {
-            for y in 0..<gridSize {
-                let initialPosition = CGPoint(x: CGFloat(x) * dotSpacing + self.frame.midX - dotSpacing * CGFloat(gridSize) / 2,
-                                              y: CGFloat(y) * dotSpacing + self.frame.midY - dotSpacing * CGFloat(gridSize) / 2)
-                let dot = DotNode(color: .white, size: CGSize(width: 2, height: 2), initialPosition: initialPosition)
+        for x in 0..<Int(gridSize.width) {
+            for y in 0..<Int(gridSize.height) {
+                let initialPosition = CGPoint(x: CGFloat(x) * dotSpacing + self.frame.midX - dotSpacing * CGFloat(gridSize.width) / 2,
+                                              y: CGFloat(y) * dotSpacing + self.frame.midY - dotSpacing * CGFloat(gridSize.height) / 2)
+                let dot = DotNode(color: .gray, size: CGSize(width: 1, height: 1), initialPosition: initialPosition)
                 addChild(dot)
                 dots.append(dot)
                 dot.lightingBitMask = 1
@@ -96,10 +96,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         shipReference.physicsBody!.categoryBitMask = PhysicsCategory.player
         shipReference.physicsBody!.mass = 100
         shipReference.physicsBody?.contactTestBitMask =  PhysicsCategory.gravityStar
-        
+        self.view?.showsDrawCount = true
         screenSizeReference = self.view!.safeAreaLayoutGuide.layoutFrame.size
+        self.backgroundColor = .black
         
         self.camera = cameraReference
+
         cameraReference.position.y = screenSizeReference.height / 4
 
         let background = SKSpriteNode.init(texture: nil, color: UIColor.black, size: CGSize.init(width: self.size.width, height: self.size.height * 3 ))
@@ -118,9 +120,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
                 node.physicsBody!.categoryBitMask =  PhysicsCategory.gravityStar
               
-                        
-                    print(node.position)
-                    
+                                        
                     starReference.append(node as! SKSpriteNode)
                   
                     planets.append((position: node.position, radius: 200, strength: 1500))
@@ -128,6 +128,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                // node.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveBy(x: 400, y: 0, duration: 5), SKAction.moveBy(x: -400, y: 0, duration: 5)])))
                 
                 
+            } else if node.name == "earth" {
+                
+                earchReference = node as! SKSpriteNode
             }
         }
         
@@ -236,12 +239,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var initialTouchLocation: CGPoint?
 
+    var savedVelocity : CGVector = CGVector(dx: 0, dy: 0)
+    var savedAngularVelocity = 1.0
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         
         
         
         shipReference.physicsBody?.fieldBitMask = PhysicsCategory.none
+        savedVelocity = shipReference.physicsBody!.velocity
+        savedAngularVelocity = shipReference.physicsBody!.angularVelocity
+        
         shipReference.physicsBody?.isDynamic = false
         shipReference.run(SKAction.scale(to: 1.0, duration: 0.1))
         
@@ -293,7 +301,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                shipReference.physicsBody?.isDynamic = true
                shipReference.run(SKAction.scale(to: 0.3, duration: 0.1))
 
-               
+               shipReference.physicsBody!.velocity = savedVelocity
+               shipReference.physicsBody!.angularVelocity = savedAngularVelocity
                
                applyForce(to: shipReference, vector: forceVector)
            }
@@ -315,19 +324,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // Called before each frame is rendered
            
             cameraReference.position.y = shipReference.position.y
-        } else { }
+        }
+        
+        if (shipReference.position.x > screenSizeReference.width  - 200 || shipReference.position.x < -screenSizeReference.width  + 200  ) {
+            
+            var amount = shipReference.position.x / (screenSizeReference.width )
+            if (amount < 0.0) {
+                amount = amount * -1
+            }
+            cameraReference.removeAllActions()
+
+            cameraReference.setScale( amount + 0.5)
+            
+        } else {
+             
+                cameraReference.run(SKAction.scale(to: 1.0, duration: 1))
+            
+        }
         
   
             planets = []
 
             for star in starReference {
         
-                planets.append((position: star.position, radius: 350, strength: 250))
+                planets.append((position: CGPoint.init(x: star.position.x, y: star.position.y - 20) , radius: 350, strength: 100))
 
             
           
             }
+        
             
+        planets.append((position: earchReference.position , radius: 50, strength: 50))
            // applyGravityWellEffects(planets: planetPoints)
         
 
