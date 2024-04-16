@@ -16,9 +16,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     struct PhysicsCategory {
         static let none: UInt32 = 0
         static let all: UInt32 = UInt32.max
-        static let gravityStar: UInt32 = 0b1       // 1
+        static let gravityStar: UInt32 = 0b1// 1
         static let player: UInt32 = 0b10          // 2
-        static let projective: UInt32 = 0b100           // 4
+        static let projective: UInt32 = 0b100  
+        static let earthplanet: UInt32 = 0b1000// 4
     }
     
     
@@ -33,8 +34,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     var earchReference = SKSpriteNode()
     var dots = [SKSpriteNode]()
-    let dotSpacing: CGFloat = 30.0  // Space between dots
-    let gridSize: CGSize = CGSize.init(width: 60, height: 170)          // Number of dots along width and height
+    let dotSpacing: CGFloat = 50  // Space between dots
+    let gridSize: CGSize = CGSize.init(width: 30, height: 100)          // Number of dots along width and height
     var planets = [(position: CGPoint, radius: CGFloat, strength: CGFloat)]()
 
     
@@ -43,12 +44,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             for y in 0..<Int(gridSize.height) {
                 let initialPosition = CGPoint(x: CGFloat(x) * dotSpacing + self.frame.midX - dotSpacing * CGFloat(gridSize.width) / 2,
                                               y: CGFloat(y) * dotSpacing + self.frame.midY - dotSpacing * CGFloat(gridSize.height) / 2)
-                let dot = DotNode(color: .gray, size: CGSize(width: 1, height: 1), initialPosition: initialPosition)
+                let dot = DotNode(color: .gray, size: CGSize(width: 3, height: 3), initialPosition: initialPosition)
                 addChild(dot)
                 dots.append(dot)
                 dot.lightingBitMask = 1
             }
         }
+        
+        
+        
     }
 
     
@@ -58,7 +62,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func updateDotPositions() {
         for dot in dots as! [DotNode] {
             var totalShift = CGVector(dx: 0, dy: 0)
-
+            
+            var totalDisplacement = 0.0
             for planet in planets {
                 let dx = planet.position.x - dot.originalPosition.x
                 let dy = planet.position.y - dot.originalPosition.y
@@ -71,12 +76,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     }
                     totalShift.dx += (dx / distance) * displacementFactor
                     totalShift.dy += (dy / distance) * displacementFactor
-                    dot.alpha = 100
+                    
+                    let displacementratio = displacementFactor / distance
+                    totalDisplacement = displacementratio + totalDisplacement
+                    
                     // Apply the calculated shift from the original position
-                    dot.position = CGPoint(x: dot.originalPosition.x + totalShift.dx,
-                                           y: dot.originalPosition.y + totalShift.dy)
+                   
                     
                 }}
+            
+            dot.setScale(1 - totalDisplacement)
+
+            
+            dot.position = CGPoint(x: dot.originalPosition.x + totalShift.dx,
+                                   y: dot.originalPosition.y + totalShift.dy)
 
          
         }
@@ -95,7 +108,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         shipReference.physicsBody?.fieldBitMask = PhysicsCategory.gravityStar
         shipReference.physicsBody!.categoryBitMask = PhysicsCategory.player
         shipReference.physicsBody!.mass = 100
-        shipReference.physicsBody?.contactTestBitMask =  PhysicsCategory.gravityStar
+        shipReference.physicsBody?.contactTestBitMask =  PhysicsCategory.gravityStar | PhysicsCategory.earthplanet
+        
         self.view?.showsDrawCount = true
         screenSizeReference = self.view!.safeAreaLayoutGuide.layoutFrame.size
         self.backgroundColor = .black
@@ -128,9 +142,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                // node.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveBy(x: 400, y: 0, duration: 5), SKAction.moveBy(x: -400, y: 0, duration: 5)])))
                 
                 
+                if let spark = SKEmitterNode(fileNamed: "spark") {
+                         // fireParticles.position = CGPoint(x: size.width / 2, y: size.height / 2)
+                    node.addChild(spark)
+                    spark.targetNode = self
+                      }
+                
             } else if node.name == "earth" {
                 
                 earchReference = node as! SKSpriteNode
+                node.physicsBody!.categoryBitMask =  PhysicsCategory.earthplanet
+
+                
             }
         }
         
@@ -224,13 +247,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             self.shipReference.removeFromParent()
             
-            if let scene = SKScene(fileNamed: "GameScene") {
+            
+            
+            if let scene = SKScene(fileNamed: "Level" + self.name!)  {
                    scene.scaleMode = .aspectFill
                    view?.presentScene(scene, transition: SKTransition.fade(withDuration: 1.0))
                }
             
-        } else {
-            print("OP")
+        } else if ( secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.earthplanet || secondBody.categoryBitMask == PhysicsCategory.earthplanet && firstBody.categoryBitMask == PhysicsCategory.player ) {
+            
+            let calcuatedNumber = Int(self.name!)! + 1
+            if let scene = SKScene(fileNamed: "Level" + String(calcuatedNumber))  {
+                   scene.scaleMode = .aspectFill
+                   view?.presentScene(scene, transition: SKTransition.fade(withDuration: 1.0))
+               }
+            
         }
         
            
@@ -284,27 +315,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
        override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
            if let touch = touches.first, let initialLocation = initialTouchLocation {
-               let currentLocation = touch.location(in: self)
-               let vector = CGVector(dx: initialLocation.x - currentLocation.x, dy: initialLocation.y - currentLocation.y)
+            
+               
                // Optionally, update something on the screen to indicate the pull direction and force
            }
        }
 
        override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
            if let touch = touches.first, let initialLocation = initialTouchLocation {
-               
-               followShip = true
-               let releaseLocation = touch.location(in: self)
-               let forceVector = CGVector(dx: initialLocation.x - releaseLocation.x, dy: initialLocation.y - releaseLocation.y)
-               
-               shipReference.physicsBody?.fieldBitMask =  PhysicsCategory.gravityStar
-               shipReference.physicsBody?.isDynamic = true
-               shipReference.run(SKAction.scale(to: 0.3, duration: 0.1))
+                         
+                         followShip = true
+                         let releaseLocation = touch.location(in: self)
+                         let forceVector = CGVector(dx: initialLocation.x - releaseLocation.x, dy: initialLocation.y - releaseLocation.y)
+                         
+                         shipReference.physicsBody?.fieldBitMask =  PhysicsCategory.gravityStar
+                         shipReference.physicsBody?.isDynamic = true
+                         shipReference.run(SKAction.scale(to: 0.05, duration: 0.1))
 
-               shipReference.physicsBody!.velocity = savedVelocity
-               shipReference.physicsBody!.angularVelocity = savedAngularVelocity
-               
-               applyForce(to: shipReference, vector: forceVector)
+                         shipReference.physicsBody!.velocity = savedVelocity
+                         shipReference.physicsBody!.angularVelocity = savedAngularVelocity
+                         
+                         applyForce(to: shipReference, vector: forceVector)
            }
        }
     

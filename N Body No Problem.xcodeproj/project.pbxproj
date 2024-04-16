@@ -9,13 +9,17 @@
 /* Begin PBXBuildFile section */
 		3B38090D2BCCE4420046ABA1 /* Smoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B38090C2BCCE4420046ABA1 /* Smoke.sks */; };
 		3B6CC9E42BCAF56D00DB4CA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CC9E32BCAF56D00DB4CA3 /* AppDelegate.swift */; };
-		3B6CC9E62BCAF56D00DB4CA3 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B6CC9E52BCAF56D00DB4CA3 /* GameScene.sks */; };
+		3B6CC9E62BCAF56D00DB4CA3 /* Level2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B6CC9E52BCAF56D00DB4CA3 /* Level2.sks */; };
 		3B6CC9E82BCAF56D00DB4CA3 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B6CC9E72BCAF56D00DB4CA3 /* Actions.sks */; };
 		3B6CC9EA2BCAF56D00DB4CA3 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CC9E92BCAF56D00DB4CA3 /* GameScene.swift */; };
 		3B6CC9EC2BCAF56D00DB4CA3 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CC9EB2BCAF56D00DB4CA3 /* GameViewController.swift */; };
 		3B6CC9EF2BCAF56D00DB4CA3 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 3B6CC9EE2BCAF56D00DB4CA3 /* Base */; };
 		3B6CC9F12BCAF56E00DB4CA3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B6CC9F02BCAF56E00DB4CA3 /* Assets.xcassets */; };
 		3B6CC9F42BCAF56E00DB4CA3 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 3B6CC9F32BCAF56E00DB4CA3 /* Base */; };
+		3B77DB022BCE0E9D00F9223C /* magic.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B77DB012BCE0E9D00F9223C /* magic.sks */; };
+		3B77DB042BCE0EB600F9223C /* firefiles.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B77DB032BCE0EB600F9223C /* firefiles.sks */; };
+		3B77DB062BCE0ED200F9223C /* spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B77DB052BCE0ED200F9223C /* spark.sks */; };
+		3B77DB082BCE1D7C00F9223C /* Level1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B77DB072BCE1D7C00F9223C /* Level1.sks */; };
 		3BDA785B2BCC584B00CC5618 /* Dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA785A2BCC584B00CC5618 /* Dot.swift */; };
 /* End PBXBuildFile section */
 
@@ -23,13 +27,17 @@
 		3B38090C2BCCE4420046ABA1 /* Smoke.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Smoke.sks; sourceTree = "<group>"; };
 		3B6CC9E02BCAF56D00DB4CA3 /* N Body No Problem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "N Body No Problem.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B6CC9E32BCAF56D00DB4CA3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3B6CC9E52BCAF56D00DB4CA3 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		3B6CC9E52BCAF56D00DB4CA3 /* Level2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level2.sks; sourceTree = "<group>"; };
 		3B6CC9E72BCAF56D00DB4CA3 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		3B6CC9E92BCAF56D00DB4CA3 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		3B6CC9EB2BCAF56D00DB4CA3 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		3B6CC9EE2BCAF56D00DB4CA3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3B6CC9F02BCAF56E00DB4CA3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3B6CC9F32BCAF56E00DB4CA3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		3B77DB012BCE0E9D00F9223C /* magic.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = magic.sks; sourceTree = "<group>"; };
+		3B77DB032BCE0EB600F9223C /* firefiles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = firefiles.sks; sourceTree = "<group>"; };
+		3B77DB052BCE0ED200F9223C /* spark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = spark.sks; sourceTree = "<group>"; };
+		3B77DB072BCE1D7C00F9223C /* Level1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level1.sks; sourceTree = "<group>"; };
 		3BDA785A2BCC584B00CC5618 /* Dot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dot.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -65,9 +73,13 @@
 			children = (
 				3B6CC9E32BCAF56D00DB4CA3 /* AppDelegate.swift */,
 				3BDA785A2BCC584B00CC5618 /* Dot.swift */,
-				3B6CC9E52BCAF56D00DB4CA3 /* GameScene.sks */,
+				3B6CC9E52BCAF56D00DB4CA3 /* Level2.sks */,
 				3B6CC9E72BCAF56D00DB4CA3 /* Actions.sks */,
 				3B6CC9E92BCAF56D00DB4CA3 /* GameScene.swift */,
+				3B77DB012BCE0E9D00F9223C /* magic.sks */,
+				3B77DB072BCE1D7C00F9223C /* Level1.sks */,
+				3B77DB032BCE0EB600F9223C /* firefiles.sks */,
+				3B77DB052BCE0ED200F9223C /* spark.sks */,
 				3B38090C2BCCE4420046ABA1 /* Smoke.sks */,
 				3B6CC9EB2BCAF56D00DB4CA3 /* GameViewController.swift */,
 				3B6CC9ED2BCAF56D00DB4CA3 /* Main.storyboard */,
@@ -135,10 +147,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B6CC9E62BCAF56D00DB4CA3 /* GameScene.sks in Resources */,
+				3B77DB082BCE1D7C00F9223C /* Level1.sks in Resources */,
+				3B77DB022BCE0E9D00F9223C /* magic.sks in Resources */,
+				3B77DB062BCE0ED200F9223C /* spark.sks in Resources */,
+				3B6CC9E62BCAF56D00DB4CA3 /* Level2.sks in Resources */,
 				3B6CC9EF2BCAF56D00DB4CA3 /* Base in Resources */,
 				3B6CC9F12BCAF56E00DB4CA3 /* Assets.xcassets in Resources */,
 				3B6CC9E82BCAF56D00DB4CA3 /* Actions.sks in Resources */,
+				3B77DB042BCE0EB600F9223C /* firefiles.sks in Resources */,
 				3B6CC9F42BCAF56E00DB4CA3 /* Base in Resources */,
 				3B38090D2BCCE4420046ABA1 /* Smoke.sks in Resources */,
 			);
