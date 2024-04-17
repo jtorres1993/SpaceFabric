@@ -171,6 +171,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     spark.targetNode = self
                       }
                 
+                for child in node.children {
+                    if child.name == "SunGravityField" {
+                        gravityField = child as! SKFieldNode
+                    }
+                }
+                
             } else if node.name == "earth" {
                 
                 earchReference = node as! SKSpriteNode
@@ -188,25 +194,92 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var planetPositions: [CGPoint] = []
     var planetRadii: [CGFloat] = []
+    
+    var gravityField: SKFieldNode!
+    
+    struct Orbitall {
+        var position: CGPoint
+        var mass: CGFloat  // Not necessarily needed unless you want realistic mass-based strength
+        var strength: CGFloat
+    }
+    
+    var orbitals: [Orbitall] = [
+        Orbitall(position: CGPoint(x: 0, y: 222), mass: 3000, strength: 50000000),
+        Orbitall(position: CGPoint(x: 0, y: 600), mass: 3000, strength: 25000000)
+     ]
 
-    func predictTrajectory(initialPosition: CGPoint, initialVelocity: CGVector, timeStep: CGFloat, numSteps: Int) -> [CGPoint] {
+    
+    func simulateGravityField(at point: CGPoint) -> CGVector {
+        var totalAcceleration = CGVector(dx: 0, dy: 0)
+        let shipMass = 100.0
+           
+           for planet in orbitals {
+               let dx = planet.position.x - point.x
+               let dy = planet.position.y - point.y
+               let distanceSquared = dx*dx + dy*dy
+               let distance = sqrt(distanceSquared)
+               
+               if distance == 0 { continue }  // Avoid division by zero
+               
+               // Simplified force calculation: F = (strength * m1 * m2) / r^2
+               // Here strength is adjusted to encapsulate G and the planet's mass (m2),
+               // and we multiply by the ship's mass (m1) to get the force.
+               let forceMagnitude = (planet.strength * shipMass) / distanceSquared  // strength should encapsulate G * m2 (planet's mass)
+               let force = forceMagnitude / shipMass  // a = F / m1
+               
+               totalAcceleration.dx += force * (dx / distance)
+               totalAcceleration.dy += force * (dy / distance)
+           }
+           
+           return totalAcceleration
+
+    }
+
+    
+    
+     var dotNodes: [SKSpriteNode] = []
+
+   
+    
+    
+    func predictTrajectory(initialPosition: CGPoint, initialVelocity: CGVector, timeStep: CGFloat, numSteps: Int)  {
+        
+        
+        for dot in dotNodes {
+            dot.removeFromParent()
+            
+        }
+         dotNodes = []
+        
         var points = [CGPoint]()
         var currentPosition = initialPosition
-        var currentVelocity = initialVelocity
+        var previousPosition = CGPoint(x: initialPosition.x - initialVelocity.dx * timeStep,
+                                       y: initialPosition.y - initialVelocity.dy * timeStep)
+        var tempPosition: CGPoint
 
-        for _ in 0..<numSteps {
-            let acceleration = calculateGravitationalAcceleration(at: currentPosition)
-            currentVelocity.dx += acceleration.dx * timeStep
-            currentVelocity.dy += acceleration.dy * timeStep
+        points.append(currentPosition)
+        
+        for i in 1..<numSteps {
+            let acceleration = simulateGravityField(at: currentPosition)
+            tempPosition = currentPosition
+            currentPosition.x = 2 * currentPosition.x - previousPosition.x + acceleration.dx * timeStep * timeStep
+            currentPosition.y = 2 * currentPosition.y - previousPosition.y + acceleration.dy * timeStep * timeStep
+            previousPosition = tempPosition
             
-            currentPosition.x += currentVelocity.dx * timeStep
-            currentPosition.y += currentVelocity.dy * timeStep
             
-            points.append(currentPosition)
+            if i % 10 == 0 {  // Add a dot every 5 steps to reduce the number of dots
+                let dot = addDot(at: currentPosition)
+                dotNodes.append(dot)
+            }
         }
         
-        return points
+       
     }
+
+    
+    
+
+
     struct Planet {
         var position: CGPoint
         var mass: CGFloat  // Mass of the planet
@@ -219,7 +292,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func calculateGravitationalAcceleration(at point: CGPoint) -> CGVector {
         // Constants
-        let gravitationalConstant: CGFloat = 5000000 // m^3 kg^-1 s^-2
+        let gravitationalConstant: CGFloat = 2000000 // m^3 kg^-1 s^-2
         var totalAcceleration = CGVector(dx: 0, dy: 0)
         for planet in orbits {
                   let dx = planet.position.x - point.x
@@ -483,6 +556,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
+        for dot in dotNodes {
+            dot.removeFromParent()
+            
+        }
+         dotNodes = []
+        
         self.removeAction(forKey: "NodePattern")
         if let touch = touches.first, let initialLocation = initialTouchLocation {
             
@@ -492,7 +571,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             shipReference.physicsBody?.fieldBitMask =  PhysicsCategory.gravityStar
             shipReference.physicsBody?.isDynamic = true
-            shipReference.run(SKAction.scale(to: 0.05, duration: 0.1))
+            shipReference.run(SKAction.scale(to: 0.05, duration: 0.01))
             
             shipReference.physicsBody!.velocity = savedVelocity
             shipReference.physicsBody!.angularVelocity = savedAngularVelocity
@@ -513,19 +592,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var trajectoryLine = SKShapeNode()
     func drawTrajectory(withPosition: CGPoint, withVelocity: CGVector) {
       
-        let pathPoints = predictTrajectory(initialPosition: withPosition, initialVelocity: withVelocity, timeStep: 0.01, numSteps: 200)
+         predictTrajectory(initialPosition: withPosition, initialVelocity: withVelocity, timeStep: 0.005, numSteps: 250)
 
         let path = CGMutablePath()
         path.move(to: withPosition)
-        for point in pathPoints {
-            path.addLine(to: point)
-        }
+       // for point in pathPoints {
+        //    path.addLine(to: point)
+       // }
         trajectoryLine.path = nil
         trajectoryLine = SKShapeNode(path: path)
-        trajectoryLine.strokeColor = SKColor.green
+        
+        
+        trajectoryLine.strokeColor = SKColor.gray
         trajectoryLine.lineWidth = 2
         trajectoryLine.zPosition = 100
         self.addChild(trajectoryLine)
+    }
+
+    
+    func addDot(at point: CGPoint, color: UIColor = .white, size: CGSize = CGSize(width: 2, height: 2)) -> SKSpriteNode {
+        let dot = SKSpriteNode(color: color, size: size)
+        dot.position = point
+        self.addChild(dot)
+        return dot
     }
 
     
