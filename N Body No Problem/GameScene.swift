@@ -45,12 +45,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
            let path = CGMutablePath()
            guard let firstNode = nodesArray.first else { return }
            path.move(to: firstNode.position)
+            var i = 0
            for node in nodesArray.dropFirst() {
+               
+               if i % 5 == 0 {  // Add a dot every 5 steps to reduce the number of dots
+                         let dot = addDot(at: node.position)
+                         dotNodes.append(dot)
+                     }
+               
+               i = i + 1
+               
                path.addLine(to: node.position)
            }
             
-        lineNode!.path = nil
-           lineNode?.path = path
+        //lineNode!.path = nil
+          // lineNode?.path = path
        }
     
     func setupDots() {
@@ -207,6 +216,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         Orbitall(position: CGPoint(x: 0, y: 222), mass: 3000, strength: 50000000),
         Orbitall(position: CGPoint(x: 0, y: 600), mass: 3000, strength: 25000000)
      ]
+
+    
+    func addDot(at point: CGPoint, color: UIColor = .white, size: CGSize = CGSize(width: 2, height: 2)) -> SKSpriteNode {
+        let dot = SKSpriteNode(color: color, size: size)
+        dot.position = point
+        self.addChild(dot)
+        return dot
+    }
 
     
     func simulateGravityField(at point: CGPoint) -> CGVector {
@@ -444,7 +461,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var savedAngularVelocity = 1.0
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        
+        self.physicsWorld.speed = 5
         for star in starReference {
             star.isPaused = true
         }
@@ -486,12 +503,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    
+    
     var movevmeentreleaseLocation : CGPoint?
 
        override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
            if let touch = touches.first, let initialLocation = initialTouchLocation {
+               
+             
             
                
+               for dots in dotNodes {
+                   dots.removeFromParent()
+               }
+               dotNodes = []
                
                if let firstnode = self.nodesArray.first {
                
@@ -502,9 +527,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                movevmeentreleaseLocation = touch.location(in: self)
 
                let forceVector = CGVector(dx: self.initialTouchLocation!.x - self.movevmeentreleaseLocation!.x, dy: self.initialTouchLocation!.y - self.movevmeentreleaseLocation!.y)
-               drawTrajectory(withPosition: shipReference.position, withVelocity: forceVector)
                
-               /*
+               
                
                self.run(SKAction.repeatForever(SKAction.sequence([  SKAction.run {
                    
@@ -526,8 +550,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                    node.position = self.shipReference.position
                    node.position.y = node.position.y + 10
                    
-                   node.run(SKAction.repeatForever(SKAction.sequence([SKAction.fadeAlpha(to: 0.0, duration: 0.0),SKAction.wait(forDuration: 0.5), SKAction.fadeAlpha(to: 1.0, duration: 0.0), SKAction.wait(forDuration: 0.5)])))
-                            
+                   node.alpha = 0
                    self.nodesArray.append(node)
                    node.run(SKAction.sequence([SKAction.wait(forDuration: 5), SKAction.run {
                        node.removeFromParent()
@@ -543,11 +566,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                  
                    
                }, SKAction.wait(forDuration: 0.1)])), withKey: "NodePattern")
-               */
+               
 
                
-               
-               
+              
 
                
                // Optionally, update something on the screen to indicate the pull direction and force
@@ -556,11 +578,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        for dot in dotNodes {
+        self.physicsWorld.speed = 1
+        
+        
+        for dot in nodesArray {
+            dot.removeAllActions()
             dot.removeFromParent()
             
         }
-         dotNodes = []
+         nodesArray = []
         
         self.removeAction(forKey: "NodePattern")
         if let touch = touches.first, let initialLocation = initialTouchLocation {
@@ -589,33 +615,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
-    var trajectoryLine = SKShapeNode()
-    func drawTrajectory(withPosition: CGPoint, withVelocity: CGVector) {
-      
-         predictTrajectory(initialPosition: withPosition, initialVelocity: withVelocity, timeStep: 0.005, numSteps: 250)
-
-        let path = CGMutablePath()
-        path.move(to: withPosition)
-       // for point in pathPoints {
-        //    path.addLine(to: point)
-       // }
-        trajectoryLine.path = nil
-        trajectoryLine = SKShapeNode(path: path)
-        
-        
-        trajectoryLine.strokeColor = SKColor.gray
-        trajectoryLine.lineWidth = 2
-        trajectoryLine.zPosition = 100
-        self.addChild(trajectoryLine)
-    }
 
     
-    func addDot(at point: CGPoint, color: UIColor = .white, size: CGSize = CGSize(width: 2, height: 2)) -> SKSpriteNode {
-        let dot = SKSpriteNode(color: color, size: size)
-        dot.position = point
-        self.addChild(dot)
-        return dot
-    }
+   
 
     
     
@@ -629,11 +631,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var frameSkipper = 0
     override func update(_ currentTime: TimeInterval) {
         super.update(currentTime)
-        updateLine()
         
         
         
-        updateDotPositions()
+       
+        
         if (followShip && shipReference.position.y > screenSizeReference.height / 4  ) {
             // Called before each frame is rendered
            
@@ -672,6 +674,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
            // applyGravityWellEffects(planets: planetPoints)
         
 
+        if frameSkipper % 1 == 0 {
+            
+            updateLine()
+            updateDotPositions()
+            frameSkipper = 0
+        }
+        frameSkipper = frameSkipper + 1
         
     }
+    
+    
 }
