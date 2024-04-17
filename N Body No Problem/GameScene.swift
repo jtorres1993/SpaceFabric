@@ -41,26 +41,100 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let gridSize: CGSize = CGSize.init(width: 30, height: 100)          // Number of dots along width and height
     var planets = [(position: CGPoint, radius: CGFloat, strength: CGFloat)]()
 
+    
     func updateLine() {
-           let path = CGMutablePath()
-           guard let firstNode = nodesArray.first else { return }
-           path.move(to: firstNode.position)
-            var i = 0
-           for node in nodesArray.dropFirst() {
-               
-               if i % 5 == 0 {  // Add a dot every 5 steps to reduce the number of dots
-                         let dot = addDot(at: node.position)
-                         dotNodes.append(dot)
-                     }
-               
-               i = i + 1
-               
-               path.addLine(to: node.position)
-           }
-            
+        let path = CGMutablePath()
+        guard let firstNode = nodesArray.first else { return }
+        path.move(to: firstNode.position)
+
+        for node in nodesArray.dropFirst() {
+            path.addLine(to: node.position)
+            path.move(to: node.position) 
+            let dot = addDot(at: node.position )
+            dotNodes.append(dot)// Move the current point to the node's position
+        }
+
+       // let points = pointsAlongPath(path: path, interval: 10)
+       // for point in points {
+         //   let dot = addDot(at: point)
+           // dotNodes.append(dot)
+        //}
         //lineNode!.path = nil
           // lineNode?.path = path
        }
+    
+    func pointsAlongPath(path: CGPath, interval: CGFloat) -> [CGPoint] {
+        var points: [CGPoint] = []
+
+        let pathLength = approximatePathLength(path: path)
+        var distance: CGFloat = 0
+        
+        while distance < pathLength {
+            if let point = point(at: distance, on: path) {
+                points.append(point)
+            }
+            distance += interval
+        }
+        
+        return points
+    }
+
+    func approximatePathLength(path: CGPath) -> CGFloat {
+        var length: CGFloat = 0.0
+        var lastPoint: CGPoint?
+
+        path.applyWithBlock { element in
+            switch element.pointee.type {
+            case .moveToPoint, .addLineToPoint:
+                if let last = lastPoint {
+                    length += hypot(last.x - element.pointee.points[0].x, last.y - element.pointee.points[0].y)
+                }
+                lastPoint = element.pointee.points[0]
+            case .closeSubpath:
+                break
+            default:
+                // Approximation for curves
+                break
+            }
+        }
+
+        return length
+    }
+
+    func point(at distance: CGFloat, on path: CGPath) -> CGPoint? {
+        var lastPoint: CGPoint?
+        var traveledLength: CGFloat = 0.0
+
+        var targetPoint: CGPoint?
+        
+        path.applyWithBlock { element in
+            guard targetPoint == nil else { return }
+            
+            switch element.pointee.type {
+            case .moveToPoint, .addLineToPoint:
+                let currentPoint = element.pointee.points[0]
+                if let last = lastPoint {
+                    let segmentLength = hypot(last.x - currentPoint.x, last.y - currentPoint.y)
+                    if traveledLength + segmentLength >= distance {
+                        let ratio = (distance - traveledLength) / segmentLength
+                        let dx = ratio * (currentPoint.x - last.x)
+                        let dy = ratio * (currentPoint.y - last.y)
+                        targetPoint = CGPoint(x: last.x + dx, y: last.y + dy)
+                    }
+                    traveledLength += segmentLength
+                }
+                lastPoint = currentPoint
+            case .closeSubpath:
+                break
+            default:
+                // Approximation for curves
+                break
+            }
+        }
+        
+        return targetPoint
+    }
+
     
     func setupDots() {
         for x in 0..<Int(gridSize.width) {
@@ -218,7 +292,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
      ]
 
     
-    func addDot(at point: CGPoint, color: UIColor = .white, size: CGSize = CGSize(width: 2, height: 2)) -> SKSpriteNode {
+    func addDot(at point: CGPoint, color: UIColor = .white, size: CGSize = CGSize(width: 4, height: 10)) -> SKSpriteNode {
         let dot = SKSpriteNode(color: color, size: size)
         dot.position = point
         self.addChild(dot)
@@ -461,7 +535,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var savedAngularVelocity = 1.0
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        self.physicsWorld.speed = 5
+        self.physicsWorld.speed = 10
         for star in starReference {
             star.isPaused = true
         }
@@ -511,19 +585,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
            if let touch = touches.first, let initialLocation = initialTouchLocation {
                
              
-            
-               
                for dots in dotNodes {
                    dots.removeFromParent()
                }
                dotNodes = []
+            
+               
+             
                
                if let firstnode = self.nodesArray.first {
                
-                   firstnode.removeAllActions()
-                   firstnode.removeFromParent()
-                   self.nodesArray.removeFirst()
+                //   firstnode.removeAllActions()
+                  // firstnode.removeFromParent()
+                  // self.nodesArray.removeFirst()
                }
+               
+               
+               
                movevmeentreleaseLocation = touch.location(in: self)
 
                let forceVector = CGVector(dx: self.initialTouchLocation!.x - self.movevmeentreleaseLocation!.x, dy: self.initialTouchLocation!.y - self.movevmeentreleaseLocation!.y)
@@ -552,7 +630,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                    
                    node.alpha = 0
                    self.nodesArray.append(node)
-                   node.run(SKAction.sequence([SKAction.wait(forDuration: 5), SKAction.run {
+                   
+                   node.run(SKAction.sequence([SKAction.wait(forDuration: 0.3), SKAction.run {
                        node.removeFromParent()
                        self.nodesArray.removeFirst()
                        
@@ -587,6 +666,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
         }
          nodesArray = []
+        
+        updateLine()
         
         self.removeAction(forKey: "NodePattern")
         if let touch = touches.first, let initialLocation = initialTouchLocation {
@@ -674,9 +755,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
            // applyGravityWellEffects(planets: planetPoints)
         
 
+        updateLine()
         if frameSkipper % 1 == 0 {
             
-            updateLine()
+          
             updateDotPositions()
             frameSkipper = 0
         }
