@@ -46,31 +46,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let path = CGMutablePath()
         guard let firstNode = nodesArray.first else { return }
         path.move(to: firstNode.position)
-        
-        if (updateDots) {
-        for dot in dotNodes {
-            dot.removeFromParent()
-        }
-            dotNodes = []
-            for node in nodesArray.dropFirst() {
-                path.addLine(to: node.position)
-                path.move(to: node.position)
-                let dot = addDot(at: node.position )
-                dotNodes.append(dot)// Move the current point to the node's position
-            }
+        if updateDots {
+               // Clear existing dots from the scene
+               for dot in dotNodes {
+                   dot.removeFromParent()
+               }
+               dotNodes = []
 
-            updateDots = false
-        }
+               // Prepare to collect new dots
+               var nextNode: SKNode? = nil  // This will be the node each dot points to
+
+               for (index, node) in nodesArray.enumerated().reversed() {
+                   if dotNodes.count < 10 {
+                       let dot = addDot(at: node.position, nextNode: nextNode ?? node)
+                       dotNodes.append(dot)
+                   }
+                   nextNode = node  // Update nextNode to the current node for the next iteration
+               }
+
+               updateDots = false
+           }
       
-        
-      
-       // let points = pointsAlongPath(path: path, interval: 10)
-       // for point in points {
-         //   let dot = addDot(at: point)
-           // dotNodes.append(dot)
-        //}
-        //lineNode!.path = nil
-          // lineNode?.path = path
        }
     
     func pointsAlongPath(path: CGPath, interval: CGFloat) -> [CGPoint] {
@@ -302,13 +298,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
      ]
 
     
-    func addDot(at point: CGPoint, color: UIColor = .white, size: CGSize = CGSize(width: 4, height: 10)) -> SKSpriteNode {
-        let dot = SKSpriteNode(color: color, size: size)
-        dot.position = point
-        self.addChild(dot)
+    func addDot(at position: CGPoint, nextNode: SKNode) -> SKSpriteNode {
+        let dot = SKSpriteNode(color: .white, size: CGSize(width: 10, height: 2))  // Appearance as a line
+        dot.position = position
+
+        let dx = nextNode.position.x - position.x
+        let dy = nextNode.position.y - position.y
+        let angle = atan2(dy, dx)
+        dot.zRotation = angle  // Set rotation to point towards the next node
+
+        addChild(dot)
         return dot
     }
-
     
     func simulateGravityField(at point: CGPoint) -> CGVector {
         var totalAcceleration = CGVector(dx: 0, dy: 0)
@@ -369,8 +370,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             
             if i % 10 == 0 {  // Add a dot every 5 steps to reduce the number of dots
-                let dot = addDot(at: currentPosition)
-                dotNodes.append(dot)
+              //  let dot = addDot(at: currentPosition)
+              //  dotNodes.append(dot)
             }
         }
         
@@ -548,10 +549,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.physicsWorld.speed = 10
         for star in starReference {
-            star.isPaused = true
+        //    star.isPaused = true
         }
         
-        earchReference.isPaused = true
+       // earchReference.isPaused = true
         
         shipReference.physicsBody?.fieldBitMask = PhysicsCategory.none
         savedVelocity = shipReference.physicsBody!.velocity
@@ -597,7 +598,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
            if let touch = touches.first, let initialLocation = initialTouchLocation {
                
              
-               updateDots = true
+               //updateDots = true
              
                
              
@@ -622,7 +623,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                    node.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 15, height: 30))
                    node.physicsBody?.fieldBitMask = PhysicsCategory.gravityStar
                    node.physicsBody?.isDynamic = true
-                   node.run(SKAction.scale(to: 0.05, duration: 0.1))
+                  // node.run(SKAction.scale(to: 0.05, duration: 0.1))
                    
                    node.physicsBody?.collisionBitMask = PhysicsCategory.none
                    node.physicsBody?.contactTestBitMask = PhysicsCategory.gravityStar | PhysicsCategory.earthplanet
@@ -631,15 +632,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                    node.physicsBody!.velocity = self.savedVelocity
                    node.physicsBody!.angularVelocity = self.savedAngularVelocity
                    node.position = self.shipReference.position
-                   node.position.y = node.position.y + 10
                    
-                   node.alpha = 0
+                   node.alpha = 0.0
                    self.nodesArray.append(node)
                    
-                   node.run(SKAction.sequence([SKAction.wait(forDuration: 0.3), SKAction.run {
-                       node.removeFromParent()
+                   node.run(SKAction.sequence([SKAction.wait(forDuration: 0.6), SKAction.run {
+                      
                        if let nodo =  self.nodesArray.first {
-                           self.nodesArray.removeFirst()
+                        
+                               node.removeFromParent()
+                               self.nodesArray.removeFirst()
+                          
                        }
                        
                    }]))
@@ -651,7 +654,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                    
                  
                    
-               }, SKAction.wait(forDuration: 0.01)])), withKey: "NodePattern")
+               }, SKAction.wait(forDuration: 0.016)])), withKey: "NodePattern")
                
 
                
@@ -673,12 +676,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
         }
         
+        for dot in dotNodes {
+            dot.removeFromParent()
+        }
+        
     
          nodesArray = []
         
-        updateDots = true
-        
-        updateLine()
         
         self.removeAction(forKey: "NodePattern")
         if let touch = touches.first, let initialLocation = initialTouchLocation {
@@ -698,10 +702,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         for star in starReference {
-            star.isPaused = false
+            //star.isPaused = false
         }
         
-        earchReference.isPaused = false
+       // earchReference.isPaused = false
         
         
     }
@@ -765,11 +769,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         planets.append((position: earchReference.position , radius: 50, strength: 50))
            // applyGravityWellEffects(planets: planetPoints)
         
-
-        updateLine()
+      
         if frameSkipper % 1 == 0 {
             
-          
+            updateDots = true
+            updateLine()
             updateDotPositions()
             frameSkipper = 0
         }
