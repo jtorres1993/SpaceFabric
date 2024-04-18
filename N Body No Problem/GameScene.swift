@@ -46,20 +46,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let path = CGMutablePath()
         guard let firstNode = nodesArray.first else { return }
         path.move(to: firstNode.position)
-
+        
+        if (updateDots) {
         for dot in dotNodes {
             dot.removeFromParent()
         }
-        
-        dotNodes = []
-        
-        for node in nodesArray.dropFirst() {
-            path.addLine(to: node.position)
-            path.move(to: node.position) 
-            let dot = addDot(at: node.position )
-            dotNodes.append(dot)// Move the current point to the node's position
-        }
+            dotNodes = []
+            for node in nodesArray.dropFirst() {
+                path.addLine(to: node.position)
+                path.move(to: node.position)
+                let dot = addDot(at: node.position )
+                dotNodes.append(dot)// Move the current point to the node's position
+            }
 
+            updateDots = false
+        }
+      
+        
+      
        // let points = pointsAlongPath(path: path, interval: 10)
        // for point in points {
          //   let dot = addDot(at: point)
@@ -524,10 +528,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if count > 0 {
                 for currentIndex in 0...count  {
                     
-                    var nodo = nodesArray.first
-                    nodo?.removeAllActions()
-                    nodo?.removeFromParent()
+                    if let nodo = nodesArray.first {
+                    nodo.removeAllActions()
+                    nodo.removeFromParent()
                     nodesArray.removeFirst()
+                    }
                 }}
         }
         
@@ -587,25 +592,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var movevmeentreleaseLocation : CGPoint?
 
+    var updateDots = false
        override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
            if let touch = touches.first, let initialLocation = initialTouchLocation {
                
              
-               for dots in dotNodes {
-                   dots.removeFromParent()
-               }
-               dotNodes = []
-            
-               
+               updateDots = true
              
                
-               if let firstnode = self.nodesArray.first {
-               
-                //   firstnode.removeAllActions()
-                  // firstnode.removeFromParent()
-                  // self.nodesArray.removeFirst()
-               }
-               
+             
+             
                
                
                movevmeentreleaseLocation = touch.location(in: self)
@@ -614,6 +610,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                
                
                
+              
+               
+               self.removeAction(forKey: "NodePattern")
                self.run(SKAction.repeatForever(SKAction.sequence([  SKAction.run {
                    
                    
@@ -639,7 +638,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                    
                    node.run(SKAction.sequence([SKAction.wait(forDuration: 0.3), SKAction.run {
                        node.removeFromParent()
-                       self.nodesArray.removeFirst()
+                       if let nodo =  self.nodesArray.first {
+                           self.nodesArray.removeFirst()
+                       }
                        
                    }]))
                    
@@ -650,7 +651,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                    
                  
                    
-               }, SKAction.wait(forDuration: 0.1)])), withKey: "NodePattern")
+               }, SKAction.wait(forDuration: 0.01)])), withKey: "NodePattern")
                
 
                
@@ -671,7 +672,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             dot.removeFromParent()
             
         }
+        
+    
          nodesArray = []
+        
+        updateDots = true
         
         updateLine()
         
