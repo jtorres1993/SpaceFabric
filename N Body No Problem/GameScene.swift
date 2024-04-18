@@ -47,6 +47,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         guard let firstNode = nodesArray.first else { return }
         path.move(to: firstNode.position)
 
+        for dot in dotNodes {
+            dot.removeFromParent()
+        }
+        
+        dotNodes = []
+        
         for node in nodesArray.dropFirst() {
             path.addLine(to: node.position)
             path.move(to: node.position) 
