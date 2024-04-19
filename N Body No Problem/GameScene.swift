@@ -37,7 +37,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
        var nodesArray: [SKNode] = []
     var earchReference = SKSpriteNode()
     var dots = [SKSpriteNode]()
-    let dotSpacing: CGFloat = 50  // Space between dots
+    let dotSpacing: CGFloat = 40  // Space between dots
     let gridSize: CGSize = CGSize.init(width: 30, height: 100)          // Number of dots along width and height
     var planets = [(position: CGPoint, radius: CGFloat, strength: CGFloat)]()
 
@@ -57,8 +57,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                var nextNode: SKNode? = nil  // This will be the node each dot points to
 
                for (index, node) in nodesArray.enumerated().reversed() {
-                   if dotNodes.count < 10 {
-                       let dot = addDot(at: node.position, nextNode: nextNode ?? node)
+                   if dotNodes.count < 20 {
+                       if nodesArray.indices.contains(index - 1 ) {
+                           nextNode = nodesArray[index - 1]
+                       }
+                       let dot = addDot(at: node.position, nextNode:  nextNode ?? node)
                        dotNodes.append(dot)
                    }
                    nextNode = node  // Update nextNode to the current node for the next iteration
@@ -142,11 +145,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     
-    func setupDots() {
+    func setupDots(withSpacing: CGFloat ) {
+        
+        for doto in dots {
+            doto.removeFromParent()
+        }
+        
+        dots = []
+        
         for x in 0..<Int(gridSize.width) {
             for y in 0..<Int(gridSize.height) {
-                let initialPosition = CGPoint(x: CGFloat(x) * dotSpacing + self.frame.midX - dotSpacing * CGFloat(gridSize.width) / 2,
-                                              y: CGFloat(y) * dotSpacing + self.frame.midY - dotSpacing * CGFloat(gridSize.height) / 2)
+                let initialPosition = CGPoint(x: CGFloat(x) * withSpacing + self.frame.midX - withSpacing * CGFloat(gridSize.width) / 2,
+                                              y: CGFloat(y) * withSpacing + self.frame.midY - withSpacing * CGFloat(gridSize.height) / 2)
                 let dot = DotNode(color: .gray, size: CGSize(width: 5, height: 5), initialPosition: initialPosition)
                 addChild(dot)
                 dots.append(dot)
@@ -235,7 +245,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         background.zPosition = -1
         self.addChild(background)
         
-        setupDots()
+        setupDots(withSpacing: dotSpacing)
           setupPlanets()
         //setupBackground()
         
@@ -254,8 +264,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                // node.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveBy(x: 400, y: 0, duration: 5), SKAction.moveBy(x: -400, y: 0, duration: 5)])))
                 
                 
-                if let spark = SKEmitterNode(fileNamed: "spark") {
-                         // fireParticles.position = CGPoint(x: size.width / 2, y: size.height / 2)
+                if let spark = SKEmitterNode(fileNamed: "firefiles") {
+                    //fireParticles.position = CGPoint(x: size.width / 2, y: size.height / 2)
                     node.addChild(spark)
                     spark.targetNode = self
                       }
@@ -272,6 +282,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 node.physicsBody!.categoryBitMask =  PhysicsCategory.earthplanet
 
                 
+            } else if node.name == "astro" {
+                
+                let dotNode = DotNode(color: .clear, size: CGSize(), initialPosition: node.position)
+                dotNode.size = (node as! SKSpriteNode).size
+                dotNode.texture = (node as! SKSpriteNode).texture
+                node.alpha = 0
+                self.addChild(dotNode)
+                dots.append(dotNode)
             }
         }
         
@@ -299,9 +317,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     
     func addDot(at position: CGPoint, nextNode: SKNode) -> SKSpriteNode {
-        let dot = SKSpriteNode(color: .white, size: CGSize(width: 10, height: 2))  // Appearance as a line
+        let dot = SKSpriteNode(color: .white, size: CGSize(width: 20, height: 10))  // Appearance as a line
         dot.position = position
-
+        dot.lightingBitMask = 2
         let dx = nextNode.position.x - position.x
         let dy = nextNode.position.y - position.y
         let angle = atan2(dy, dx)
@@ -547,7 +565,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var savedAngularVelocity = 1.0
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        self.physicsWorld.speed = 10
+        self.physicsWorld.speed = 5
         for star in starReference {
         //    star.isPaused = true
         }
@@ -740,13 +758,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if (shipReference.position.x > screenSizeReference.width  - 200 || shipReference.position.x < -screenSizeReference.width  + 200  ) {
             
-            var amount = shipReference.position.x / (screenSizeReference.width )
-            if (amount < 0.0) {
-                amount = amount * -1
+            let amountInitial = shipReference.position.x / (screenSizeReference.width )
+            var amount = 0.0
+            if (amountInitial < 0.0) {
+                amount = amountInitial * -1
+            } else {
+                amount = amountInitial
             }
             cameraReference.removeAllActions()
 
             cameraReference.setScale( amount + 0.5)
+             
+            if (amountInitial > 0) {
+            setupDots(withSpacing: dotSpacing * (amountInitial + 0.2))
+            } else if (amountInitial < 0 ) {
+                setupDots(withSpacing: dotSpacing * (amountInitial - 0.5))
+            }
+
             
         } else {
              

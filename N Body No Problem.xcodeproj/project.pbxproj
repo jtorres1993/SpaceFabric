@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3B38090D2BCCE4420046ABA1 /* Smoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B38090C2BCCE4420046ABA1 /* Smoke.sks */; };
+		3B3F79432BD2483E007991C1 /* bokeh.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B3F79422BD2483E007991C1 /* bokeh.sks */; };
 		3B6CC9E42BCAF56D00DB4CA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CC9E32BCAF56D00DB4CA3 /* AppDelegate.swift */; };
 		3B6CC9E62BCAF56D00DB4CA3 /* Level2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B6CC9E52BCAF56D00DB4CA3 /* Level2.sks */; };
 		3B6CC9E82BCAF56D00DB4CA3 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B6CC9E72BCAF56D00DB4CA3 /* Actions.sks */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		3B38090C2BCCE4420046ABA1 /* Smoke.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Smoke.sks; sourceTree = "<group>"; };
+		3B3F79422BD2483E007991C1 /* bokeh.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = bokeh.sks; sourceTree = "<group>"; };
 		3B6CC9E02BCAF56D00DB4CA3 /* N Body No Problem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "N Body No Problem.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B6CC9E32BCAF56D00DB4CA3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3B6CC9E52BCAF56D00DB4CA3 /* Level2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level2.sks; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				3B77DB032BCE0EB600F9223C /* firefiles.sks */,
 				3B77DB052BCE0ED200F9223C /* spark.sks */,
 				3B38090C2BCCE4420046ABA1 /* Smoke.sks */,
+				3B3F79422BD2483E007991C1 /* bokeh.sks */,
 				3B6CC9EB2BCAF56D00DB4CA3 /* GameViewController.swift */,
 				3B6CC9ED2BCAF56D00DB4CA3 /* Main.storyboard */,
 				3B6CC9F02BCAF56E00DB4CA3 /* Assets.xcassets */,
@@ -152,6 +155,7 @@
 				3B77DB062BCE0ED200F9223C /* spark.sks in Resources */,
 				3B6CC9E62BCAF56D00DB4CA3 /* Level2.sks in Resources */,
 				3B6CC9EF2BCAF56D00DB4CA3 /* Base in Resources */,
+				3B3F79432BD2483E007991C1 /* bokeh.sks in Resources */,
 				3B6CC9F12BCAF56E00DB4CA3 /* Assets.xcassets in Resources */,
 				3B6CC9E82BCAF56D00DB4CA3 /* Actions.sks in Resources */,
 				3B77DB042BCE0EB600F9223C /* firefiles.sks in Resources */,
@@ -324,12 +328,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7YWUHB5HZ5;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Cosmic Swing";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -353,12 +358,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7YWUHB5HZ5;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Cosmic Swing";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
