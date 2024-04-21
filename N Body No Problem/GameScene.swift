@@ -1,15 +1,5 @@
-//
-//  GameScene.swift
-//  N Body No Problem
-//
-//  Created by Jorge Torres on 4/13/24.
-//
-
 import SpriteKit
 import GameplayKit
-
-
-
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
@@ -111,16 +101,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             {
 
                 node.physicsBody!.categoryBitMask =  PhysicsCategory.gravityStar
-              
-                                        
-                    starReference.append(node as! SKSpriteNode)
-                  
-               // (node as! SKSpriteNode).lightingBitMask = 1
-                    planets.append((position: node.position, radius: 200, strength: 1500))
-                
-               // node.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveBy(x: 400, y: 0, duration: 5), SKAction.moveBy(x: -400, y: 0, duration: 5)])))
-                
-                
+    
+                starReference.append(node as! SKSpriteNode)
+                planets.append((position: node.position, radius: 200, strength: 1500))
+            
                 let lightNode = SKLightNode()
                 lightNode.categoryBitMask = 1
                 lightNode.falloff = 1
@@ -139,8 +123,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                             
                         }
                     }
-                    
-                      
+                       
                 
                 for child in node.children {
                     if child.name == "SunGravityField" {
@@ -209,9 +192,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       
        }
     
- 
-
-    
     
     func setupDots(withSpacing: CGFloat ) {
         
@@ -231,8 +211,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 dot.lightingBitMask = 1
             }
         }
-        
-        
         
     }
 
@@ -264,8 +242,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }}
             
             dot.setScale(1 - totalDisplacement)
-
-            
             dot.position = CGPoint(x: dot.originalPosition.x + totalShift.dx,
                                    y: dot.originalPosition.y + totalShift.dy)
 
@@ -273,15 +249,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
-
-    
     func degreesToradians(_ degrees: Float) -> Float {
           return degrees * .pi / 180
     }
     
 
-
-    
     func addDot(at position: CGPoint, nextNode: SKNode) -> SKSpriteNode {
         let dot = SKSpriteNode(color: .white, size: CGSize(width: 20, height: 10))  // Appearance as a line
         dot.position = position
@@ -370,13 +342,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
            }
         
         if secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.gravityStar {
-                  
-            
-            print("Collision detected")
-            
+                
+        
             self.shipReference.removeFromParent()
-            
-            
             
             if let scene = SKScene(fileNamed: "Level" + self.name!)  {
                    scene.scaleMode = .aspectFill
@@ -387,7 +355,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             secondBody.node!.removeFromParent()
             firstBody.node!.removeFromParent()
-            
             
         }
         
@@ -428,8 +395,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     }
                 }}
         }
-        
-           
            
        }
     
@@ -438,15 +403,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.physicsWorld.speed = 5
         for star in starReference {
-        //    star.isPaused = true
+                star.isPaused = true
         }
         
-       // earchReference.isPaused = true
-        
-        shipReference.physicsBody?.fieldBitMask = PhysicsCategory.none
+        earchReference.isPaused = true
         savedVelocity = shipReference.physicsBody!.velocity
         savedAngularVelocity = shipReference.physicsBody!.angularVelocity
-        
+        shipReference.physicsBody?.fieldBitMask = PhysicsCategory.none
         shipReference.physicsBody?.isDynamic = false
         shipReference.run(SKAction.scale(to: 1.0, duration: 0.1))
         
@@ -455,42 +418,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             if (shipHasBeenPlaced == false) {
                 
-             
+                
                 shipHasBeenPlaced = true
                 if let fireParticles = SKEmitterNode(fileNamed: "Smoke") {
-                         // fireParticles.position = CGPoint(x: size.width / 2, y: size.height / 2)
+                    // fireParticles.position = CGPoint(x: size.width / 2, y: size.height / 2)
                     shipReference.addChild(fireParticles)
                     fireParticles.targetNode = self
-                      }
-                
-                
-            }
-            
-        }
-        
-        
-        
-        
+                }}}
     }
     
-    
  
-    
     func toggleMissileMode(_ button: JKButtonNode){
         
         if missleMode == false {
             missleMode = true
-            
         } else if missleMode == true {
             missleMode = false
         }
-        
     }
     
     
     func launchMissile(){
-        
-        
         
         let missile = SKSpriteNode.init(color: .blue, size: CGSize.init(width: 5, height: 5  ))
         missile.position = self.shipReference.position
@@ -504,41 +452,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         missile.physicsBody?.usesPreciseCollisionDetection = true
         missile.physicsBody?.isDynamic = true
         missile.physicsBody?.fieldBitMask = PhysicsCategory.none
-       
         missile.physicsBody?.velocity = self.savedVelocity
         missile.physicsBody?.angularVelocity = self.savedAngularVelocity
         
-        
         self.applyForce(to: missile, vector: self.forceVector)
-
-        
         self.addChild(missile)
-        
-        
-        
+  
     }
     
 
-   
        override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
            if let touch = touches.first, let initialLocation = initialTouchLocation {
-               
-             
-               //updateDots = true
-             
-               
-             
-             
-               
-               
+
                movevmeentreleaseLocation = touch.location(in: self)
 
                let forceVector = CGVector(dx: self.initialTouchLocation!.x - self.movevmeentreleaseLocation!.x, dy: self.initialTouchLocation!.y - self.movevmeentreleaseLocation!.y)
-               
-               
-               
-              
-               
+            
                self.removeAction(forKey: "NodePattern")
                self.run(SKAction.repeatForever(SKAction.sequence([  SKAction.run {
                    
@@ -548,63 +477,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                        color = UIColor.blue
                    }
                    
-                   
                    let node = SKSpriteNode.init(texture: nil, color: color, size: CGSize.init(width: 50, height: 50))
-                   
-                   
+        
                    self.addChild(node)
 
                    node.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 15, height: 30))
                    node.physicsBody?.fieldBitMask = PhysicsCategory.gravityStar
                    node.physicsBody?.isDynamic = true
-                  // node.run(SKAction.scale(to: 0.05, duration: 0.1))
-                   
                    node.physicsBody?.collisionBitMask = PhysicsCategory.none
                    node.physicsBody?.contactTestBitMask = PhysicsCategory.gravityStar | PhysicsCategory.earthplanet
                    node.physicsBody?.categoryBitMask = PhysicsCategory.whip
-                   
-                   if(self.missleMode){
-                   node.physicsBody!.mass = 100
-                   } else {
-                       node.physicsBody!.mass = 50
-
-                   }
-                   
                    node.physicsBody!.velocity = self.savedVelocity
                    node.physicsBody!.angularVelocity = self.savedAngularVelocity
+                   
+                   if(self.missleMode){
+                       node.physicsBody!.mass = 100
+                   } else {
+                       node.physicsBody!.mass = 50
+                   }
+                   
                    node.position = self.shipReference.position
-                   
                    node.alpha = 0.0
-                   self.nodesArray.append(node)
-                   
                    node.run(SKAction.sequence([SKAction.wait(forDuration: 0.6), SKAction.run {
                       
                        if let nodo =  self.nodesArray.first {
-                        
                                node.removeFromParent()
-                           
                                self.nodesArray.removeFirst()
-                          
                        }
                        
                    }]))
-                   
-                  
-                 
-
+                   self.nodesArray.append(node)
                    self.applyForce(to: node, vector: forceVector)
-                   
-                 
-                   
+   
                }, SKAction.wait(forDuration: 0.016)])), withKey: "NodePattern")
-               
-
-               
-              
-
-               
-               // Optionally, update something on the screen to indicate the pull direction and force
-           }
+            }
        }
   
  
@@ -660,8 +566,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 lazerBullet.physicsBody?.fieldBitMask = PhysicsCategory.none
                 lazerBullet.run(SKAction.repeatForever(SKAction.move(by: self.shipReference.physicsBody!.velocity, duration: 0.1)))
                 
-                
-                
+        
                     //  self.applyForce(to: lazerBullet, vector: self.forceVector)
 
                 
@@ -680,18 +585,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         for star in starReference {
-            //star.isPaused = false
+            star.isPaused = false
         }
-        
-       // earchReference.isPaused = false
-        
         
     }
     
-    
-
-    
-    func applyForce(to sprite: SKSpriteNode, vector: CGVector, _ multipler: CGFloat = 100.0) {
+        func applyForce(to sprite: SKSpriteNode, vector: CGVector, _ multipler: CGFloat = 100.0) {
         
         let impulseVector = CGVector(dx: vector.dx * multipler, dy: vector.dy * multipler ) // Adjust multiplier as needed
        // sprite.physicsBody?.isDynamic = true
@@ -700,10 +599,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
    
     override func update(_ currentTime: TimeInterval) {
         super.update(currentTime)
-        
-        
-        
-       
         
         if (followShip && shipReference.position.y > screenSizeReference.height / 4  ) {
             // Called before each frame is rendered
@@ -721,27 +616,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 amount = amountInitial
             }
             cameraReference.removeAllActions()
-
             cameraReference.setScale( amount + 0.5)
-             
-       
-
             
         } else {
              
                 cameraReference.run(SKAction.scale(to: 1.0, duration: 1))
-            
         }
         
-  
             planets = []
 
             for star in starReference {
-        
                 planets.append((position: CGPoint.init(x: star.position.x, y: star.position.y - 20) , radius: 350, strength: 100))
-
-            
-          
             }
         
             
@@ -759,6 +644,4 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         frameSkipper = frameSkipper + 1
         
     }
-    
-    
 }
