@@ -28,11 +28,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var planets = [(position: CGPoint, radius: CGFloat, strength: CGFloat)]()
     var gridBackground: SKSpriteNode!
     var planetPositions: [CGPoint] = []
-    var planetRadii: [CGFloat] = []
-    var gravityField: SKFieldNode!
     var dotNodes: [SKSpriteNode] = []
 
-
+    var backgroundColorIndex = 0
+    let colors = [UIColor.red, UIColor.yellow, UIColor.blue, UIColor.green, UIColor.cyan, UIColor.gray]
     
     override func didMove(to view: SKView) {
         
@@ -74,7 +73,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         menuBKG.missileButton?.action = toggleMissileMode
         
         menuBKG.zPosition = 100
-        let background = SKSpriteNode.init(texture: nil, color: UIColor.black, size: CGSize.init(width: self.size.width, height: self.size.height * 3 ))
+        let background = SKSpriteNode.init(imageNamed: "gradientbkg")
+        background.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 5),
+                                                                 
+                                                                 SKAction.run {
+            background.run(SKAction.colorize(with: self.colors[self.backgroundColorIndex], colorBlendFactor: 0.5, duration: 5))
+        }
+                                                                
+                                                                
+                                                             , SKAction.run {
+            if(self.backgroundColorIndex < self.colors.count - 1) {
+                self.backgroundColorIndex = self.backgroundColorIndex + 1} else {
+                    self.backgroundColorIndex = 0
+                }
+        }])))
+            
+            
+        background.setScale(3.0)
         background.lightingBitMask = 1
         background.zPosition = -1
         self.addChild(background)
@@ -127,7 +142,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 for child in node.children {
                     if child.name == "SunGravityField" {
-                        gravityField = child as! SKFieldNode
                     }
                 }
                 
