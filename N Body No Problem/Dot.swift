@@ -9,6 +9,7 @@ class DotNode: SKSpriteNode {
         self.originalPosition = initialPosition
         super.init(texture: nil, color: color, size: size)
         self.position = initialPosition
+        self.lightingBitMask = 1
     }
     
     required init?(coder aDecoder: NSCoder) {

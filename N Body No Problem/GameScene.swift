@@ -20,7 +20,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         static let player: UInt32 = 0b10          // 2
         static let projective: UInt32 = 0b100  
         static let earthplanet: UInt32 = 0b1000// 4
-        static let whip : UInt32 = 0b10000
+        static let whip: UInt32 = 0b10000        // 16
+        static let playerProjectile: UInt32 = 0b100000      // 32
+        static let enemy: UInt32 = 0b1000000     // 64
+       // static let item: UInt32 = 0b10000000        // 128
+       // static let hazard: UInt32 = 0b100000000     // 256
+      //  static let interactive: UInt32 = 0b1000000000 // 512
+      //  static let bonus: UInt32 = 0b10000000000   // 1024
+       // static let debris: UInt32 = 0b100000000000
+        
     }
     
     
@@ -41,6 +49,142 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let gridSize: CGSize = CGSize.init(width: 30, height: 100)          // Number of dots along width and height
     var planets = [(position: CGPoint, radius: CGFloat, strength: CGFloat)]()
 
+    override func didMove(to view: SKView) {
+        
+        physicsWorld.gravity = CGVector(dx:0, dy: 0);
+        self.physicsWorld.contactDelegate = self
+
+              self.lineNode = SKShapeNode()
+              self.lineNode?.strokeColor = .gray
+              self.lineNode?.lineWidth = 4.0
+              self.addChild(lineNode!)
+                let pattern : [CGFloat] = [2.0, 2.0]
+        shipReference = SKSpriteNode.init(imageNamed: "spaceship")
+        
+        shipReference.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 15, height: 30))
+        shipReference.physicsBody?.fieldBitMask = PhysicsCategory.gravityStar
+        shipReference.physicsBody!.categoryBitMask = PhysicsCategory.player
+        shipReference.physicsBody!.mass = 100
+        shipReference.physicsBody?.contactTestBitMask =  PhysicsCategory.gravityStar | PhysicsCategory.earthplanet
+        
+        SharedInfo.SharedInstance.screenSize = self.size
+    
+        
+        self.view?.showsDrawCount = true
+        screenSizeReference = self.view!.safeAreaLayoutGuide.layoutFrame.size
+        self.backgroundColor = .black
+        
+        self.camera = cameraReference
+        self.addChild(cameraReference)
+        
+       cameraReference.position.y = screenSizeReference.height / 4
+       
+        
+        let menuBKG = BottomMenuBar()
+        menuBKG.setup()
+        cameraReference.addChild(menuBKG)
+        
+        menuBKG.missileButton?.action = launchMissile
+        
+        menuBKG.zPosition = 100
+        let background = SKSpriteNode.init(texture: nil, color: UIColor.black, size: CGSize.init(width: self.size.width, height: self.size.height * 3 ))
+        background.lightingBitMask = 1
+        background.zPosition = -1
+        self.addChild(background)
+        
+        setupDots(withSpacing: dotSpacing)
+          setupPlanets()
+        //setupBackground()
+        //self.scene?.view?.showsPhysics = true
+        //self.scene?.view?.showsFields = false
+        
+        
+        shipReference.position =  CGPoint.init(x: 0, y: -200)
+        shipReference.physicsBody?.isDynamic = false
+        self.addChild(shipReference)
+        let lightNode = SKLightNode()
+        lightNode.categoryBitMask = 1
+        lightNode.falloff = 4.5
+        shipReference.addChild(lightNode)
+        
+        
+        var count = 0
+        for node in self.children {
+            if node.name == "gravitystar"
+            {
+
+                node.physicsBody!.categoryBitMask =  PhysicsCategory.gravityStar
+              
+                                        
+                    starReference.append(node as! SKSpriteNode)
+                  
+               // (node as! SKSpriteNode).lightingBitMask = 1
+                    planets.append((position: node.position, radius: 200, strength: 1500))
+                
+               // node.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveBy(x: 400, y: 0, duration: 5), SKAction.moveBy(x: -400, y: 0, duration: 5)])))
+                
+                
+                let lightNode = SKLightNode()
+                lightNode.categoryBitMask = 1
+                lightNode.falloff = 1
+                node.addChild(lightNode)
+                
+                let dotTexture = SKTexture.init(imageNamed: "sybdit")
+                    
+                    for i in 0...7 {
+                        
+                        if let spark = SKEmitterNode(fileNamed: "spark") {
+                            
+                            spark.particleTexture = dotTexture
+                            node.addChild(spark)
+                            spark.targetNode = node
+                            spark.emissionAngle = CGFloat(degreesToradians( Float(i) * 45 ))
+                            
+                        }
+                    }
+                    
+                      
+                
+                for child in node.children {
+                    if child.name == "SunGravityField" {
+                        gravityField = child as! SKFieldNode
+                    }
+                }
+                
+            } else if node.name == "earth" {
+                
+                earchReference = node as! SKSpriteNode
+                node.physicsBody!.categoryBitMask =  PhysicsCategory.earthplanet
+
+                
+            } else if node.name == "astro" {
+                
+                let dotNode = DotNode(color: .clear, size: CGSize(), initialPosition: node.position)
+                dotNode.size = (node as! SKSpriteNode).size
+                dotNode.texture = (node as! SKSpriteNode).texture
+                node.alpha = 0
+                self.addChild(dotNode)
+                dots.append(dotNode)
+            } else if node.name == "alien" {
+                
+                
+                node.physicsBody = SKPhysicsBody(rectangleOf: CGSize.init(width: 100, height: 100))
+                node.physicsBody!.affectedByGravity = false
+                node.physicsBody!.pinned = true
+                node.physicsBody!.categoryBitMask = PhysicsCategory.enemy
+                node.physicsBody!.contactTestBitMask = PhysicsCategory.playerProjectile
+                node.physicsBody?.usesPreciseCollisionDetection = true
+                node.physicsBody?.allowsRotation = false
+                node.physicsBody!.isDynamic = true
+                
+            }
+        }
+        
+       
+       // shipReference.position.x = self.size.width / 2
+    }
+    
+    
     
     func updateLine() {
         let path = CGMutablePath()
@@ -157,7 +301,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             for y in 0..<Int(gridSize.height) {
                 let initialPosition = CGPoint(x: CGFloat(x) * withSpacing + self.frame.midX - withSpacing * CGFloat(gridSize.width) / 2,
                                               y: CGFloat(y) * withSpacing + self.frame.midY - withSpacing * CGFloat(gridSize.height) / 2)
-                let dot = DotNode(color: .gray, size: CGSize(width: 5, height: 5), initialPosition: initialPosition)
+                let dot = DotNode(color: .white, size: CGSize(width: 10, height: 10), initialPosition: initialPosition)
                 addChild(dot)
                 dots.append(dot)
                 dot.lightingBitMask = 1
@@ -215,87 +359,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       
     
     
-    override func didMove(to view: SKView) {
-        
-        physicsWorld.gravity = CGVector(dx:0, dy: 0);
-        self.physicsWorld.contactDelegate = self
-
-              self.lineNode = SKShapeNode()
-              self.lineNode?.strokeColor = .gray
-              self.lineNode?.lineWidth = 4.0
-              self.addChild(lineNode!)
-                let pattern : [CGFloat] = [2.0, 2.0]
-        shipReference = SKSpriteNode.init(imageNamed: "spaceship")
-        
-        shipReference.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 15, height: 30))
-        shipReference.physicsBody?.fieldBitMask = PhysicsCategory.gravityStar
-        shipReference.physicsBody!.categoryBitMask = PhysicsCategory.player
-        shipReference.physicsBody!.mass = 100
-        shipReference.physicsBody?.contactTestBitMask =  PhysicsCategory.gravityStar | PhysicsCategory.earthplanet
-        
-        self.view?.showsDrawCount = true
-        screenSizeReference = self.view!.safeAreaLayoutGuide.layoutFrame.size
-        self.backgroundColor = .black
-        
-        self.camera = cameraReference
-
-        cameraReference.position.y = screenSizeReference.height / 4
-        let background = SKSpriteNode.init(texture: nil, color: UIColor.black, size: CGSize.init(width: self.size.width, height: self.size.height * 3 ))
-        background.lightingBitMask = 1
-        background.zPosition = -1
-        self.addChild(background)
-        
-        setupDots(withSpacing: dotSpacing)
-          setupPlanets()
-        //setupBackground()
-        
-        var count = 0
-        for node in self.children {
-            if node.name == "gravitystar"
-            {
-
-                node.physicsBody!.categoryBitMask =  PhysicsCategory.gravityStar
-              
-                                        
-                    starReference.append(node as! SKSpriteNode)
-                  
-                    planets.append((position: node.position, radius: 200, strength: 1500))
-                
-               // node.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveBy(x: 400, y: 0, duration: 5), SKAction.moveBy(x: -400, y: 0, duration: 5)])))
-                
-                
-                if let spark = SKEmitterNode(fileNamed: "firefiles") {
-                    //fireParticles.position = CGPoint(x: size.width / 2, y: size.height / 2)
-                    node.addChild(spark)
-                    spark.targetNode = self
-                      }
-                
-                for child in node.children {
-                    if child.name == "SunGravityField" {
-                        gravityField = child as! SKFieldNode
-                    }
-                }
-                
-            } else if node.name == "earth" {
-                
-                earchReference = node as! SKSpriteNode
-                node.physicsBody!.categoryBitMask =  PhysicsCategory.earthplanet
-
-                
-            } else if node.name == "astro" {
-                
-                let dotNode = DotNode(color: .clear, size: CGSize(), initialPosition: node.position)
-                dotNode.size = (node as! SKSpriteNode).size
-                dotNode.texture = (node as! SKSpriteNode).texture
-                node.alpha = 0
-                self.addChild(dotNode)
-                dots.append(dotNode)
-            }
-        }
-        
-       
-       // shipReference.position.x = self.size.width / 2
+    
+    func degreesToradians(_ degrees: Float) -> Float {
+          return degrees * .pi / 180
     }
+    
+    
     var gridBackground: SKSpriteNode!
 
     
@@ -517,7 +586,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                    view?.presentScene(scene, transition: SKTransition.fade(withDuration: 1.0))
                }
             
-        } else if ( secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.earthplanet || secondBody.categoryBitMask == PhysicsCategory.earthplanet && firstBody.categoryBitMask == PhysicsCategory.player ) {
+        } else if ((secondBody.categoryBitMask == PhysicsCategory.playerProjectile && firstBody.categoryBitMask == PhysicsCategory.enemy) || (secondBody.categoryBitMask == PhysicsCategory.enemy && firstBody.categoryBitMask == PhysicsCategory.playerProjectile)) {
+            
+            secondBody.node!.removeFromParent()
+            firstBody.node!.removeFromParent()
+            
+            
+        }
+        
+        else if ( secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.earthplanet || secondBody.categoryBitMask == PhysicsCategory.earthplanet && firstBody.categoryBitMask == PhysicsCategory.player ) {
             
             let calcuatedNumber = Int(self.name!)! + 1
             if let scene = SKScene(fileNamed: "Level" + String(calcuatedNumber))  {
@@ -584,12 +661,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             if (shipHasBeenPlaced == false) {
                 
-                shipReference.position =  initialTouchLocation!
-                self.addChild(shipReference)
-                let lightNode = SKLightNode()
-                lightNode.categoryBitMask = 1
-                lightNode.falloff = 4.5
-                shipReference.addChild(lightNode)
+             
                 shipHasBeenPlaced = true
                 if let fireParticles = SKEmitterNode(fileNamed: "Smoke") {
                          // fireParticles.position = CGPoint(x: size.width / 2, y: size.height / 2)
@@ -608,6 +680,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
+    
+    func launchMissile(_ button: JKButtonNode){
+        
+        
+        
+        let missile = SKSpriteNode.init(color: .blue, size: CGSize.init(width: 5, height: 5  ))
+        missile.position = self.shipReference.position
+        
+        missile.physicsBody = SKPhysicsBody(rectangleOf: CGSize.init(width: 10, height: 10))
+        missile.physicsBody?.affectedByGravity = false
+        missile.physicsBody?.categoryBitMask = PhysicsCategory.playerProjectile
+        missile.physicsBody?.collisionBitMask = PhysicsCategory.none
+        missile.physicsBody?.contactTestBitMask = PhysicsCategory.enemy
+        missile.physicsBody?.fieldBitMask = PhysicsCategory.gravityStar
+        missile.physicsBody?.usesPreciseCollisionDetection = true
+        missile.physicsBody?.isDynamic = true
+        missile.physicsBody?.fieldBitMask = PhysicsCategory.none
+       
+        missile.physicsBody?.velocity = self.savedVelocity
+        missile.physicsBody?.angularVelocity = self.savedAngularVelocity
+        
+        
+        self.applyForce(to: missile, vector: self.forceVector)
+
+        
+        self.addChild(missile)
+        
+        
+        
+    }
     
     var movevmeentreleaseLocation : CGPoint?
 
@@ -659,6 +761,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                        if let nodo =  self.nodesArray.first {
                         
                                node.removeFromParent()
+                           
                                self.nodesArray.removeFirst()
                           
                        }
@@ -683,9 +786,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
            }
        }
 
+    var forceVector = CGVector()
+ 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        self.physicsWorld.speed = 1
+        self.physicsWorld.speed = 0.5
         
         
         for dot in nodesArray {
@@ -701,20 +806,47 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
          nodesArray = []
         
-        
-        self.removeAction(forKey: "NodePattern")
+         self.removeAction(forKey: "NodePattern")
         if let touch = touches.first, let initialLocation = initialTouchLocation {
             
             followShip = true
             let releaseLocation = touch.location(in: self)
-            let forceVector = CGVector(dx: initialLocation.x - releaseLocation.x, dy: initialLocation.y - releaseLocation.y)
+            forceVector = CGVector(dx: initialLocation.x - releaseLocation.x, dy: initialLocation.y - releaseLocation.y)
             
             shipReference.physicsBody?.fieldBitMask =  PhysicsCategory.gravityStar
+            shipReference.physicsBody?.categoryBitMask = PhysicsCategory.player
+            shipReference.physicsBody?.collisionBitMask = PhysicsCategory.none
             shipReference.physicsBody?.isDynamic = true
             shipReference.run(SKAction.scale(to: 0.05, duration: 0.01))
             
             shipReference.physicsBody!.velocity = savedVelocity
             shipReference.physicsBody!.angularVelocity = savedAngularVelocity
+            
+            
+            shipReference.run(SKAction.repeatForever(SKAction.sequence([SKAction.run {
+                
+                let lazerBullet = SKSpriteNode.init(color: .red, size: CGSize.init(width: 5, height: 5  ))
+                lazerBullet.position = self.shipReference.position
+                
+                lazerBullet.physicsBody = SKPhysicsBody(rectangleOf: CGSize.init(width: 10, height: 10))
+                lazerBullet.physicsBody?.affectedByGravity = false
+                lazerBullet.physicsBody?.categoryBitMask = PhysicsCategory.playerProjectile
+                lazerBullet.physicsBody?.collisionBitMask = PhysicsCategory.none
+                lazerBullet.physicsBody?.contactTestBitMask = PhysicsCategory.enemy
+                lazerBullet.physicsBody?.usesPreciseCollisionDetection = true
+                lazerBullet.physicsBody?.isDynamic = true
+                lazerBullet.physicsBody?.fieldBitMask = PhysicsCategory.none
+                lazerBullet.run(SKAction.repeatForever(SKAction.move(by: self.shipReference.physicsBody!.velocity, duration: 0.1)))
+                
+                
+                
+                    //  self.applyForce(to: lazerBullet, vector: self.forceVector)
+
+                
+                self.addChild(lazerBullet)
+                
+                
+            }, SKAction.wait(forDuration: 0.2) ])), withKey: "Lazers")
             
             applyForce(to: shipReference, vector: forceVector)
         }
@@ -769,11 +901,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
             cameraReference.setScale( amount + 0.5)
              
-            if (amountInitial > 0) {
-            setupDots(withSpacing: dotSpacing * (amountInitial + 0.2))
-            } else if (amountInitial < 0 ) {
-                setupDots(withSpacing: dotSpacing * (amountInitial - 0.5))
-            }
+       
 
             
         } else {
