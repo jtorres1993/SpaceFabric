@@ -20,6 +20,7 @@
 		3B7594852BD4A4E600B94493 /* JKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7594842BD4A4E600B94493 /* JKButtonNode.swift */; };
 		3B7594872BD4A65A00B94493 /* BottomMenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7594862BD4A65A00B94493 /* BottomMenuBar.swift */; };
 		3B7594892BD4A78200B94493 /* SharedInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7594882BD4A78200B94493 /* SharedInfo.swift */; };
+		3B75948B2BD593DE00B94493 /* DotGridManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B75948A2BD593DD00B94493 /* DotGridManager.swift */; };
 		3B77DB022BCE0E9D00F9223C /* magic.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B77DB012BCE0E9D00F9223C /* magic.sks */; };
 		3B77DB042BCE0EB600F9223C /* firefiles.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B77DB032BCE0EB600F9223C /* firefiles.sks */; };
 		3B77DB062BCE0ED200F9223C /* spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B77DB052BCE0ED200F9223C /* spark.sks */; };
@@ -42,6 +43,7 @@
 		3B7594842BD4A4E600B94493 /* JKButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JKButtonNode.swift; path = ../../../Foldobo/Foldobo/Utilities/JKButtonNode.swift; sourceTree = "<group>"; };
 		3B7594862BD4A65A00B94493 /* BottomMenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomMenuBar.swift; sourceTree = "<group>"; };
 		3B7594882BD4A78200B94493 /* SharedInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharedInfo.swift; path = ../../../Foldobo/Foldobo/SharedInfo.swift; sourceTree = "<group>"; };
+		3B75948A2BD593DD00B94493 /* DotGridManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotGridManager.swift; sourceTree = "<group>"; };
 		3B77DB012BCE0E9D00F9223C /* magic.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = magic.sks; sourceTree = "<group>"; };
 		3B77DB032BCE0EB600F9223C /* firefiles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = firefiles.sks; sourceTree = "<group>"; };
 		3B77DB052BCE0ED200F9223C /* spark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = spark.sks; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 				3B6CC9E32BCAF56D00DB4CA3 /* AppDelegate.swift */,
 				3B6CC9EB2BCAF56D00DB4CA3 /* GameViewController.swift */,
 				3B6CC9E92BCAF56D00DB4CA3 /* GameScene.swift */,
+				3B75948A2BD593DD00B94493 /* DotGridManager.swift */,
 				3BDA785A2BCC584B00CC5618 /* Dot.swift */,
 				3B7594862BD4A65A00B94493 /* BottomMenuBar.swift */,
 				3B7594882BD4A78200B94493 /* SharedInfo.swift */,
@@ -203,6 +206,7 @@
 				3B6CC9E42BCAF56D00DB4CA3 /* AppDelegate.swift in Sources */,
 				3BDA785B2BCC584B00CC5618 /* Dot.swift in Sources */,
 				3B7594892BD4A78200B94493 /* SharedInfo.swift in Sources */,
+				3B75948B2BD593DE00B94493 /* DotGridManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

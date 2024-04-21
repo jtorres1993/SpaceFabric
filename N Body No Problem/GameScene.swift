@@ -13,6 +13,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var initialTouchLocation: CGPoint?
     var missleMode = false
     var updateDots = false
+    var followShip = false
     var forceVector = CGVector()
     var frameSkipper = 0
     var savedVelocity : CGVector = CGVector(dx: 0, dy: 0)
@@ -20,15 +21,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var lineNode: SKShapeNode?
     var nodesArray: [SKNode] = []
     var earchReference = SKSpriteNode()
-    var dots = [SKSpriteNode]()
-    let dotSpacing: CGFloat = 40
     var movevmeentreleaseLocation : CGPoint?
-    let gridSize: CGSize = CGSize.init(width: 50, height: 110)
     var planets = [(position: CGPoint, radius: CGFloat, strength: CGFloat)]()
     var gridBackground: SKSpriteNode!
     var planetPositions: [CGPoint] = []
     var dotNodes: [SKSpriteNode] = []
-
+    var dotGridManager = DotGridManager()
     var backgroundColorIndex = 0
     let colors = [UIColor.red, UIColor.yellow, UIColor.blue, UIColor.green, UIColor.cyan, UIColor.gray, UIColor.white, UIColor.black, UIColor.magenta, UIColor.orange]
     
@@ -93,7 +91,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         background.zPosition = -1
         self.addChild(background)
         
-        setupDots(withBaseSpacing: dotSpacing)
+        dotGridManager.setupDots( scene: self)
    
         //self.scene?.view?.showsPhysics = true
         //self.scene?.view?.showsFields = false
@@ -152,12 +150,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
             } else if node.name == "astro" {
                 
-                let dotNode = DotNode(color: .clear, size: CGSize(), initialPosition: node.position)
-                dotNode.size = (node as! SKSpriteNode).size
-                dotNode.texture = (node as! SKSpriteNode).texture
-                node.alpha = 0
-                self.addChild(dotNode)
-                dots.append(dotNode)
+               
             } else if node.name == "alien" {
                 
                 
@@ -175,6 +168,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
 
+   
     func updateLine() {
         let path = CGMutablePath()
         guard let firstNode = nodesArray.first else { return }
@@ -206,107 +200,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
        }
     
     
-    func setupDots(withBaseSpacing spacing: CGFloat) {
-        
-        let coreWidth = 800.0
-        let coreHeight = 2000.0
-            // Clear existing dots from the parent node
-            for dot in dots {
-                dot.removeFromParent()
-            }
-            
-            dots.removeAll()
-            
-            let centerX = self.frame.midX
-            let centerY = self.frame.midY
-            let numDotsX = Int(gridSize.width)
-            let numDotsY = Int(gridSize.height)
-            
-            // Define the boundaries within which dots will have uniform spacing
-            let halfCoreWidth = coreWidth / 2.0
-            let halfCoreHeight = coreHeight / 2.0
-            
-            // Define the exponential growth rate and the width of the transition area
-            let growthRate: CGFloat = 0.2  // This is the base growth rate
-            let transitionWidth: CGFloat = 50.0  // Width of the gradual transition area
-
-            for x in 0..<numDotsX {
-                for y in 0..<numDotsY {
-                    // Position index starting from the middle of the grid
-                    let deltaX = CGFloat(x - numDotsX / 2)
-                    let deltaY = CGFloat(y - numDotsY / 2)
-                    
-                    let absDeltaX = abs(deltaX)
-                    let absDeltaY = abs(deltaY)
-                    
-                    // Determine if the dot is outside the core area and in the transition area
-                    let distanceOutsideCoreX = max(0, absDeltaX - halfCoreWidth / spacing)
-                    let distanceOutsideCoreY = max(0, absDeltaY - halfCoreHeight / spacing)
-                    
-                    let factorX = distanceOutsideCoreX / transitionWidth
-                    let factorY = distanceOutsideCoreY / transitionWidth
-                    
-                    // Smooth transition factor using a sigmoid-like function (tanh)
-                    let smoothFactorX = tanh(factorX)
-                    let smoothFactorY = tanh(factorY)
-                    
-                    // Apply exponential factor gradually transitioning to full growth rate
-                    let expFactorX = exp(growthRate * smoothFactorX * distanceOutsideCoreX)
-                    let expFactorY = exp(growthRate * smoothFactorY * distanceOutsideCoreY)
-                    
-                    // Calculate final positions
-                    let finalX = centerX + deltaX * spacing * expFactorX
-                    let finalY = centerY + deltaY * spacing * expFactorY
-                    
-                    // Create the dot node and add to the scene
-                    let dot = DotNode(color: .white, size: CGSize(width: 10, height: 10), initialPosition: CGPoint(x: finalX, y: finalY))
-                    addChild(dot)
-                    dots.append(dot)
-                    dot.lightingBitMask = 1
-                }
-            }
-        }
 
     
-    func updateDotPositions() {
-        for dot in dots as! [DotNode] {
-            var totalShift = CGVector(dx: 0, dy: 0)
-            
-            var totalDisplacement = 0.0
-            for planet in planets {
-                let dx = planet.position.x - dot.originalPosition.x
-                let dy = planet.position.y - dot.originalPosition.y
-                let distance = sqrt(dx * dx + dy * dy)
-                
-                if distance < planet.radius && distance > 0 {  // Ensure distance is not zero to avoid division by zero
-                    var displacementFactor = planet.strength * (1 - (distance / planet.radius))
-                    if (displacementFactor > distance){
-                        displacementFactor = distance
-                    }
-                    totalShift.dx += (dx / distance) * displacementFactor
-                    totalShift.dy += (dy / distance) * displacementFactor
-                    
-                    let displacementratio = displacementFactor / distance
-                    totalDisplacement = displacementratio + totalDisplacement
-                    
-                    // Apply the calculated shift from the original position
-                   
-                    
-                }}
-            
-            dot.setScale(1 - totalDisplacement)
-            dot.position = CGPoint(x: dot.originalPosition.x + totalShift.dx,
-                                   y: dot.originalPosition.y + totalShift.dy)
-
-         
-        }
-    }
-
-    func degreesToradians(_ degrees: Float) -> Float {
-          return degrees * .pi / 180
-    }
-    
-
     func addDot(at position: CGPoint, nextNode: SKNode) -> SKSpriteNode {
         let dot = SKSpriteNode(color: .white, size: CGSize(width: 20, height: 10))  // Appearance as a line
         dot.position = position
@@ -320,68 +215,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return dot
     }
     
-  
-       
-    func applyGravityWellEffects(planets: [(position: CGPoint, radius: CGFloat)]) {
-        let shaderCode = """
-        void main() {
-            vec2 newCoord = v_tex_coord;
-            float pullStrength = 0.0;
-            float radius = 0.0;
-            vec2 diff = vec2(0.0, 0.0);
-            float dist = 0.0;
+    func updateDotPosition( dot: SKSpriteNode, position: CGPoint, nextNode: SKNode){
 
-            \(planets.enumerated().map { index, planet in
-                let position = CGPoint(x: planet.position.x / gridBackground.size.width, y: planet.position.y / gridBackground.size.height )
-                let radius = Float(planet.radius / gridBackground.size.width)
-                return """
-                radius = \(radius); // Normalize radius for planet \(index)
-                diff = v_tex_coord - vec2(\(position.x), \(position.y)); // Vector from pixel to center of planet \(index)
-                dist = length(diff); // Distance from center for planet \(index)
-
-                if (dist < radius) {
-                    pullStrength = 0.12 * pow((radius - dist) / radius, 2.0); // Calculate pull strength for planet \(index)
-                    newCoord.y -= pullStrength * -1; // Apply pull downwards
-                }
-                """
-            }.joined(separator: "\n"))
-
-            gl_FragColor = texture2D(u_texture, newCoord);
-        }
-        """
-
-        let shader = SKShader(source: shaderCode)
-        gridBackground.shader = shader
+        dot.position = position
+        dot.lightingBitMask = 1
+        let dx = nextNode.position.x - position.x
+        let dy = nextNode.position.y - position.y
+        let angle = atan2(dy, dx)
+        dot.zRotation = angle  // Set rotation to point towards the next node
     }
     
     
-    
-    func setupBackground() {
-          let gridSize = CGSize(width: size.height, height: size.height )
-          UIGraphicsBeginImageContextWithOptions(gridSize, false, 0.0)
-          guard let context = UIGraphicsGetCurrentContext() else { return }
-
-          context.setLineWidth(1)
-          context.setStrokeColor(UIColor.white.cgColor)
-          
-          let gridStep: CGFloat = 40
-          for x in stride(from: 0, to: gridSize.width, by: gridStep) {
-              for y in stride(from: 0, to: gridSize.height, by: gridStep) {
-                  context.move(to: CGPoint(x: x, y: 0))
-                  context.addLine(to: CGPoint(x: x, y: gridSize.height))
-                  context.move(to: CGPoint(x: 0, y: y))
-                  context.addLine(to: CGPoint(x: gridSize.width, y: y))
-              }
-          }
-          context.strokePath()
-          let image = UIGraphicsGetImageFromCurrentImageContext()
-          UIGraphicsEndImageContext()
-
-          gridBackground = SKSpriteNode(texture: SKTexture(image: image!))
-          gridBackground.position = CGPoint(x: frame.midX, y: frame.midY)
-          addChild(gridBackground)
-        gridBackground.zPosition = -1
-      }
     
     func didBegin(_ contact: SKPhysicsContact) {
            var firstBody: SKPhysicsBody
@@ -454,7 +298,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
   
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+         statisMode = true
+
         self.physicsWorld.speed = 5
         for star in starReference {
                 star.isPaused = true
@@ -515,56 +360,63 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
 
-       override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-           if let touch = touches.first, let initialLocation = initialTouchLocation {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first, let initialLocation = initialTouchLocation {
 
-               movevmeentreleaseLocation = touch.location(in: self)
+            movevmeentreleaseLocation = touch.location(in: self)
 
-               let forceVector = CGVector(dx: self.initialTouchLocation!.x - self.movevmeentreleaseLocation!.x, dy: self.initialTouchLocation!.y - self.movevmeentreleaseLocation!.y)
-            
-               self.removeAction(forKey: "NodePattern")
-               self.run(SKAction.repeatForever(SKAction.sequence([  SKAction.run {
-                   
-                  
-                   let node = SKSpriteNode.init(texture: nil, color: UIColor.clear, size: CGSize.init(width: 50, height: 50))
-        
-                   self.addChild(node)
+            let forceVector = CGVector(dx: self.initialTouchLocation!.x - self.movevmeentreleaseLocation!.x, dy: self.initialTouchLocation!.y - self.movevmeentreleaseLocation!.y)
+         
+            self.removeAction(forKey: "NodePattern")
+            self.run(SKAction.repeatForever(SKAction.sequence([  SKAction.run {
+                
+                
+                var color = UIColor.white
+                if(self.missleMode){
+                    color = UIColor.blue
+                }
+                
+                let node = SKSpriteNode.init(texture: nil, color: color, size: CGSize.init(width: 50, height: 50))
+     
+                self.addChild(node)
 
-                   node.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width:   10, height: 10))
-                   node.physicsBody?.fieldBitMask = PhysicsCategory.gravityStar
-                   node.physicsBody?.isDynamic = true
-                   node.physicsBody?.collisionBitMask = PhysicsCategory.none
-                   node.physicsBody?.contactTestBitMask = PhysicsCategory.gravityStar | PhysicsCategory.earthplanet
-                   node.physicsBody?.categoryBitMask = PhysicsCategory.whip
-                   node.physicsBody!.velocity = self.savedVelocity
-                   node.physicsBody!.angularVelocity = self.savedAngularVelocity
+                node.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 15, height: 30))
+                node.physicsBody?.fieldBitMask = PhysicsCategory.gravityStar
+                node.physicsBody?.isDynamic = true
+                node.physicsBody?.collisionBitMask = PhysicsCategory.none
+                node.physicsBody?.contactTestBitMask = PhysicsCategory.gravityStar | PhysicsCategory.earthplanet
+                node.physicsBody?.categoryBitMask = PhysicsCategory.whip
+                node.physicsBody!.velocity = self.savedVelocity
+                node.physicsBody!.angularVelocity = self.savedAngularVelocity
+                
+                if(!self.missleMode){
+                    node.physicsBody!.mass = 100
+                } else {
+                    node.physicsBody!.mass = 50
+                }
+                
+                node.position = self.shipReference.position
+                node.alpha = 0.0
+                node.run(SKAction.sequence([SKAction.wait(forDuration: 0.6), SKAction.run {
                    
-                   if(!self.missleMode){
-                       node.physicsBody!.mass = 100
-                   } else {
-                       node.physicsBody!.mass = 50
-                   }
-                   
-                   node.position = self.shipReference.position
-                   node.alpha = 0.0
-                   node.run(SKAction.sequence([SKAction.wait(forDuration: 0.6), SKAction.run {
-                      
-                       if let nodo =  self.nodesArray.first {
-                               node.removeFromParent()
-                               self.nodesArray.removeFirst()
-                       }
-                       
-                   }]))
-                   self.nodesArray.append(node)
-                   self.applyForce(to: node, vector: forceVector)
-   
-               }, SKAction.wait(forDuration: 0.016)])), withKey: "NodePattern")
-            }
-       }
-  
- 
+                    if let nodo =  self.nodesArray.first {
+                            node.removeFromParent()
+                            self.nodesArray.removeFirst()
+                    }
+                    
+                }]))
+                self.nodesArray.append(node)
+                self.applyForce(to: node, vector: forceVector)
+
+            }, SKAction.wait(forDuration: 0.016)])), withKey: "NodePattern")
+         }
+    }
+
+    var statisMode = false
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
+        statisMode = false
+
         self.physicsWorld.speed = 0.5
         
         
@@ -586,11 +438,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             
             if !missleMode {
-                
-                
-                
+             followShip = true
             let releaseLocation = touch.location(in: self)
-                
             forceVector = CGVector(dx: initialLocation.x - releaseLocation.x, dy: initialLocation.y - releaseLocation.y)
             
             shipReference.physicsBody?.fieldBitMask =  PhysicsCategory.gravityStar
@@ -627,15 +476,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
             }, SKAction.wait(forDuration: 0.2) ])), withKey: "Lazers")
             
-                movevmeentreleaseLocation = touch.location(in: self)
-
-                
-                let forceVector = CGVector(dx: self.initialTouchLocation!.x - self.movevmeentreleaseLocation!.x, dy: self.initialTouchLocation!.y - self.movevmeentreleaseLocation!.y)
-             
             applyForce(to: shipReference, vector: forceVector)
-                
-                
-                
             } else {
                 
                 
@@ -647,9 +488,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for star in starReference {
             star.isPaused = false
         }
-        
-        earchReference.isPaused = false
-
         
     }
     
@@ -663,7 +501,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         super.update(currentTime)
         
-        if (shipReference.position.y > screenSizeReference.height / 4  ) {
+        if (followShip && shipReference.position.y > screenSizeReference.height / 4  ) {
             // Called before each frame is rendered
            
             cameraReference.position.y = shipReference.position.y
@@ -701,10 +539,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             updateDots = true
             updateLine()
-            updateDotPositions()
+            if(!statisMode){
+            self.dotGridManager.updateDotPositions(planets: self.planets)
+            }
             frameSkipper = 0
         }
         frameSkipper = frameSkipper + 1
         
     }
+    
 }
