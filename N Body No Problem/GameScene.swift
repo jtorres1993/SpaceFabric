@@ -389,6 +389,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 node.physicsBody!.velocity = self.savedVelocity
                 node.physicsBody!.angularVelocity = self.savedAngularVelocity
                 
+                
                 if(!self.missleMode){
                     node.physicsBody!.mass = 100
                 } else {
