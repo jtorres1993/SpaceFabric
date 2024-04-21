@@ -8,30 +8,11 @@
 import SpriteKit
 import GameplayKit
 
+
+
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
-    
-    struct PhysicsCategory {
-        static let none: UInt32 = 0
-        static let all: UInt32 = UInt32.max
-        static let gravityStar: UInt32 = 0b1// 1
-        static let player: UInt32 = 0b10          // 2
-        static let projective: UInt32 = 0b100  
-        static let earthplanet: UInt32 = 0b1000// 4
-        static let whip: UInt32 = 0b10000        // 16
-        static let playerProjectile: UInt32 = 0b100000      // 32
-        static let enemy: UInt32 = 0b1000000     // 64
-       // static let item: UInt32 = 0b10000000        // 128
-       // static let hazard: UInt32 = 0b100000000     // 256
-      //  static let interactive: UInt32 = 0b1000000000 // 512
-      //  static let bonus: UInt32 = 0b10000000000   // 1024
-       // static let debris: UInt32 = 0b100000000000
-        
-    }
-    
-    
+
     
     var shipHasBeenPlaced = false
     var followShip = false
@@ -40,36 +21,52 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var screenSizeReference = CGSize()
     var starReference : [SKSpriteNode] = []
     var planetPoints : [(position: CGPoint, radius: CGFloat)] = []
-
+    var initialTouchLocation: CGPoint?
+    var missleMode = false
+    var updateDots = false
+    var forceVector = CGVector()
+    var frameSkipper = 0
+    var savedVelocity : CGVector = CGVector(dx: 0, dy: 0)
+    var savedAngularVelocity = 1.0
     var lineNode: SKShapeNode?
-       var nodesArray: [SKNode] = []
+    var nodesArray: [SKNode] = []
     var earchReference = SKSpriteNode()
     var dots = [SKSpriteNode]()
-    let dotSpacing: CGFloat = 40  // Space between dots
-    let gridSize: CGSize = CGSize.init(width: 30, height: 100)          // Number of dots along width and height
+    let dotSpacing: CGFloat = 40
+    var movevmeentreleaseLocation : CGPoint?
+    let gridSize: CGSize = CGSize.init(width: 30, height: 100)
     var planets = [(position: CGPoint, radius: CGFloat, strength: CGFloat)]()
+    var gridBackground: SKSpriteNode!
+    var planetPositions: [CGPoint] = []
+    var planetRadii: [CGFloat] = []
+    var gravityField: SKFieldNode!
+    var dotNodes: [SKSpriteNode] = []
 
+
+    
     override func didMove(to view: SKView) {
         
         physicsWorld.gravity = CGVector(dx:0, dy: 0);
         self.physicsWorld.contactDelegate = self
 
-              self.lineNode = SKShapeNode()
-              self.lineNode?.strokeColor = .gray
-              self.lineNode?.lineWidth = 4.0
-              self.addChild(lineNode!)
-                let pattern : [CGFloat] = [2.0, 2.0]
-        shipReference = SKSpriteNode.init(imageNamed: "spaceship")
+        self.lineNode = SKShapeNode()
+        self.lineNode?.strokeColor = .gray
+        self.lineNode?.lineWidth = 4.0
+        self.addChild(lineNode!)
         
+        shipReference = SKSpriteNode.init(imageNamed: "spaceship")
         shipReference.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 15, height: 30))
         shipReference.physicsBody?.fieldBitMask = PhysicsCategory.gravityStar
         shipReference.physicsBody!.categoryBitMask = PhysicsCategory.player
         shipReference.physicsBody!.mass = 100
         shipReference.physicsBody?.contactTestBitMask =  PhysicsCategory.gravityStar | PhysicsCategory.earthplanet
+        shipReference.position =  CGPoint.init(x: 0, y: -200)
+        shipReference.physicsBody?.isDynamic = false
+        self.addChild(shipReference)
+        
         
         SharedInfo.SharedInstance.screenSize = self.size
     
-        
         self.view?.showsDrawCount = true
         screenSizeReference = self.view!.safeAreaLayoutGuide.layoutFrame.size
         self.backgroundColor = .black
@@ -77,14 +74,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.camera = cameraReference
         self.addChild(cameraReference)
         
-       cameraReference.position.y = screenSizeReference.height / 4
+        cameraReference.position.y = screenSizeReference.height / 4
        
         
         let menuBKG = BottomMenuBar()
         menuBKG.setup()
         cameraReference.addChild(menuBKG)
         
-        menuBKG.missileButton?.action = launchMissile
+        menuBKG.missileButton?.action = toggleMissileMode
         
         menuBKG.zPosition = 100
         let background = SKSpriteNode.init(texture: nil, color: UIColor.black, size: CGSize.init(width: self.size.width, height: self.size.height * 3 ))
@@ -93,22 +90,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(background)
         
         setupDots(withSpacing: dotSpacing)
-          setupPlanets()
-        //setupBackground()
+   
         //self.scene?.view?.showsPhysics = true
         //self.scene?.view?.showsFields = false
         
-        
-        shipReference.position =  CGPoint.init(x: 0, y: -200)
-        shipReference.physicsBody?.isDynamic = false
-        self.addChild(shipReference)
         let lightNode = SKLightNode()
         lightNode.categoryBitMask = 1
         lightNode.falloff = 4.5
         shipReference.addChild(lightNode)
         
         
-        var count = 0
+        self.updateSceneNodes()
+        
+    }
+    
+    
+    func updateSceneNodes(){
         for node in self.children {
             if node.name == "gravitystar"
             {
@@ -180,12 +177,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-       
-       // shipReference.position.x = self.size.width / 2
     }
-    
-    
-    
+
     func updateLine() {
         let path = CGMutablePath()
         guard let firstNode = nodesArray.first else { return }
@@ -216,78 +209,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       
        }
     
-    func pointsAlongPath(path: CGPath, interval: CGFloat) -> [CGPoint] {
-        var points: [CGPoint] = []
+ 
 
-        let pathLength = approximatePathLength(path: path)
-        var distance: CGFloat = 0
-        
-        while distance < pathLength {
-            if let point = point(at: distance, on: path) {
-                points.append(point)
-            }
-            distance += interval
-        }
-        
-        return points
-    }
-
-    func approximatePathLength(path: CGPath) -> CGFloat {
-        var length: CGFloat = 0.0
-        var lastPoint: CGPoint?
-
-        path.applyWithBlock { element in
-            switch element.pointee.type {
-            case .moveToPoint, .addLineToPoint:
-                if let last = lastPoint {
-                    length += hypot(last.x - element.pointee.points[0].x, last.y - element.pointee.points[0].y)
-                }
-                lastPoint = element.pointee.points[0]
-            case .closeSubpath:
-                break
-            default:
-                // Approximation for curves
-                break
-            }
-        }
-
-        return length
-    }
-
-    func point(at distance: CGFloat, on path: CGPath) -> CGPoint? {
-        var lastPoint: CGPoint?
-        var traveledLength: CGFloat = 0.0
-
-        var targetPoint: CGPoint?
-        
-        path.applyWithBlock { element in
-            guard targetPoint == nil else { return }
-            
-            switch element.pointee.type {
-            case .moveToPoint, .addLineToPoint:
-                let currentPoint = element.pointee.points[0]
-                if let last = lastPoint {
-                    let segmentLength = hypot(last.x - currentPoint.x, last.y - currentPoint.y)
-                    if traveledLength + segmentLength >= distance {
-                        let ratio = (distance - traveledLength) / segmentLength
-                        let dx = ratio * (currentPoint.x - last.x)
-                        let dy = ratio * (currentPoint.y - last.y)
-                        targetPoint = CGPoint(x: last.x + dx, y: last.y + dy)
-                    }
-                    traveledLength += segmentLength
-                }
-                lastPoint = currentPoint
-            case .closeSubpath:
-                break
-            default:
-                // Approximation for curves
-                break
-            }
-        }
-        
-        return targetPoint
-    }
-
+    
     
     func setupDots(withSpacing: CGFloat ) {
         
@@ -313,9 +237,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     
-    func setupPlanets() {
-          // Example planets
-      }
     func updateDotPositions() {
         for dot in dots as! [DotNode] {
             var totalShift = CGVector(dx: 0, dy: 0)
@@ -352,37 +273,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
-    
-   
-        
-      
-      
-    
-    
+
     
     func degreesToradians(_ degrees: Float) -> Float {
           return degrees * .pi / 180
     }
     
-    
-    var gridBackground: SKSpriteNode!
 
-    
-    var planetPositions: [CGPoint] = []
-    var planetRadii: [CGFloat] = []
-    
-    var gravityField: SKFieldNode!
-    
-    struct Orbitall {
-        var position: CGPoint
-        var mass: CGFloat  // Not necessarily needed unless you want realistic mass-based strength
-        var strength: CGFloat
-    }
-    
-    var orbitals: [Orbitall] = [
-        Orbitall(position: CGPoint(x: 0, y: 222), mass: 3000, strength: 50000000),
-        Orbitall(position: CGPoint(x: 0, y: 600), mass: 3000, strength: 25000000)
-     ]
 
     
     func addDot(at position: CGPoint, nextNode: SKNode) -> SKSpriteNode {
@@ -398,107 +295,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return dot
     }
     
-    func simulateGravityField(at point: CGPoint) -> CGVector {
-        var totalAcceleration = CGVector(dx: 0, dy: 0)
-        let shipMass = 100.0
-           
-           for planet in orbitals {
-               let dx = planet.position.x - point.x
-               let dy = planet.position.y - point.y
-               let distanceSquared = dx*dx + dy*dy
-               let distance = sqrt(distanceSquared)
-               
-               if distance == 0 { continue }  // Avoid division by zero
-               
-               // Simplified force calculation: F = (strength * m1 * m2) / r^2
-               // Here strength is adjusted to encapsulate G and the planet's mass (m2),
-               // and we multiply by the ship's mass (m1) to get the force.
-               let forceMagnitude = (planet.strength * shipMass) / distanceSquared  // strength should encapsulate G * m2 (planet's mass)
-               let force = forceMagnitude / shipMass  // a = F / m1
-               
-               totalAcceleration.dx += force * (dx / distance)
-               totalAcceleration.dy += force * (dy / distance)
-           }
-           
-           return totalAcceleration
-
-    }
-
-    
-    
-     var dotNodes: [SKSpriteNode] = []
-
-   
-    
-    
-    func predictTrajectory(initialPosition: CGPoint, initialVelocity: CGVector, timeStep: CGFloat, numSteps: Int)  {
-        
-        
-        for dot in dotNodes {
-            dot.removeFromParent()
-            
-        }
-         dotNodes = []
-        
-        var points = [CGPoint]()
-        var currentPosition = initialPosition
-        var previousPosition = CGPoint(x: initialPosition.x - initialVelocity.dx * timeStep,
-                                       y: initialPosition.y - initialVelocity.dy * timeStep)
-        var tempPosition: CGPoint
-
-        points.append(currentPosition)
-        
-        for i in 1..<numSteps {
-            let acceleration = simulateGravityField(at: currentPosition)
-            tempPosition = currentPosition
-            currentPosition.x = 2 * currentPosition.x - previousPosition.x + acceleration.dx * timeStep * timeStep
-            currentPosition.y = 2 * currentPosition.y - previousPosition.y + acceleration.dy * timeStep * timeStep
-            previousPosition = tempPosition
-            
-            
-            if i % 10 == 0 {  // Add a dot every 5 steps to reduce the number of dots
-              //  let dot = addDot(at: currentPosition)
-              //  dotNodes.append(dot)
-            }
-        }
-        
-       
-    }
-
-    
-    
-
-
-    struct Planet {
-        var position: CGPoint
-        var mass: CGFloat  // Mass of the planet
-    }
-    
-    var orbits: [Planet] = [
-           Planet(position: CGPoint(x: 0, y: 221), mass: 10),  // Example planet
-           Planet(position: CGPoint(x: 0, y: 600), mass: 10)   // Another example planet
-       ]
-
-    func calculateGravitationalAcceleration(at point: CGPoint) -> CGVector {
-        // Constants
-        let gravitationalConstant: CGFloat = 2000000 // m^3 kg^-1 s^-2
-        var totalAcceleration = CGVector(dx: 0, dy: 0)
-        for planet in orbits {
-                  let dx = planet.position.x - point.x
-                  let dy = planet.position.y - point.y
-                  let distanceSquared = dx*dx + dy*dy
-                  let distance = sqrt(distanceSquared)
-                  
-                  if distance != 0 {  // Prevent division by zero
-                      let forceMagnitude = gravitationalConstant * planet.mass / distanceSquared
-                      totalAcceleration.dx += forceMagnitude * (dx / distance)
-                      totalAcceleration.dy += forceMagnitude * (dy / distance)
-                  }
-              }
-              
-              return totalAcceleration
-    }
-
+  
        
     func applyGravityWellEffects(planets: [(position: CGPoint, radius: CGFloat)]) {
         let shaderCode = """
@@ -636,10 +433,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
            
        }
     
-    var initialTouchLocation: CGPoint?
-
-    var savedVelocity : CGVector = CGVector(dx: 0, dy: 0)
-    var savedAngularVelocity = 1.0
+  
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         self.physicsWorld.speed = 5
@@ -680,8 +474,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
+ 
     
-    func launchMissile(_ button: JKButtonNode){
+    func toggleMissileMode(_ button: JKButtonNode){
+        
+        if missleMode == false {
+            missleMode = true
+            
+        } else if missleMode == true {
+            missleMode = false
+        }
+        
+    }
+    
+    
+    func launchMissile(){
         
         
         
@@ -711,9 +518,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    var movevmeentreleaseLocation : CGPoint?
 
-    var updateDots = false
+   
        override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
            if let touch = touches.first, let initialLocation = initialTouchLocation {
                
@@ -737,7 +543,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                self.run(SKAction.repeatForever(SKAction.sequence([  SKAction.run {
                    
                    
-                   let node = SKSpriteNode.init(texture: nil, color: UIColor.white, size: CGSize.init(width: 50, height: 50))
+                   var color = UIColor.white
+                   if(self.missleMode){
+                       color = UIColor.blue
+                   }
+                   
+                   
+                   let node = SKSpriteNode.init(texture: nil, color: color, size: CGSize.init(width: 50, height: 50))
+                   
+                   
                    self.addChild(node)
 
                    node.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 15, height: 30))
@@ -748,7 +562,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                    node.physicsBody?.collisionBitMask = PhysicsCategory.none
                    node.physicsBody?.contactTestBitMask = PhysicsCategory.gravityStar | PhysicsCategory.earthplanet
                    node.physicsBody?.categoryBitMask = PhysicsCategory.whip
+                   
+                   if(self.missleMode){
                    node.physicsBody!.mass = 100
+                   } else {
+                       node.physicsBody!.mass = 50
+
+                   }
+                   
                    node.physicsBody!.velocity = self.savedVelocity
                    node.physicsBody!.angularVelocity = self.savedAngularVelocity
                    node.position = self.shipReference.position
@@ -785,8 +606,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                // Optionally, update something on the screen to indicate the pull direction and force
            }
        }
-
-    var forceVector = CGVector()
+  
  
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
@@ -809,7 +629,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
          self.removeAction(forKey: "NodePattern")
         if let touch = touches.first, let initialLocation = initialTouchLocation {
             
-            followShip = true
+            
+            if !missleMode {
+             followShip = true
             let releaseLocation = touch.location(in: self)
             forceVector = CGVector(dx: initialLocation.x - releaseLocation.x, dy: initialLocation.y - releaseLocation.y)
             
@@ -849,6 +671,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }, SKAction.wait(forDuration: 0.2) ])), withKey: "Lazers")
             
             applyForce(to: shipReference, vector: forceVector)
+            } else {
+                
+                
+                launchMissile()
+                missleMode = false
+            }
         }
         
         for star in starReference {
@@ -863,18 +691,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 
     
-   
-
-    
-    
     func applyForce(to sprite: SKSpriteNode, vector: CGVector, _ multipler: CGFloat = 100.0) {
         
         let impulseVector = CGVector(dx: vector.dx * multipler, dy: vector.dy * multipler ) // Adjust multiplier as needed
        // sprite.physicsBody?.isDynamic = true
         sprite.physicsBody?.applyImpulse(impulseVector)
     }
-    
-    var frameSkipper = 0
+   
     override func update(_ currentTime: TimeInterval) {
         super.update(currentTime)
         
