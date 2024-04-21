@@ -302,6 +302,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
+    
     func setupBackground() {
           let gridSize = CGSize(width: size.height, height: size.height )
           UIGraphicsBeginImageContextWithOptions(gridSize, false, 0.0)
