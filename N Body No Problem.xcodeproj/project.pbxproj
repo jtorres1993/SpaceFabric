@@ -21,10 +21,15 @@
 		3B7594872BD4A65A00B94493 /* BottomMenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7594862BD4A65A00B94493 /* BottomMenuBar.swift */; };
 		3B7594892BD4A78200B94493 /* SharedInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7594882BD4A78200B94493 /* SharedInfo.swift */; };
 		3B75948B2BD593DE00B94493 /* DotGridManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B75948A2BD593DD00B94493 /* DotGridManager.swift */; };
+		3B75948D2BDDA2F400B94493 /* scifiwep.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B75948C2BDDA2F400B94493 /* scifiwep.mp3 */; };
 		3B77DB022BCE0E9D00F9223C /* magic.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B77DB012BCE0E9D00F9223C /* magic.sks */; };
 		3B77DB042BCE0EB600F9223C /* firefiles.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B77DB032BCE0EB600F9223C /* firefiles.sks */; };
 		3B77DB062BCE0ED200F9223C /* spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B77DB052BCE0ED200F9223C /* spark.sks */; };
 		3B77DB082BCE1D7C00F9223C /* Level1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B77DB072BCE1D7C00F9223C /* Level1.sks */; };
+		3B7F208E2BEB4C2C0034FDDF /* LevelCompleteMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7F208D2BEB4C2C0034FDDF /* LevelCompleteMenu.swift */; };
+		3B7F20902BEB4C530034FDDF /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7F208F2BEB4C530034FDDF /* Menu.swift */; };
+		3B9BB4922BDDA4DE00BE5C08 /* star_man-155034.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B9BB4912BDDA4DE00BE5C08 /* star_man-155034.mp3 */; };
+		3B9BB4942BDDA8D100BE5C08 /* Galactic Swing (Singularity Mix).mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B9BB4932BDDA8D000BE5C08 /* Galactic Swing (Singularity Mix).mp3 */; };
 		3BDA785B2BCC584B00CC5618 /* Dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA785A2BCC584B00CC5618 /* Dot.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,10 +49,15 @@
 		3B7594862BD4A65A00B94493 /* BottomMenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomMenuBar.swift; sourceTree = "<group>"; };
 		3B7594882BD4A78200B94493 /* SharedInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharedInfo.swift; path = ../../../Foldobo/Foldobo/SharedInfo.swift; sourceTree = "<group>"; };
 		3B75948A2BD593DD00B94493 /* DotGridManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotGridManager.swift; sourceTree = "<group>"; };
+		3B75948C2BDDA2F400B94493 /* scifiwep.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = scifiwep.mp3; path = ../../../../Downloads/scifiwep.mp3; sourceTree = "<group>"; };
 		3B77DB012BCE0E9D00F9223C /* magic.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = magic.sks; sourceTree = "<group>"; };
 		3B77DB032BCE0EB600F9223C /* firefiles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = firefiles.sks; sourceTree = "<group>"; };
 		3B77DB052BCE0ED200F9223C /* spark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = spark.sks; sourceTree = "<group>"; };
 		3B77DB072BCE1D7C00F9223C /* Level1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level1.sks; sourceTree = "<group>"; };
+		3B7F208D2BEB4C2C0034FDDF /* LevelCompleteMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelCompleteMenu.swift; sourceTree = "<group>"; };
+		3B7F208F2BEB4C530034FDDF /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
+		3B9BB4912BDDA4DE00BE5C08 /* star_man-155034.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "star_man-155034.mp3"; path = "../../../../Downloads/star_man-155034.mp3"; sourceTree = "<group>"; };
+		3B9BB4932BDDA8D000BE5C08 /* Galactic Swing (Singularity Mix).mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Galactic Swing (Singularity Mix).mp3"; path = "../../../../Downloads/Galactic Swing (Singularity Mix).mp3"; sourceTree = "<group>"; };
 		3BDA785A2BCC584B00CC5618 /* Dot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dot.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -85,9 +95,14 @@
 				3B6CC9EB2BCAF56D00DB4CA3 /* GameViewController.swift */,
 				3B6CC9E92BCAF56D00DB4CA3 /* GameScene.swift */,
 				3B75948A2BD593DD00B94493 /* DotGridManager.swift */,
+				3B9BB4932BDDA8D000BE5C08 /* Galactic Swing (Singularity Mix).mp3 */,
+				3B9BB4912BDDA4DE00BE5C08 /* star_man-155034.mp3 */,
+				3B75948C2BDDA2F400B94493 /* scifiwep.mp3 */,
 				3BDA785A2BCC584B00CC5618 /* Dot.swift */,
-				3B7594862BD4A65A00B94493 /* BottomMenuBar.swift */,
 				3B7594882BD4A78200B94493 /* SharedInfo.swift */,
+				3B7594862BD4A65A00B94493 /* BottomMenuBar.swift */,
+				3B7F208D2BEB4C2C0034FDDF /* LevelCompleteMenu.swift */,
+				3B7F208F2BEB4C530034FDDF /* Menu.swift */,
 				3B7594842BD4A4E600B94493 /* JKButtonNode.swift */,
 				3B7594832BD4471500B94493 /* Particles */,
 				3B7594822BD4470B00B94493 /* Levels */,
@@ -180,13 +195,16 @@
 			files = (
 				3B77DB082BCE1D7C00F9223C /* Level1.sks in Resources */,
 				3B77DB022BCE0E9D00F9223C /* magic.sks in Resources */,
+				3B9BB4942BDDA8D100BE5C08 /* Galactic Swing (Singularity Mix).mp3 in Resources */,
 				3B77DB062BCE0ED200F9223C /* spark.sks in Resources */,
 				3B6CC9E62BCAF56D00DB4CA3 /* Level2.sks in Resources */,
 				3B6CC9EF2BCAF56D00DB4CA3 /* Base in Resources */,
 				3B3F79432BD2483E007991C1 /* bokeh.sks in Resources */,
 				3B6CC9F12BCAF56E00DB4CA3 /* Assets.xcassets in Resources */,
 				3B6CC9E82BCAF56D00DB4CA3 /* Actions.sks in Resources */,
+				3B75948D2BDDA2F400B94493 /* scifiwep.mp3 in Resources */,
 				3B77DB042BCE0EB600F9223C /* firefiles.sks in Resources */,
+				3B9BB4922BDDA4DE00BE5C08 /* star_man-155034.mp3 in Resources */,
 				3B6CC9F42BCAF56E00DB4CA3 /* Base in Resources */,
 				3B38090D2BCCE4420046ABA1 /* Smoke.sks in Resources */,
 			);
@@ -202,6 +220,8 @@
 				3B6CC9EA2BCAF56D00DB4CA3 /* GameScene.swift in Sources */,
 				3B7594852BD4A4E600B94493 /* JKButtonNode.swift in Sources */,
 				3B7594872BD4A65A00B94493 /* BottomMenuBar.swift in Sources */,
+				3B7F208E2BEB4C2C0034FDDF /* LevelCompleteMenu.swift in Sources */,
+				3B7F20902BEB4C530034FDDF /* Menu.swift in Sources */,
 				3B6CC9EC2BCAF56D00DB4CA3 /* GameViewController.swift in Sources */,
 				3B6CC9E42BCAF56D00DB4CA3 /* AppDelegate.swift in Sources */,
 				3BDA785B2BCC584B00CC5618 /* Dot.swift in Sources */,

@@ -16,7 +16,7 @@ class DotGridManager {
     let gridSize: CGSize = CGSize.init(width: 50, height: 110)
     let dotSize = CGSize(width: 5, height: 5)
     
-    func setupDots( scene: SKScene) {
+    func setupDots( scene: SKScene, withCameraPos: CGPoint) {
         
         let coreWidth = 800.0
         let coreHeight = 2000.0
@@ -70,23 +70,44 @@ class DotGridManager {
                     let finalY = centerY + deltaY * dotSpacing * expFactorY
                     
                     // Create the dot node and add to the scene
-                    let dot = DotNode(color: .white, size: dotSize, initialPosition: CGPoint(x: finalX, y: finalY))
-                    scene.addChild(dot)
+                    let dot = DotNode(color: SharedInfo.SharedInstance.dotColor, size: dotSize, initialPosition: CGPoint(x: finalX, y: finalY), withCameraPos: withCameraPos)
+                        scene.addChild(dot)
+                    
                     dots.append(dot)
-                    dot.lightingBitMask = 1
+                   
                 }
             }
         }
     
+    func hyperSpaceNextLevelTransition(withCameraPos: CGPoint){
+        for dot in dots {
+          
+            let randWaitTIme = Double.random(in: 0.0 ... 1.0)
+
+            let randSpeedTIme = Double.random(in: 0.0 ... 1.0)
+        
+
+            dot.run(SKAction.sequence([
+                SKAction.wait(forDuration: randWaitTIme),
+                SKAction.group([ SKAction.fadeAlpha(to: 0.0, duration: randSpeedTIme),            SKAction.move(to: withCameraPos, duration: randSpeedTIme) ])
+    
+                ]))
+            
+            
+            
+        }
+    }
     
     func updateDotPositions(planets: [(position: CGPoint, radius: CGFloat, strength: CGFloat)]) {
         for dot in dots as! [DotNode] {
+            
+            if let ogDotPosition = dot.originalPosition {
             var totalShift = CGVector(dx: 0, dy: 0)
             
             var totalDisplacement = 0.0
             for planet in planets {
-                let dx = planet.position.x - dot.originalPosition.x
-                let dy = planet.position.y - dot.originalPosition.y
+                let dx = planet.position.x - ogDotPosition.x
+                let dy = planet.position.y - ogDotPosition.y
                 let distance = sqrt(dx * dx + dy * dy)
                 
                 if distance < planet.radius && distance > 0 {  // Ensure distance is not zero to avoid division by zero
@@ -106,10 +127,10 @@ class DotGridManager {
                 }}
             
             dot.setScale(1 - totalDisplacement)
-            dot.position = CGPoint(x: dot.originalPosition.x + totalShift.dx,
-                                   y: dot.originalPosition.y + totalShift.dy)
+            dot.position = CGPoint(x: ogDotPosition.x + totalShift.dx,
+                                   y: ogDotPosition.y + totalShift.dy)
 
-         
+            }
         }
     }
 
