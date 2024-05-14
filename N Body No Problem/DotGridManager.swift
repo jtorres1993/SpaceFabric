@@ -79,23 +79,39 @@ class DotGridManager {
             }
         }
     
+    
+    func vector(from startPoint: CGPoint, to endPoint: CGPoint) -> CGVector {
+        let dx = endPoint.x - startPoint.x
+        let dy = endPoint.y - startPoint.y
+        return CGVector(dx: dx, dy: dy)
+    }
+    
+    
     func hyperSpaceNextLevelTransition(withCameraPos: CGPoint){
         for dot in dots {
           
-            let randWaitTIme = Double.random(in: 0.0 ... 1.0)
+            
+            
+            let randWaitTIme = Double.random(in: 0.0 ... 0.5)
 
-            let randSpeedTIme = Double.random(in: 0.0 ... 1.0)
-        
+            let randSpeedTIme = Double.random(in: 0.0 ... 0.5)
+            
+            let movementVector = vector(from: withCameraPos, to: dot.position)
 
+            
             dot.run(SKAction.sequence([
                 SKAction.wait(forDuration: randWaitTIme),
-                SKAction.group([ SKAction.fadeAlpha(to: 0.0, duration: randSpeedTIme),            SKAction.move(to: withCameraPos, duration: randSpeedTIme) ])
+                SKAction.group([ SKAction.fadeAlpha(to: 0.0, duration: randSpeedTIme),             SKAction.move(by: CGVector.init(dx: movementVector.dx * 20, dy: movementVector.dy * 20), duration: randSpeedTIme), SKAction.scale(to: 3.0, duration: randSpeedTIme) ])
     
-                ]))
+            ,  SKAction.run {
+                dot.removeFromParent()
+            }]))
             
             
             
         }
+        
+        dots = []
     }
     
     func updateDotPositions(planets: [(position: CGPoint, radius: CGFloat, strength: CGFloat)]) {

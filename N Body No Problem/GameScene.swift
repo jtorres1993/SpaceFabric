@@ -34,7 +34,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
       //  let scifiwepsound = SKAction.playSoundFileNamed("Galactic Swing (Singularity Mix)", waitForCompletion: false)
        
-        run(scifiwepsound)
+       // run(scifiwepsound)
         physicsWorld.gravity = CGVector(dx:0, dy: 0);
         self.physicsWorld.contactDelegate = self
 
@@ -110,7 +110,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         lightNode.falloff = 4.5
         shipReference.addChild(lightNode)
         
-        self.run(SKAction.sequence([SKAction.wait(forDuration: 2.5), SKAction.run {
+        self.run(SKAction.sequence([SKAction.wait(forDuration: 1.5), SKAction.run {
             self.updateSceneNodes()
             self.addChild(self.shipReference)
             self.shipReference.run(SKAction.moveTo(y: -200, duration: 1.0))
@@ -182,8 +182,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                             
                         }
                     }
-                       
                 
+                
+                
+                let sunLensFlare = SKShapeNode.init(circleOfRadius: 40)
+                sunLensFlare.fillColor = .systemYellow
+                sunLensFlare.strokeColor = .systemYellow
+                sunLensFlare.alpha = 0.15
+                sunLensFlare.run(SKAction.repeatForever( SKAction.sequence([
+                  
+                    SKAction.scale(to: 1.2, duration: 0.4),
+                    SKAction.scale(to: 1.0, duration: 0.4) ]) ))
+                       
+                    
+                    
+                   
+               node.addChild(sunLensFlare)
+                                    
                 for child in node.children {
                     if child.name == "SunGravityField" {
                     }
@@ -216,6 +231,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             } else if node.name == "astro" {
                 node.position.y = node.position.y + 25
                 node.run(SKAction.group([SKAction.moveBy(x: 0, y: -25, duration: 1.0),  SKAction.fadeAlpha(to: 1.0, duration: 0.5)]))
+                node.physicsBody!.categoryBitMask = PhysicsCategory.
+                
+                
                
             } else if node.name == "alien" {
                 
@@ -295,8 +313,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let completion = LevelCompleteMenu()
 
     func nextLevelButtonPressed(button: JKButtonNode){
-        
         self.completion.hide()
+        let calcuatedNumber = Int(self.name!)! + 1
+        let scene = SKScene(fileNamed: "Level" + String(calcuatedNumber))
+      
         
         self.dotGridManager.hyperSpaceNextLevelTransition(withCameraPos: self.cameraReference.position)
         
@@ -314,12 +334,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         shipReference.run(SKAction.fadeAlpha(to: 0.0, duration: 0.3))
         earchReference.alpha = 0.0
         
-        self.run(SKAction.sequence([SKAction.wait(forDuration: 2), SKAction.run {
-            let calcuatedNumber = Int(self.name!)! + 1
-            if let scene = SKScene(fileNamed: "Level" + String(calcuatedNumber))  {
-                   scene.scaleMode = .aspectFill
-                self.view?.presentScene(scene, transition: SKTransition.fade(withDuration: 1.0))
-               }
+        self.run(SKAction.sequence([SKAction.wait(forDuration: 1.0), SKAction.run {
+             
+                scene!.scaleMode = .aspectFill
+            self.view?.presentScene(scene!)
+               
         }]))
         
        
@@ -401,7 +420,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
            
        }
-    let scifiwepsound = SKAction.playSoundFileNamed("scifiwep", waitForCompletion: false)
+   // let scifiwepsound = SKAction.playSoundFileNamed("scifiwep", waitForCompletion: false)
     
 
     var velocityLine = SKSpriteNode.init(color: UIColor.cyan, size: CGSize.init(width: 5, height: 15))
@@ -411,7 +430,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         velocityLine.zPosition = 10
 
         
-        self.run(scifiwepsound)
+     //   self.run(scifiwepsound)
         
         
         
