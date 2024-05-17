@@ -129,80 +129,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for node in self.children {
             if node.name == "gravitystar"
             {
-
-                node.physicsBody!.categoryBitMask =  PhysicsCategory.gravityStar
-    
-                starReference.append(node as! SKSpriteNode)
-                planets.append((position: node.position, radius: 200, strength: 1500))
-            
-                let lightNode = SKLightNode()
-                lightNode.categoryBitMask = 1
-                lightNode.falloff = 1
-                node.addChild(lightNode)
-                
-                
-                
-                let shape = SKShapeNode.init(circleOfRadius: 200)
-                
-                shape.lineWidth = 10
-                
-                
-                shape.alpha = 0.0
-                shape.strokeColor = UIColor.systemYellow
-                shape.run(SKAction.repeatForever(SKAction.sequence([
-                    SKAction.group([SKAction.scale(to: 0.0, duration: 2), SKAction.fadeAlpha(to: 0.8, duration: 2.0)]),
-                    SKAction.wait(forDuration: 1),
-                    SKAction.group([SKAction.scale(to: 1.0, duration: 0.001), SKAction.fadeAlpha(to: 0.0, duration: 0.001)])
-                   
-                    
-                ])))
-                node.addChild(shape)
-                node.position.y = node.position.y + 25
-                
-                node.run(SKAction.group([SKAction.moveBy(x: 0, y: -25, duration: 1.0),  SKAction.fadeAlpha(to: 1.0, duration: 0.5)]))
-
-                
-                let shape2 = SKShapeNode.init(circleOfRadius: 200)
-                shape2.strokeColor = UIColor.yellow
-                
-                shape2.alpha = 0.5
-                
-                //node.addChild(shape2)
-                
-                let dotTexture = SKTexture.init(imageNamed: "sybdit")
-                    
-                    for i in 0...7 {
-                        
-                        if let spark = SKEmitterNode(fileNamed: "spark") {
-                            
-                            spark.particleTexture = dotTexture
-                            node.addChild(spark)
-                            spark.targetNode = node
-                            spark.emissionAngle = CGFloat(degreesToradians( Float(i) * 45 ))
-                            
-                        }
-                    }
-                
-                
-                
-                let sunLensFlare = SKShapeNode.init(circleOfRadius: 40)
-                sunLensFlare.fillColor = .systemYellow
-                sunLensFlare.strokeColor = .systemYellow
-                sunLensFlare.alpha = 0.15
-                sunLensFlare.run(SKAction.repeatForever( SKAction.sequence([
-                  
-                    SKAction.scale(to: 1.2, duration: 0.4),
-                    SKAction.scale(to: 1.0, duration: 0.4) ]) ))
-                       
-                    
-                    
-                   
-               node.addChild(sunLensFlare)
-                                    
-                for child in node.children {
-                    if child.name == "SunGravityField" {
-                    }
-                }
+                setupStarWithNode(node: node)
                 
             } else if node.name == "earth" {
                 
@@ -231,7 +158,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             } else if node.name == "astro" {
                 node.position.y = node.position.y + 25
                 node.run(SKAction.group([SKAction.moveBy(x: 0, y: -25, duration: 1.0),  SKAction.fadeAlpha(to: 1.0, duration: 0.5)]))
-                node.physicsBody!.categoryBitMask = PhysicsCategory.
+                node.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 30, height: 50))
+                node.physicsBody!.categoryBitMask = PhysicsCategory.astronaut
+                node.physicsBody!.affectedByGravity = false
+                node.physicsBody!.isDynamic = false
+                node.physicsBody!.contactTestBitMask = PhysicsCategory.player
                 
                 
                
@@ -247,11 +178,92 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 node.physicsBody?.allowsRotation = false
                 node.physicsBody!.isDynamic = true
                 
+            } else if node.name == "HolderNode" {
+                
+                for nodos in node.children {
+                    setupStarWithNode(node: nodos)
+                }
             }
         }
         
     }
 
+    func setupStarWithNode(node: SKNode){
+        
+        node.physicsBody!.categoryBitMask =  PhysicsCategory.gravityStar
+
+        starReference.append(node as! SKSpriteNode)
+        planets.append((position: node.position, radius: 200, strength: 1500))
+    
+        let lightNode = SKLightNode()
+        lightNode.categoryBitMask = 1
+        lightNode.falloff = 1
+        node.addChild(lightNode)
+        
+        
+        
+        let shape = SKShapeNode.init(circleOfRadius: 200)
+        
+        shape.lineWidth = 10
+        
+        
+        shape.alpha = 0.0
+        shape.strokeColor = UIColor.systemYellow
+        shape.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.group([SKAction.scale(to: 0.0, duration: 2), SKAction.fadeAlpha(to: 0.8, duration: 2.0)]),
+            SKAction.wait(forDuration: 1),
+            SKAction.group([SKAction.scale(to: 1.0, duration: 0.001), SKAction.fadeAlpha(to: 0.0, duration: 0.001)])
+           
+            
+        ])))
+        node.addChild(shape)
+        node.position.y = node.position.y + 25
+        
+        node.run(SKAction.group([SKAction.moveBy(x: 0, y: -25, duration: 1.0),  SKAction.fadeAlpha(to: 1.0, duration: 0.5)]))
+
+        
+        let shape2 = SKShapeNode.init(circleOfRadius: 200)
+        shape2.strokeColor = UIColor.yellow
+        
+        shape2.alpha = 0.5
+        
+        //node.addChild(shape2)
+        
+            
+            for i in 0...7 {
+                
+                if let spark = SKEmitterNode(fileNamed: "spark") {
+                    
+                    spark.particleTexture = SharedInfo.SharedInstance.dotTexture
+                   // node.addChild(spark)
+                   // spark.targetNode = node
+                    spark.emissionAngle = CGFloat(degreesToradians( Float(i) * 45 ))
+                    
+                }
+            }
+        
+        
+        
+        let sunLensFlare = SKShapeNode.init(circleOfRadius: 40)
+        sunLensFlare.fillColor = .systemYellow
+        sunLensFlare.strokeColor = .systemYellow
+        sunLensFlare.alpha = 0.15
+        sunLensFlare.run(SKAction.repeatForever( SKAction.sequence([
+          
+            SKAction.scale(to: 1.2, duration: 0.4),
+            SKAction.scale(to: 1.0, duration: 0.4) ]) ))
+               
+            
+            
+           
+       node.addChild(sunLensFlare)
+                            
+        for child in node.children {
+            if child.name == "SunGravityField" {
+            }
+        }
+        
+    }
    
     func updateLine() {
         let path = CGMutablePath()
@@ -417,6 +429,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     nodesArray.removeFirst()
                     }
                 }}
+        }  else if ( secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.astronaut || secondBody.categoryBitMask == PhysicsCategory.astronaut && firstBody.categoryBitMask == PhysicsCategory.player )  {
+            
+            let node =  secondBody.node!
+            node.run(SKAction.sequence([SKAction.group([
+                
+                SKAction.scale(to: 1.3, duration: 0.2),
+                SKAction.fadeAlpha(to: 0.0, duration: 0.2)]),
+           
+                                        SKAction.run {
+                node.removeFromParent()
+            }
+            ])
+            
+            )
+            
+            
+            
+            
+            
+            node.physicsBody = nil
+                
+           // secondBody.node?.run(SKAction.scale(to: 5, duration: 0.3))
+            
         }
            
        }
@@ -454,6 +489,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 shipHasBeenPlaced = true
                 if let fireParticles = SKEmitterNode(fileNamed: "Smoke") {
+                    
                     
                     fireParticles.name = "trail"
                     // fireParticles.position = CGPoint(x: size.width / 2, y: size.height / 2)
@@ -703,7 +739,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             planets = []
 
             for star in starReference {
+                
+                if star.parent!.name == "HolderNode"  {
+                    
+                    planets.append((position:  self.convert(star.position, from: star.parent!) , radius: 350, strength: 100))
+                    
+                } else  {
+                
                 planets.append((position: CGPoint.init(x: star.position.x, y: star.position.y - 20) , radius: 350, strength: 100))
+                }
             }
         
             
@@ -711,12 +755,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
            // applyGravityWellEffects(planets: planetPoints)
         
       
-        if frameSkipper % 1 == 0 {
+        if frameSkipper % 3 == 0 {
             
             updateDots = true
             updateLine()
             if(!statisMode){
-            self.dotGridManager.updateDotPositions(planets: self.planets)
+             
+                self.dotGridManager.updateDotPositions(planets: self.planets)
             }
             frameSkipper = 0
         }

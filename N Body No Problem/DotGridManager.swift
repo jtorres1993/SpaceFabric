@@ -101,7 +101,7 @@ class DotGridManager {
             
             dot.run(SKAction.sequence([
                 SKAction.wait(forDuration: randWaitTIme),
-                SKAction.group([ SKAction.fadeAlpha(to: 0.0, duration: randSpeedTIme),             SKAction.move(by: CGVector.init(dx: movementVector.dx * 20, dy: movementVector.dy * 20), duration: randSpeedTIme), SKAction.scale(to: 3.0, duration: randSpeedTIme) ])
+                SKAction.group([ SKAction.fadeAlpha(to: 0.0, duration: randSpeedTIme),             SKAction.move(by: CGVector.init(dx: movementVector.dx * 20, dy: movementVector.dy * 20), duration: randSpeedTIme), SKAction.scale(to: 5.0, duration: randSpeedTIme) ])
     
             ,  SKAction.run {
                 dot.removeFromParent()

@@ -10,7 +10,7 @@
 		3B38090D2BCCE4420046ABA1 /* Smoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B38090C2BCCE4420046ABA1 /* Smoke.sks */; };
 		3B3F79432BD2483E007991C1 /* bokeh.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B3F79422BD2483E007991C1 /* bokeh.sks */; };
 		3B6CC9E42BCAF56D00DB4CA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CC9E32BCAF56D00DB4CA3 /* AppDelegate.swift */; };
-		3B6CC9E62BCAF56D00DB4CA3 /* Level2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B6CC9E52BCAF56D00DB4CA3 /* Level2.sks */; };
+		3B6CC9E62BCAF56D00DB4CA3 /* Level3.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B6CC9E52BCAF56D00DB4CA3 /* Level3.sks */; };
 		3B6CC9E82BCAF56D00DB4CA3 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B6CC9E72BCAF56D00DB4CA3 /* Actions.sks */; };
 		3B6CC9EA2BCAF56D00DB4CA3 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CC9E92BCAF56D00DB4CA3 /* GameScene.swift */; };
 		3B6CC9EC2BCAF56D00DB4CA3 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CC9EB2BCAF56D00DB4CA3 /* GameViewController.swift */; };
@@ -25,13 +25,16 @@
 		3B77DB022BCE0E9D00F9223C /* magic.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B77DB012BCE0E9D00F9223C /* magic.sks */; };
 		3B77DB042BCE0EB600F9223C /* firefiles.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B77DB032BCE0EB600F9223C /* firefiles.sks */; };
 		3B77DB062BCE0ED200F9223C /* spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B77DB052BCE0ED200F9223C /* spark.sks */; };
-		3B77DB082BCE1D7C00F9223C /* Level1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B77DB072BCE1D7C00F9223C /* Level1.sks */; };
+		3B77DB082BCE1D7C00F9223C /* Level6.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B77DB072BCE1D7C00F9223C /* Level6.sks */; };
 		3B7F208E2BEB4C2C0034FDDF /* LevelCompleteMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7F208D2BEB4C2C0034FDDF /* LevelCompleteMenu.swift */; };
 		3B7F20902BEB4C530034FDDF /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7F208F2BEB4C530034FDDF /* Menu.swift */; };
 		3B7F20922BF2F2110034FDDF /* popo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B7F20912BF2F2110034FDDF /* popo.mp3 */; };
 		3B7F20942BF2F4E30034FDDF /* popo2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B7F20932BF2F4E20034FDDF /* popo2.mp3 */; };
 		3B7F20962BF2F4EE0034FDDF /* popo3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B7F20952BF2F4EE0034FDDF /* popo3.mp3 */; };
 		3B7F20982BF2F52E0034FDDF /* popo4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B7F20972BF2F52E0034FDDF /* popo4.mp3 */; };
+		3B7F209A2BF3096C0034FDDF /* Level2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B7F20992BF3096C0034FDDF /* Level2.sks */; };
+		3B7F209E2BF30A9A0034FDDF /* Level4.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B7F209D2BF30A9A0034FDDF /* Level4.sks */; };
+		3B7F20A02BF31CCC0034FDDF /* Level1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B7F209F2BF31CCC0034FDDF /* Level1.sks */; };
 		3B9BB4922BDDA4DE00BE5C08 /* star_man-155034.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B9BB4912BDDA4DE00BE5C08 /* star_man-155034.mp3 */; };
 		3B9BB4942BDDA8D100BE5C08 /* Galactic Swing (Singularity Mix).mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B9BB4932BDDA8D000BE5C08 /* Galactic Swing (Singularity Mix).mp3 */; };
 		3BDA785B2BCC584B00CC5618 /* Dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA785A2BCC584B00CC5618 /* Dot.swift */; };
@@ -42,7 +45,7 @@
 		3B3F79422BD2483E007991C1 /* bokeh.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = bokeh.sks; sourceTree = "<group>"; };
 		3B6CC9E02BCAF56D00DB4CA3 /* N Body No Problem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "N Body No Problem.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B6CC9E32BCAF56D00DB4CA3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3B6CC9E52BCAF56D00DB4CA3 /* Level2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level2.sks; sourceTree = "<group>"; };
+		3B6CC9E52BCAF56D00DB4CA3 /* Level3.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level3.sks; sourceTree = "<group>"; };
 		3B6CC9E72BCAF56D00DB4CA3 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		3B6CC9E92BCAF56D00DB4CA3 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		3B6CC9EB2BCAF56D00DB4CA3 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -57,13 +60,16 @@
 		3B77DB012BCE0E9D00F9223C /* magic.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = magic.sks; sourceTree = "<group>"; };
 		3B77DB032BCE0EB600F9223C /* firefiles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = firefiles.sks; sourceTree = "<group>"; };
 		3B77DB052BCE0ED200F9223C /* spark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = spark.sks; sourceTree = "<group>"; };
-		3B77DB072BCE1D7C00F9223C /* Level1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level1.sks; sourceTree = "<group>"; };
+		3B77DB072BCE1D7C00F9223C /* Level6.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level6.sks; sourceTree = "<group>"; };
 		3B7F208D2BEB4C2C0034FDDF /* LevelCompleteMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelCompleteMenu.swift; sourceTree = "<group>"; };
 		3B7F208F2BEB4C530034FDDF /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		3B7F20912BF2F2110034FDDF /* popo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = popo.mp3; path = ../../../../Downloads/popo.mp3; sourceTree = "<group>"; };
 		3B7F20932BF2F4E20034FDDF /* popo2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = popo2.mp3; path = ../../../../Downloads/popo2.mp3; sourceTree = "<group>"; };
 		3B7F20952BF2F4EE0034FDDF /* popo3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = popo3.mp3; path = ../../../../Downloads/popo3.mp3; sourceTree = "<group>"; };
 		3B7F20972BF2F52E0034FDDF /* popo4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = popo4.mp3; path = ../../../../Downloads/popo4.mp3; sourceTree = "<group>"; };
+		3B7F20992BF3096C0034FDDF /* Level2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level2.sks; sourceTree = "<group>"; };
+		3B7F209D2BF30A9A0034FDDF /* Level4.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level4.sks; sourceTree = "<group>"; };
+		3B7F209F2BF31CCC0034FDDF /* Level1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level1.sks; sourceTree = "<group>"; };
 		3B9BB4912BDDA4DE00BE5C08 /* star_man-155034.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "star_man-155034.mp3"; path = "../../../../Downloads/star_man-155034.mp3"; sourceTree = "<group>"; };
 		3B9BB4932BDDA8D000BE5C08 /* Galactic Swing (Singularity Mix).mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Galactic Swing (Singularity Mix).mp3"; path = "../../../../Downloads/Galactic Swing (Singularity Mix).mp3"; sourceTree = "<group>"; };
 		3BDA785A2BCC584B00CC5618 /* Dot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dot.swift; sourceTree = "<group>"; };
@@ -129,8 +135,11 @@
 		3B7594822BD4470B00B94493 /* Levels */ = {
 			isa = PBXGroup;
 			children = (
-				3B6CC9E52BCAF56D00DB4CA3 /* Level2.sks */,
-				3B77DB072BCE1D7C00F9223C /* Level1.sks */,
+				3B6CC9E52BCAF56D00DB4CA3 /* Level3.sks */,
+				3B7F20992BF3096C0034FDDF /* Level2.sks */,
+				3B7F209D2BF30A9A0034FDDF /* Level4.sks */,
+				3B7F209F2BF31CCC0034FDDF /* Level1.sks */,
+				3B77DB072BCE1D7C00F9223C /* Level6.sks */,
 			);
 			path = Levels;
 			sourceTree = "<group>";
@@ -205,21 +214,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B77DB082BCE1D7C00F9223C /* Level1.sks in Resources */,
+				3B77DB082BCE1D7C00F9223C /* Level6.sks in Resources */,
 				3B77DB022BCE0E9D00F9223C /* magic.sks in Resources */,
 				3B7F20942BF2F4E30034FDDF /* popo2.mp3 in Resources */,
 				3B9BB4942BDDA8D100BE5C08 /* Galactic Swing (Singularity Mix).mp3 in Resources */,
 				3B77DB062BCE0ED200F9223C /* spark.sks in Resources */,
-				3B6CC9E62BCAF56D00DB4CA3 /* Level2.sks in Resources */,
+				3B6CC9E62BCAF56D00DB4CA3 /* Level3.sks in Resources */,
 				3B6CC9EF2BCAF56D00DB4CA3 /* Base in Resources */,
 				3B7F20922BF2F2110034FDDF /* popo.mp3 in Resources */,
 				3B3F79432BD2483E007991C1 /* bokeh.sks in Resources */,
 				3B6CC9F12BCAF56E00DB4CA3 /* Assets.xcassets in Resources */,
 				3B6CC9E82BCAF56D00DB4CA3 /* Actions.sks in Resources */,
+				3B7F209A2BF3096C0034FDDF /* Level2.sks in Resources */,
 				3B7F20962BF2F4EE0034FDDF /* popo3.mp3 in Resources */,
 				3B7F20982BF2F52E0034FDDF /* popo4.mp3 in Resources */,
 				3B75948D2BDDA2F400B94493 /* scifiwep.mp3 in Resources */,
 				3B77DB042BCE0EB600F9223C /* firefiles.sks in Resources */,
+				3B7F20A02BF31CCC0034FDDF /* Level1.sks in Resources */,
+				3B7F209E2BF30A9A0034FDDF /* Level4.sks in Resources */,
 				3B9BB4922BDDA4DE00BE5C08 /* star_man-155034.mp3 in Resources */,
 				3B6CC9F42BCAF56E00DB4CA3 /* Base in Resources */,
 				3B38090D2BCCE4420046ABA1 /* Smoke.sks in Resources */,
