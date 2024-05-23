@@ -15,7 +15,7 @@ class BottomMenuBar: SKNode {
     var settingsButton : JKButtonNode? = nil
     let settingsMenu = SKSpriteNode()
 
-    var missileButton : JKButtonNode? = nil
+    var cameraButton : JKButtonNode? = nil
     let missileMenu = SKSpriteNode()
     
    
@@ -25,11 +25,11 @@ class BottomMenuBar: SKNode {
         
     
         settingsButton = setupMenuItem(button: settingsButton, withImage: "MenuBottomBackgroundButton", withOffset: 0, withSettingsMenu: settingsMenu)
-        setupIconForButton(iconImage: "sybdit", button: settingsButton!)
+        //setupIconForButton(iconImage: "sybdit", button: settingsButton!)
         
      
-        missileButton = setupMenuItem(button: missileButton, withImage: "MenuBottomBackgroundButton", withOffset: 1, withSettingsMenu: missileMenu)
-        setupIconForButton(iconImage: "sybdit", button: missileButton!)
+        cameraButton = setupMenuItem(button: cameraButton, withImage: "camerabutton", withOffset: 1, withSettingsMenu: missileMenu)
+        //setupIconForButton(iconImage: "sybdit", button: missileButton!)
         
         
         
@@ -45,10 +45,11 @@ class BottomMenuBar: SKNode {
         
         let screenBorder = SharedInfo.SharedInstance.screenSize.width / 2.0
         let buttonOffset = button.size.width * CGFloat(withOffset)
-        var buttonMargin = 10 * withOffset + 10
+        let buttonMargin = 10 * withOffset + 50
        
-        button.position.x = screenBorder - buttonOffset - CGFloat(buttonMargin) - (button.size.width / 2)
-        button.position.y = -SharedInfo.SharedInstance.screenSize.height / 2 
+        button.position.x = screenBorder  - 50 - (button.size.width / 2
+        )
+        button.position.y = -SharedInfo.SharedInstance.screenSize.height / 2 + CGFloat(buttonOffset) + 50
         self.addChild(button)
         button.zPosition = 10
         self.addChild(withSettingsMenu)

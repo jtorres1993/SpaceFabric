@@ -70,13 +70,15 @@ class DotGridManager {
                     let finalY = centerY + deltaY * dotSpacing * expFactorY
                     
                     // Create the dot node and add to the scene
-                    let dot = DotNode(color: SharedInfo.SharedInstance.dotColor, size: dotSize, initialPosition: CGPoint(x: finalX, y: finalY), withCameraPos: withCameraPos)
+                    let dot = DotNode(color: SharedInfo.SharedInstance.dotColor, size: dotSize)
                         scene.addChild(dot)
-                    
+                    dot.runInitialAnimation(initialPosition: CGPoint(x: finalX, y: finalY), withCameraPos: withCameraPos)
                     dots.append(dot)
                    
                 }
             }
+        
+       
         }
     
     
@@ -114,8 +116,16 @@ class DotGridManager {
         dots = []
     }
     
-    func updateDotPositions(planets: [(position: CGPoint, radius: CGFloat, strength: CGFloat)]) {
+    func updateDotPositions(planets: [(position: CGPoint, radius: CGFloat, strength: CGFloat)], playerPos: CGPoint) {
+        
+        
+        var index = 0
         for dot in dots as! [DotNode] {
+            
+            let distance = hypot(playerPos.x - dot.position.x, playerPos.y - dot.position.y)
+            
+            if (distance > 30 ) {
+                
             
             if let ogDotPosition = dot.originalPosition {
             var totalShift = CGVector(dx: 0, dy: 0)
@@ -147,6 +157,12 @@ class DotGridManager {
                                    y: ogDotPosition.y + totalShift.dy)
 
             }
+            } else {
+                dots.remove(at: index)
+                dot.removeFromParent()
+            }
+            
+            index = index + 1
         }
     }
 
