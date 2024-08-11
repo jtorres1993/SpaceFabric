@@ -10,6 +10,9 @@ import SpriteKit
 
 class MotherShip: SKSpriteNode {
     
+    var isLockedOn = false 
+    
+    
     func setup(){
         
         self.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 10, height: 10))
@@ -19,11 +22,25 @@ class MotherShip: SKSpriteNode {
         self.physicsBody!.mass = 100
         self.physicsBody?.contactTestBitMask =  PhysicsCategory.gravityStar | PhysicsCategory.earthplanet
         self.physicsBody?.isDynamic = false
+        
+        
         let lightNode = SKLightNode()
         lightNode.categoryBitMask = 1
         lightNode.falloff = 4.5
         self.addChild(lightNode)
+        
+        
     }
     
+    func lockedOnEnemeyDestroyed(){
+        
+    }
+    
+    func lazerShoot(_ vector: CGPoint){
+     
+        
+      
+      
+    }
     
 }

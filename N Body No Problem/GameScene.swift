@@ -5,6 +5,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     
     var shipHasBeenPlaced = false
+    let soundHandler = SoundHandler()
+    let backgroundHandler = BackgroundHandler()
+    let completion = LevelCompleteMenu()
     var shipReference = MotherShip()
     var cameraReference = SKCameraNode()
     var screenSizeReference = CGSize()
@@ -18,79 +21,60 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var frameSkipper = 0
     var savedVelocity : CGVector = CGVector(dx: 0, dy: 0)
     var savedAngularVelocity = 1.0
+    var lineNode: SKShapeNode?
     var nodesArray: [SKNode] = []
     var earchReference = SKSpriteNode()
     var movevmeentreleaseLocation : CGPoint?
     var planets = [(position: CGPoint, radius: CGFloat, strength: CGFloat)]()
-    var gridBackground: SKSpriteNode!
-    var planetPositions: [CGPoint] = []
     var dotNodes: [SKSpriteNode] = []
     var dotGridManager = DotGridManager()
-    var backgroundColorIndex = 0
-    let colors = [UIColor.red, UIColor.yellow, UIColor.blue, UIColor.green, UIColor.cyan, UIColor.gray, UIColor.white, UIColor.black, UIColor.magenta, UIColor.orange]
+    let cameraZoomSpeed = 0.05
+
+   
+    
     var initialEnemeyPosition : CGPoint = CGPoint.zero
     
     override func didMove(to view: SKView) {
         
-      //  let scifiwepsound = SKAction.playSoundFileNamed("Galactic Swing (Singularity Mix)", waitForCompletion: false)
-       
-       // run(scifiwepsound)
+        self.addChild(soundHandler)
+        //soundHandler.playInitialSound()
         
-        physicsWorld.gravity = CGVector(dx:0, dy: 0);
         self.physicsWorld.contactDelegate = self
 
-      
         screenSizeReference = self.view!.safeAreaLayoutGuide.layoutFrame.size
-
-        shipReference = MotherShip.init(imageNamed: "spaceship")
-        shipReference.setup()
-
-        
-        velocityLine.anchorPoint = CGPoint.init(x: 0.5, y: 0.0)
-        
-        shipReference.addChild(velocityLine)
-        
-        
         SharedInfo.SharedInstance.screenSize = self.size
-    
-        self.view?.showsDrawCount = true
-        self.backgroundColor = .black
+        setSceneOptions()
+       
+        self.backgroundColor = SharedInfo.SharedInstance.backgroundColor
         
-        
+        let menuBKG = BottomMenuBar()
+        menuBKG.setup()
+        menuBKG.cameraButton?.action = zoomTogglePressed
+        menuBKG.zPosition = 100
         
         self.camera = cameraReference
         self.addChild(cameraReference)
         
+        
         cameraReference.position.y = screenSizeReference.height / 4
-       
-        
-        let menuBKG = BottomMenuBar()
-        menuBKG.setup()
         cameraReference.addChild(menuBKG)
+        cameraReference.setScale(1.0)
+
+        self.addChild(backgroundHandler)
         
-       //addAndColorizeBackground()
-        
-        menuBKG.cameraButton?.action = zoomTogglePressed
-        
-        menuBKG.zPosition = 100
-      
-        
+        self.addChild(dotGridManager)
         dotGridManager.setupDots( scene: self, withCameraPos: cameraReference.position)
-   
-        //self.scene?.view?.showsPhysics = true
-        //self.scene?.view?.showsFields = false
-        
-     
-        
+  
         self.run(SKAction.sequence([SKAction.wait(forDuration: 1.5), SKAction.run {
             
-            self.addEnemyNodes()
+          //  self.addEnemyNodes()
             
             self.updateSceneNodes()
+         
 
         }]))
         
-        completion.zPosition = 100
+        physicsWorld.gravity = CGVector(dx:0, dy: 0);
         self.physicsWorld.speed = 0.01
 
         completion.setup()
@@ -99,6 +83,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     var isCameraZoomToggled = false
+    
     func addEnemyNodes(){
         
         let enemey = SKSpriteNode.init(imageNamed: "redtriangle")
@@ -109,52 +94,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    func addAndColorizeBackground(){
-        /*
-        let background = SKSpriteNode.init(texture: nil , color: .black , size:SharedInfo.SharedInstance.screenSize )
+    func setSceneOptions(){
+        self.view?.showsDrawCount = true
+        self.scene?.view?.showsPhysics = true
+        //self.scene?.view?.showsFields = false
         
-   
-        self.backgroundColorIndex = Int.random(in: 1...9)
-        background.run(SKAction.colorize(with: self.colors[self.backgroundColorIndex], colorBlendFactor: 0.3, duration: 0.01))
-        
-        background.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 5),
-                                                                 
-                                                                 SKAction.run {
-            background.run(SKAction.colorize(with: self.colors[self.backgroundColorIndex], colorBlendFactor: 0.3, duration: 5))
-        }
-                                                                
-                                                                
-                                                             , SKAction.run {
-            if(self.backgroundColorIndex < self.colors.count - 1) {
-                self.backgroundColorIndex = self.backgroundColorIndex + 1} else {
-                    self.backgroundColorIndex = 0
-                }
-        }])))
-         
-        
-        background.setScale(3.0)
-        //background.lightingBitMask = 1
-        background.zPosition = -1
-        self.addChild(background)
-         */
     }
     
-    let cameraZoomSpeed = 0.05
     func zoomTogglePressed(_ button: JKButtonNode){
         
         
         if(isCameraZoomToggled){
            // cameraReference.run(SKAction.scale(to: 1.0, duration: cameraZoomSpeed))
             //cameraReference.run(SKAction.moveBy(x: 0, y: -self.size.height / 2, duration: cameraZoomSpeed))
-            cameraReference.setScale(1.0)
-            cameraReference.position.y = cameraReference.position.y - self.size.height / 2
+            cameraReference.setScale(2.0)
+           // cameraReference.position.y = cameraReference.position.y - self.size.height / 2
             isCameraZoomToggled = false
         } else {
            // cameraReference.run(SKAction.scale(to: 2.0, duration: cameraZoomSpeed))
             //cameraReference.run(SKAction.moveBy(x: 0, y: self.size.height / 2, duration: cameraZoomSpeed))
             
-            cameraReference.setScale(2.0)
-            cameraReference.position.y = cameraReference.position.y + self.size.height / 2
+            cameraReference.setScale(1.0)
+          //  cameraReference.position.y = cameraReference.position.y + self.size.height / 2
             isCameraZoomToggled = true
         }
     }
@@ -225,12 +186,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                  node.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 10, height: 10))
                  node.name = "Enemigo"
                  node.physicsBody?.fieldBitMask = PhysicsCategory.gravityStar
+                node.physicsBody?.categoryBitMask = PhysicsCategory.enemy
+                node.physicsBody?.usesPreciseCollisionDetection = true 
                  node.physicsBody?.mass = 10000000
                 
                 
                 self.run(SKAction.repeatForever(SKAction.sequence([
                 
-                    SKAction.wait(forDuration: 30 ),
+                    SKAction.wait(forDuration: 60 ),
                     
                     SKAction.run {
                         node.physicsBody!.velocity = CGVector.init(dx: 0, dy: 0)
@@ -340,7 +303,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                        if nodesArray.indices.contains(index - 1 ) {
                            nextNode = nodesArray[index - 1]
                        }
-                       let dot = addDot(at: node.position, nextNode:  nextNode ?? node)
+                       let dot = self.dotGridManager.addDot(at: node.position, nextNode:  nextNode ?? node)
                        dotNodes.append(dot)
                    }
                    nextNode = node  // Update nextNode to the current node for the next iteration
@@ -354,31 +317,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 
     
-    func addDot(at position: CGPoint, nextNode: SKNode) -> SKSpriteNode {
-        let dot = SKSpriteNode(color: .white, size: CGSize(width: 20, height: 10))  // Appearance as a line
-        dot.position = position
-        dot.lightingBitMask = 1
-        let dx = nextNode.position.x - position.x
-        let dy = nextNode.position.y - position.y
-        let angle = atan2(dy, dx)
-        dot.zRotation = angle  // Set rotation to point towards the next node
-
-        addChild(dot)
-        return dot
-    }
     
-    func updateDotPosition( dot: SKSpriteNode, position: CGPoint, nextNode: SKNode){
-
-        dot.position = position
-        dot.lightingBitMask = 1
-        let dx = nextNode.position.x - position.x
-        let dy = nextNode.position.y - position.y
-        let angle = atan2(dy, dx)
-        dot.zRotation = angle  // Set rotation to point towards the next node
-    }
-    
-    
-    let completion = LevelCompleteMenu()
 
     func nextLevelButtonPressed(button: JKButtonNode){
         self.completion.hide()
@@ -436,6 +375,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                }
             
         } else if ((secondBody.categoryBitMask == PhysicsCategory.playerProjectile && firstBody.categoryBitMask == PhysicsCategory.enemy) || (secondBody.categoryBitMask == PhysicsCategory.enemy && firstBody.categoryBitMask == PhysicsCategory.playerProjectile)) {
+            
+            
             if let secondbody_node = secondBody.node {
                 secondbody_node.removeFromParent()
             }
@@ -449,15 +390,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         else if ( secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.earthplanet || secondBody.categoryBitMask == PhysicsCategory.earthplanet && firstBody.categoryBitMask == PhysicsCategory.player ) {
             
             
-            shipReference.physicsBody!.isDynamic = false
+            //shipReference.physicsBody!.isDynamic = false
             
            // completion.setup()
             
-        self.cameraReference.addChild(completion)
+      //  self.cameraReference.addChild(completion)
            
             
             
-        } else if ( secondBody.categoryBitMask == PhysicsCategory.whip && firstBody.categoryBitMask == PhysicsCategory.gravityStar || secondBody.categoryBitMask == PhysicsCategory.whip && firstBody.categoryBitMask == PhysicsCategory.earthplanet ) {
+        } else if ( secondBody.categoryBitMask == PhysicsCategory.whip && firstBody.categoryBitMask == PhysicsCategory.gravityStar ) {
             
             print("dot collision")
             var count = 0
@@ -511,15 +452,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
            
        }
-   // let scifiwepsound = SKAction.playSoundFileNamed("scifiwep", waitForCompletion: false)
+  
     
-
-    var velocityLine = SKSpriteNode.init(color: UIColor.cyan, size: CGSize.init(width: 5, height: 15))
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
          statisMode = true
         
-        velocityLine.zPosition = 10
-
+        shipReference = MotherShip.init(imageNamed: "spaceship")
+        shipReference.setup()
+        
+        
+        
+        shipReference.position = earchReference.position
+        self.addChild(shipReference)
+         
+         
         
      //   self.run(scifiwepsound)
         
@@ -593,17 +539,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   
     }
     
-    func scalingFactor(fromVector vector: CGVector) -> CGFloat {
-        let maxMagnitude: CGFloat = 500 // as derived above
-        let magnitudeValue = magnitude(of: vector)
-        let scale = 1 + (magnitudeValue / maxMagnitude) * 40
-        return min(scale, 40) // Ensures the scale does not exceed 5
-    }
 
-    func magnitude(of vector: CGVector) -> CGFloat {
-        return sqrt(vector.dx * vector.dx + vector.dy * vector.dy)
-    }
-    
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first, let initialLocation = initialTouchLocation {
@@ -670,10 +606,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     var statisMode = false
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for node in self.children {
+            if (node.name == "Enemigo") {
+                node.isPaused = false
+                node.physicsBody!.isDynamic = true
+            }
+        }
         
-        
-        let sound = SKAction.playSoundFileNamed("star_man-155034", waitForCompletion: false)
-        self.run(sound)
+        let sound = SKAction.playSoundFileNamed("blast-37988", waitForCompletion: false)
+      //  self.run(sound)
         
         
         statisMode = false
@@ -712,31 +653,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             shipReference.physicsBody!.velocity = savedVelocity
             shipReference.physicsBody!.angularVelocity = savedAngularVelocity
             
-            /* Lazer firing
-            shipReference.run(SKAction.repeatForever(SKAction.sequence([SKAction.run {
-                
-                let lazerBullet = SKSpriteNode.init(color: .red, size: CGSize.init(width: 5, height: 5  ))
-                lazerBullet.position = self.shipReference.position
-                
-                lazerBullet.physicsBody = SKPhysicsBody(rectangleOf: CGSize.init(width: 10, height: 10))
-                lazerBullet.physicsBody?.affectedByGravity = false
-                lazerBullet.physicsBody?.categoryBitMask = PhysicsCategory.playerProjectile
-                lazerBullet.physicsBody?.collisionBitMask = PhysicsCategory.none
-                lazerBullet.physicsBody?.contactTestBitMask = PhysicsCategory.enemy
-                lazerBullet.physicsBody?.usesPreciseCollisionDetection = true
-                lazerBullet.physicsBody?.isDynamic = true
-                lazerBullet.physicsBody?.fieldBitMask = PhysicsCategory.none
-                lazerBullet.run(SKAction.repeatForever(SKAction.move(by: self.shipReference.physicsBody!.velocity, duration: 0.1)))
-                
-        
-                    //  self.applyForce(to: lazerBullet, vector: self.forceVector)
-
-                
-                self.addChild(lazerBullet)
-                
-                
-            }, SKAction.wait(forDuration: 0.2) ])), withKey: "Lazers")
-            */
+           
             applyForce(to: shipReference, vector: forceVector)
                 
             
@@ -829,9 +746,78 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 self.dotGridManager.updateDotPositions(planets: self.planets, playerPos: shipReference.position)
             }
             frameSkipper = 0
+            
+            calculateLockOn()
         }
         frameSkipper = frameSkipper + 1
         
+    }
+    
+    
+    func calculateLockOn(){
+        
+        for shipnode in self.children
+        {
+         
+            if shipnode.name == "ship"
+            {
+                for enemey in self.children{
+                    if enemey.name == "Enemigo"{
+                        
+                        let distanceTo = distanceBetweenNodes(nodeA: shipnode, nodeB: enemey)
+                        
+                        
+                        //Close to enemey detection logic
+                        /*
+                        if distanceTo < 200 {
+                            
+                            
+                            let shipReference = (shipnode as! MotherShip)
+                            if(shipReference.isLockedOn == false ) {
+                                shipReference.isLockedOn = true
+                                shipnode.physicsBody!.isDynamic = false
+                                enemey.physicsBody!.isDynamic = false
+                            
+                                let angle = angleBetweenNodes(nodeA: shipnode, nodeB: enemey)
+                                let normalizedDirection = normalizedDirection(from: shipnode.position, to: enemey.position)
+                            
+                            
+                                let directionVector = CGVector(dx: cos(angle) * speed, dy: cos(angle) * speed)
+                            
+                                self.run(SKAction.repeatForever(SKAction.sequence([SKAction.run {
+                                
+                                    let lazerBullet = SKSpriteNode.init(color: .red, size: CGSize.init(width: 10, height: 5  ))
+                                    lazerBullet.position = shipnode.position
+                                
+                                    lazerBullet.physicsBody = SKPhysicsBody(rectangleOf: CGSize.init(width: 10, height: 10))
+                                    lazerBullet.physicsBody?.affectedByGravity = false
+                                    lazerBullet.physicsBody?.categoryBitMask = PhysicsCategory.playerProjectile
+                                    lazerBullet.physicsBody?.collisionBitMask = PhysicsCategory.none
+                                    lazerBullet.physicsBody?.contactTestBitMask = PhysicsCategory.enemy
+                                    lazerBullet.physicsBody?.usesPreciseCollisionDetection = true
+                                    lazerBullet.physicsBody?.isDynamic = true
+                                    lazerBullet.physicsBody?.fieldBitMask = PhysicsCategory.none
+                                
+                                    lazerBullet.run(SKAction.repeatForever(SKAction.move(by: CGVector(dx: normalizedDirection.x, dy: normalizedDirection.y), duration: 0.01)))
+                                
+                        
+
+                                
+                                self.addChild(lazerBullet)
+                                
+                                
+                            }, SKAction.wait(forDuration: 1.0) ])), withKey: "Lazers")
+                                
+                                
+                            }
+                            //(shipnode as! MotherShip).lazerShoot(normalizedDirection)
+                             
+                        }*/
+                        
+                    }
+                }
+            }
+        }
     }
     
 }

@@ -62,8 +62,8 @@
             filePath = "N Body No Problem/GameScene.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
             landmarkName = "zoomTogglePressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -78,9 +78,163 @@
             filePath = "N Body No Problem/GameScene.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
             landmarkName = "zoomTogglePressed(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "7F9CA4C4-3632-4C72-B120-F84AF868E79C - d7f9c36920169530"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "N_Body_No_Problem.GameScene.zoomTogglePressed(N_Body_No_Problem.JKButtonNode) -&gt; ()"
+                  moduleName = "N Body No Problem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jorgetorres/Documents/Projects/N%20Body%20No%20Problem/N%20Body%20No%20Problem/GameScene.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "111"
+                  endingLineNumber = "111">
+               </Location>
+               <Location
+                  uuid = "7F9CA4C4-3632-4C72-B120-F84AF868E79C - d7f9c369201696ef"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "N_Body_No_Problem.GameScene.zoomTogglePressed(N_Body_No_Problem.JKButtonNode) -&gt; ()"
+                  moduleName = "N Body No Problem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jorgetorres/Documents/Projects/N%20Body%20No%20Problem/N%20Body%20No%20Problem/GameScene.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "112"
+                  endingLineNumber = "112">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7DEE438B-A792-41EA-943D-737523205357"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "N Body No Problem/GameScene.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "381"
+            endingLineNumber = "381"
+            landmarkName = "didBegin(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "7DEE438B-A792-41EA-943D-737523205357 - a660510bac41d68c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "N_Body_No_Problem.GameScene.didBegin(__C.SKPhysicsContact) -&gt; ()"
+                  moduleName = "N Body No Problem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jorgetorres/Documents/Projects/N%20Body%20No%20Problem/N%20Body%20No%20Problem/GameScene.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "403"
+                  endingLineNumber = "403">
+               </Location>
+               <Location
+                  uuid = "7DEE438B-A792-41EA-943D-737523205357 - a660510bac41d5a2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "N_Body_No_Problem.GameScene.didBegin(__C.SKPhysicsContact) -&gt; ()"
+                  moduleName = "N Body No Problem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jorgetorres/Documents/Projects/N%20Body%20No%20Problem/N%20Body%20No%20Problem/GameScene.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "381"
+                  endingLineNumber = "381">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1997BCD0-BEEE-48D8-BA80-F13FDB4A26F6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "N Body No Problem/GameScene.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "377"
+            endingLineNumber = "377"
+            landmarkName = "didBegin(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3B046B77-EC8C-4605-AE33-37BD7B926339"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "N Body No Problem/GameScene.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "378"
+            endingLineNumber = "378"
+            landmarkName = "didBegin(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "3B046B77-EC8C-4605-AE33-37BD7B926339 - a660510bac41d66d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "N_Body_No_Problem.GameScene.didBegin(__C.SKPhysicsContact) -&gt; ()"
+                  moduleName = "N Body No Problem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jorgetorres/Documents/Projects/N%20Body%20No%20Problem/N%20Body%20No%20Problem/GameScene.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "402"
+                  endingLineNumber = "402">
+               </Location>
+               <Location
+                  uuid = "3B046B77-EC8C-4605-AE33-37BD7B926339 - a660510bac41d583"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "N_Body_No_Problem.GameScene.didBegin(__C.SKPhysicsContact) -&gt; ()"
+                  moduleName = "N Body No Problem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jorgetorres/Documents/Projects/N%20Body%20No%20Problem/N%20Body%20No%20Problem/GameScene.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "380"
+                  endingLineNumber = "380">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8E532AD8-C0BF-46F9-834F-590A38334320"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "N Body No Problem/GameScene.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "618"
+            endingLineNumber = "618"
+            landmarkName = "touchesEnded(_:with:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

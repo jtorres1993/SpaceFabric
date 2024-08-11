@@ -8,7 +8,7 @@
 import Foundation
 import SpriteKit
 
-class DotGridManager {
+class DotGridManager: SKSpriteNode {
     
     
     var dots = [SKSpriteNode]()
@@ -71,7 +71,7 @@ class DotGridManager {
                     
                     // Create the dot node and add to the scene
                     let dot = DotNode(color: SharedInfo.SharedInstance.dotColor, size: dotSize)
-                        scene.addChild(dot)
+                        self.addChild(dot)
                     dot.runInitialAnimation(initialPosition: CGPoint(x: finalX, y: finalY), withCameraPos: withCameraPos)
                     dots.append(dot)
                    
@@ -168,5 +168,28 @@ class DotGridManager {
 
 
     
+    
+    func addDot(at position: CGPoint, nextNode: SKNode) -> SKSpriteNode {
+        let dot = SKSpriteNode(color: .white, size: CGSize(width: 20, height: 10))  // Appearance as a line
+        dot.position = position
+        dot.lightingBitMask = 1
+        let dx = nextNode.position.x - position.x
+        let dy = nextNode.position.y - position.y
+        let angle = atan2(dy, dx)
+        dot.zRotation = angle  // Set rotation to point towards the next node
+
+        addChild(dot)
+        return dot
+    }
+    
+    func updateDotPosition( dot: SKSpriteNode, position: CGPoint, nextNode: SKNode){
+
+        dot.position = position
+        dot.lightingBitMask = 1
+        let dx = nextNode.position.x - position.x
+        let dy = nextNode.position.y - position.y
+        let angle = atan2(dy, dx)
+        dot.zRotation = angle  // Set rotation to point towards the next node
+    }
     
 }
