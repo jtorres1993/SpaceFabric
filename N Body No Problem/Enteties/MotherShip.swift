@@ -32,6 +32,12 @@ class MotherShip: SKSpriteNode {
         
     }
     
+    func rotateBasedOnMovement(forceVector: CGVector){
+        
+        let angle = atan2(forceVector.dy, forceVector.dx) - (CGFloat.pi / 2)
+        self.zRotation = angle
+    }
+    
     func lockedOnEnemeyDestroyed(){
         
     }

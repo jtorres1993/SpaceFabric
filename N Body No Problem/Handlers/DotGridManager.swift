@@ -170,7 +170,7 @@ class DotGridManager: SKSpriteNode {
     
     
     func addDot(at position: CGPoint, nextNode: SKNode) -> SKSpriteNode {
-        let dot = SKSpriteNode(color: .white, size: CGSize(width: 20, height: 10))  // Appearance as a line
+        let dot = SKSpriteNode(color: .white, size: CGSize(width: 10, height: 10))  // Appearance as a line
         dot.position = position
         dot.lightingBitMask = 1
         let dx = nextNode.position.x - position.x

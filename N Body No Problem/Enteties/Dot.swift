@@ -100,7 +100,7 @@ class DotNode: SKSpriteNode {
                         let randomInt = Int.random(in: 0...3)
                             if(randomInt == 0){
                          
-                            self.run(SharedInfo.SharedInstance.scifiwepsound)
+                            //self.run(SharedInfo.SharedInstance.scifiwepsound)
                         }
                     
                 self.originalPosition = initialPosition

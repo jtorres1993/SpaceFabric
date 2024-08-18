@@ -14,7 +14,7 @@ class SoundHandler: SKSpriteNode {
         
           let scifiwepsound = SKAction.playSoundFileNamed("Galactic Swing (Singularity Mix)", waitForCompletion: false)
          
-         run(scifiwepsound)
+        // run(scifiwepsound)
         
     }
     

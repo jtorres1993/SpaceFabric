@@ -17,6 +17,10 @@
 		3B37AC652C682939004A42CB /* popo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B37AC462C68245E004A42CB /* popo.mp3 */; };
 		3B37AC662C682939004A42CB /* popo4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B37AC492C682460004A42CB /* popo4.mp3 */; };
 		3B37AC672C682939004A42CB /* Galactic Swing (Singularity Mix).mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B37AC4B2C682461004A42CB /* Galactic Swing (Singularity Mix).mp3 */; };
+		3B37AC6B2C6935F2004A42CB /* TrajectoryLineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B37AC6A2C6935F2004A42CB /* TrajectoryLineManager.swift */; };
+		3B37AC6D2C6939FC004A42CB /* CameraHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B37AC6C2C6939FC004A42CB /* CameraHandler.swift */; };
+		3B37AC6F2C693AA3004A42CB /* GameplayHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B37AC6E2C693AA3004A42CB /* GameplayHandler.swift */; };
+		3B37AC742C693DA6004A42CB /* JKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B37AC732C693D9B004A42CB /* JKButtonNode.swift */; };
 		3B38090D2BCCE4420046ABA1 /* Smoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B38090C2BCCE4420046ABA1 /* Smoke.sks */; };
 		3B3F79432BD2483E007991C1 /* bokeh.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3B3F79422BD2483E007991C1 /* bokeh.sks */; };
 		3B6CC9E42BCAF56D00DB4CA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CC9E32BCAF56D00DB4CA3 /* AppDelegate.swift */; };
@@ -27,7 +31,6 @@
 		3B6CC9EF2BCAF56D00DB4CA3 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 3B6CC9EE2BCAF56D00DB4CA3 /* Base */; };
 		3B6CC9F12BCAF56E00DB4CA3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B6CC9F02BCAF56E00DB4CA3 /* Assets.xcassets */; };
 		3B6CC9F42BCAF56E00DB4CA3 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 3B6CC9F32BCAF56E00DB4CA3 /* Base */; };
-		3B7594852BD4A4E600B94493 /* JKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7594842BD4A4E600B94493 /* JKButtonNode.swift */; };
 		3B7594872BD4A65A00B94493 /* BottomMenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7594862BD4A65A00B94493 /* BottomMenuBar.swift */; };
 		3B7594892BD4A78200B94493 /* SharedInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7594882BD4A78200B94493 /* SharedInfo.swift */; };
 		3B75948B2BD593DE00B94493 /* DotGridManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B75948A2BD593DD00B94493 /* DotGridManager.swift */; };
@@ -43,6 +46,10 @@
 		3B7F20A22BFEE7040034FDDF /* MotherShip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7F20A12BFEE7040034FDDF /* MotherShip.swift */; };
 		3B7F20A42C0143D00034FDDF /* BackgroundHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7F20A32C0143CF0034FDDF /* BackgroundHandler.swift */; };
 		3B7F20A62C0144100034FDDF /* SoundHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7F20A52C0144100034FDDF /* SoundHandler.swift */; };
+		3BBD0FF32C694AE600476E23 /* UIHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBD0FF22C694AE600476E23 /* UIHandler.swift */; };
+		3BBD0FF52C69ACB900476E23 /* IntroScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBD0FF42C69ACB900476E23 /* IntroScreen.swift */; };
+		3BBD0FF72C69B31E00476E23 /* MSKAnimatedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBD0FF62C69B31E00476E23 /* MSKAnimatedLabel.swift */; };
+		3BBD0FF92C7299D000476E23 /* LongRangeMissile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBD0FF82C7299D000476E23 /* LongRangeMissile.swift */; };
 		3BDA785B2BCC584B00CC5618 /* Dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA785A2BCC584B00CC5618 /* Dot.swift */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +64,10 @@
 		3B37AC4C2C682461004A42CB /* scifiwep.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scifiwep.mp3; sourceTree = "<group>"; };
 		3B37AC4D2C682461004A42CB /* popo3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = popo3.mp3; sourceTree = "<group>"; };
 		3B37AC552C68291D004A42CB /* blast-37988-2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "blast-37988-2.mp3"; sourceTree = "<group>"; };
+		3B37AC6A2C6935F2004A42CB /* TrajectoryLineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrajectoryLineManager.swift; sourceTree = "<group>"; };
+		3B37AC6C2C6939FC004A42CB /* CameraHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraHandler.swift; sourceTree = "<group>"; };
+		3B37AC6E2C693AA3004A42CB /* GameplayHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayHandler.swift; sourceTree = "<group>"; };
+		3B37AC732C693D9B004A42CB /* JKButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JKButtonNode.swift; sourceTree = "<group>"; };
 		3B38090C2BCCE4420046ABA1 /* Smoke.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Smoke.sks; sourceTree = "<group>"; };
 		3B3F79422BD2483E007991C1 /* bokeh.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = bokeh.sks; sourceTree = "<group>"; };
 		3B6CC9E02BCAF56D00DB4CA3 /* N Body No Problem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "N Body No Problem.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,7 +79,6 @@
 		3B6CC9EE2BCAF56D00DB4CA3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3B6CC9F02BCAF56E00DB4CA3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3B6CC9F32BCAF56E00DB4CA3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		3B7594842BD4A4E600B94493 /* JKButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JKButtonNode.swift; path = ../../../Foldobo/Foldobo/Utilities/JKButtonNode.swift; sourceTree = "<group>"; };
 		3B7594862BD4A65A00B94493 /* BottomMenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomMenuBar.swift; sourceTree = "<group>"; };
 		3B7594882BD4A78200B94493 /* SharedInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharedInfo.swift; path = ../../../Foldobo/Foldobo/SharedInfo.swift; sourceTree = "<group>"; };
 		3B75948A2BD593DD00B94493 /* DotGridManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotGridManager.swift; sourceTree = "<group>"; };
@@ -84,6 +94,10 @@
 		3B7F20A12BFEE7040034FDDF /* MotherShip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotherShip.swift; sourceTree = "<group>"; };
 		3B7F20A32C0143CF0034FDDF /* BackgroundHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundHandler.swift; sourceTree = "<group>"; };
 		3B7F20A52C0144100034FDDF /* SoundHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundHandler.swift; sourceTree = "<group>"; };
+		3BBD0FF22C694AE600476E23 /* UIHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHandler.swift; sourceTree = "<group>"; };
+		3BBD0FF42C69ACB900476E23 /* IntroScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroScreen.swift; sourceTree = "<group>"; };
+		3BBD0FF62C69B31E00476E23 /* MSKAnimatedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSKAnimatedLabel.swift; sourceTree = "<group>"; };
+		3BBD0FF82C7299D000476E23 /* LongRangeMissile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongRangeMissile.swift; sourceTree = "<group>"; };
 		3BDA785A2BCC584B00CC5618 /* Dot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dot.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,6 +128,42 @@
 			path = Sounds;
 			sourceTree = "<group>";
 		};
+		3B37AC702C693D63004A42CB /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+				3B7F208D2BEB4C2C0034FDDF /* LevelCompleteMenu.swift */,
+				3BBD0FF22C694AE600476E23 /* UIHandler.swift */,
+				3B37AC6E2C693AA3004A42CB /* GameplayHandler.swift */,
+				3B37AC6C2C6939FC004A42CB /* CameraHandler.swift */,
+				3B37AC6A2C6935F2004A42CB /* TrajectoryLineManager.swift */,
+				3B7F20A32C0143CF0034FDDF /* BackgroundHandler.swift */,
+				3B75948A2BD593DD00B94493 /* DotGridManager.swift */,
+				3B7594862BD4A65A00B94493 /* BottomMenuBar.swift */,
+				3B7F208F2BEB4C530034FDDF /* Menu.swift */,
+				3B7F20A52C0144100034FDDF /* SoundHandler.swift */,
+			);
+			path = Handlers;
+			sourceTree = "<group>";
+		};
+		3B37AC712C693D72004A42CB /* Enteties */ = {
+			isa = PBXGroup;
+			children = (
+				3B28FD412C03A4F400839B72 /* EnemeyScout.swift */,
+				3B7F20A12BFEE7040034FDDF /* MotherShip.swift */,
+				3BDA785A2BCC584B00CC5618 /* Dot.swift */,
+				3BBD0FF82C7299D000476E23 /* LongRangeMissile.swift */,
+			);
+			path = Enteties;
+			sourceTree = "<group>";
+		};
+		3B37AC722C693D96004A42CB /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				3B37AC732C693D9B004A42CB /* JKButtonNode.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		3B6CC9D72BCAF56D00DB4CA3 = {
 			isa = PBXGroup;
 			children = (
@@ -135,19 +185,14 @@
 			children = (
 				3B6CC9E32BCAF56D00DB4CA3 /* AppDelegate.swift */,
 				3B6CC9EB2BCAF56D00DB4CA3 /* GameViewController.swift */,
-				3B6CC9E92BCAF56D00DB4CA3 /* GameScene.swift */,
-				3B7F20A52C0144100034FDDF /* SoundHandler.swift */,
-				3B28FD412C03A4F400839B72 /* EnemeyScout.swift */,
-				3B7F20A32C0143CF0034FDDF /* BackgroundHandler.swift */,
-				3B7F20A12BFEE7040034FDDF /* MotherShip.swift */,
-				3B75948A2BD593DD00B94493 /* DotGridManager.swift */,
-				3B37AC452C68245A004A42CB /* Sounds */,
-				3BDA785A2BCC584B00CC5618 /* Dot.swift */,
 				3B7594882BD4A78200B94493 /* SharedInfo.swift */,
-				3B7594862BD4A65A00B94493 /* BottomMenuBar.swift */,
-				3B7F208D2BEB4C2C0034FDDF /* LevelCompleteMenu.swift */,
-				3B7F208F2BEB4C530034FDDF /* Menu.swift */,
-				3B7594842BD4A4E600B94493 /* JKButtonNode.swift */,
+				3B6CC9E92BCAF56D00DB4CA3 /* GameScene.swift */,
+				3BBD0FF42C69ACB900476E23 /* IntroScreen.swift */,
+				3BBD0FF62C69B31E00476E23 /* MSKAnimatedLabel.swift */,
+				3B37AC702C693D63004A42CB /* Handlers */,
+				3B37AC712C693D72004A42CB /* Enteties */,
+				3B37AC722C693D96004A42CB /* Utilities */,
+				3B37AC452C68245A004A42CB /* Sounds */,
 				3B7594832BD4471500B94493 /* Particles */,
 				3B7594822BD4470B00B94493 /* Levels */,
 				3B6CC9E72BCAF56D00DB4CA3 /* Actions.sks */,
@@ -274,15 +319,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B6CC9EA2BCAF56D00DB4CA3 /* GameScene.swift in Sources */,
-				3B7594852BD4A4E600B94493 /* JKButtonNode.swift in Sources */,
+				3B37AC6F2C693AA3004A42CB /* GameplayHandler.swift in Sources */,
 				3B7594872BD4A65A00B94493 /* BottomMenuBar.swift in Sources */,
 				3B7F208E2BEB4C2C0034FDDF /* LevelCompleteMenu.swift in Sources */,
 				3B7F20902BEB4C530034FDDF /* Menu.swift in Sources */,
+				3BBD0FF92C7299D000476E23 /* LongRangeMissile.swift in Sources */,
+				3B37AC6D2C6939FC004A42CB /* CameraHandler.swift in Sources */,
 				3B7F20A22BFEE7040034FDDF /* MotherShip.swift in Sources */,
+				3BBD0FF72C69B31E00476E23 /* MSKAnimatedLabel.swift in Sources */,
 				3B6CC9EC2BCAF56D00DB4CA3 /* GameViewController.swift in Sources */,
+				3BBD0FF32C694AE600476E23 /* UIHandler.swift in Sources */,
 				3B6CC9E42BCAF56D00DB4CA3 /* AppDelegate.swift in Sources */,
+				3BBD0FF52C69ACB900476E23 /* IntroScreen.swift in Sources */,
 				3B7F20A42C0143D00034FDDF /* BackgroundHandler.swift in Sources */,
 				3BDA785B2BCC584B00CC5618 /* Dot.swift in Sources */,
+				3B37AC742C693DA6004A42CB /* JKButtonNode.swift in Sources */,
+				3B37AC6B2C6935F2004A42CB /* TrajectoryLineManager.swift in Sources */,
 				3B7F20A62C0144100034FDDF /* SoundHandler.swift in Sources */,
 				3B7594892BD4A78200B94493 /* SharedInfo.swift in Sources */,
 				3B75948B2BD593DE00B94493 /* DotGridManager.swift in Sources */,
