@@ -10,19 +10,20 @@ import SpriteKit
 
 class MotherShip: SKSpriteNode {
     
-    var isLockedOn = false 
-    
+    var isLockedOn = false
+    var totalHealth = 2
+    var currentHealth  = 2
     
     func setup(){
         
-        self.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 10, height: 10))
+        self.physicsBody = SKPhysicsBody.init(rectangleOf: self.size)
         self.name = "ship"
         self.physicsBody?.fieldBitMask = PhysicsCategory.gravityStar
         self.physicsBody!.categoryBitMask = PhysicsCategory.player
         self.physicsBody!.mass = 100
         self.physicsBody?.contactTestBitMask =  PhysicsCategory.gravityStar | PhysicsCategory.earthplanet
         self.physicsBody?.isDynamic = false
-        
+        self.physicsBody?.usesPreciseCollisionDetection = true 
         
         let lightNode = SKLightNode()
         lightNode.categoryBitMask = 1

@@ -15,9 +15,16 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
     var planets = [(position: CGPoint, radius: CGFloat, strength: CGFloat)]()
     var earchReference = SKSpriteNode()
     var trajectoryLineIntersectionWithStarCallback : ((_ dotNode: SKNode?) -> Void)? = nil
-    var nextSceneLevelTriggered : (() -> Void )? = nil
+    var sameLevelTriggered : (() -> Void )? = nil
     var astroCapturedHandler : (() -> Void)? = nil
-    var requiredAstrosToNextLevel = 0 
+    var playerTookHealthDamage: ((_ percentage: CGFloat ) -> Void)? = nil
+    
+    var playerDestroyed: (() -> Void)? = nil
+    
+    var requiredAstrosToNextLevel = 0
+    var shipReference = MotherShip()
+    var enemies : [Enemey] = []
+
     
     func updateSceneNodes(withNodes: [SKNode]){
         for node in withNodes {
@@ -97,6 +104,10 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                     }
                 ])))
                 
+            } else if node.name == "EnemeyAttackDrone" {
+                
+                enemies.append(node as! EnemeyAttackDrone)
+                
             }
         }
         
@@ -132,6 +143,8 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
            
             
         ])))
+        
+        
         node.addChild(shape)
         node.position.y = node.position.y + 25
         
@@ -194,13 +207,15 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
      
      if secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.gravityStar {
              
+         //Player crashed into a star
        
-         self.nextSceneLevelTriggered?()
+         self.sameLevelTriggered?()
      
         
          
      } else if ((secondBody.categoryBitMask == PhysicsCategory.playerProjectile && firstBody.categoryBitMask == PhysicsCategory.enemy) || (secondBody.categoryBitMask == PhysicsCategory.enemy && firstBody.categoryBitMask == PhysicsCategory.playerProjectile)) {
          
+         //Player projectile hit enemey
          
          if let secondbody_node = secondBody.node {
              secondbody_node.removeFromParent()
@@ -211,25 +226,46 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
          
          
      }
+        
+        else if ((secondBody.categoryBitMask == PhysicsCategory.enemeyProjectile && firstBody.categoryBitMask == PhysicsCategory.player) || (secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.enemeyProjectile)) {
+            
+            //Enemey projectile hit Player
+            
+            
+           
+            
+            shipReference.currentHealth = shipReference.currentHealth - 1
+            
+            if (shipReference.currentHealth == 0) {
+                firstBody.node!.removeAllActions()
+                secondBody.node!.removeAllActions()
+                self.playerDestroyed?()
+                
+                
+            }
+            
+            self.playerTookHealthDamage?(CGFloat(shipReference.currentHealth /  shipReference.totalHealth ))
+           
+            
+        }
      
      else if ( secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.earthplanet || secondBody.categoryBitMask == PhysicsCategory.earthplanet && firstBody.categoryBitMask == PhysicsCategory.player ) {
          
          
+         //player hit earth planet
       
         
          
          
      } else if ( secondBody.categoryBitMask == PhysicsCategory.whip && firstBody.categoryBitMask == PhysicsCategory.gravityStar ) {
          
-         
-         if let trajectoryFunction = self.trajectoryLineIntersectionWithStarCallback {
-             
-          
+         // End of Trajectory line hit a star object, remove the last dot node
+
              if let dotNode = secondBody.node {
-                 self.trajectoryLineIntersectionWithStarCallback!( dotNode )
+                 self.trajectoryLineIntersectionWithStarCallback?( dotNode )
                 }
              
-         }
+         
          
      }  else if ( secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.astronaut || secondBody.categoryBitMask == PhysicsCategory.astronaut && firstBody.categoryBitMask == PhysicsCategory.player )  {
          
@@ -254,9 +290,19 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
          
          node.physicsBody = nil
              
-        // secondBody.node?.run(SKAction.scale(to: 5, duration: 0.3))
+        
          
      }
+    }
+    
+    func update(_ currentTime: TimeInterval){
+        
+        for enemy in enemies {
+            if let playerPhysicsBody = shipReference.physicsBody {
+            enemy.detectIfPlayerVisibleToNode(playerPosition: shipReference.position, playerVelocity: playerPhysicsBody.velocity)
+            }
+        }
+        
     }
    
 }

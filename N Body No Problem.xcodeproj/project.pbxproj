@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3B28FD422C03A4F400839B72 /* EnemeyScout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B28FD412C03A4F400839B72 /* EnemeyScout.swift */; };
+		3B28FD422C03A4F400839B72 /* EnemeyAttackDrone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B28FD412C03A4F400839B72 /* EnemeyAttackDrone.swift */; };
 		3B37AC5E2C682939004A42CB /* blast-37988-2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B37AC552C68291D004A42CB /* blast-37988-2.mp3 */; };
 		3B37AC602C682939004A42CB /* popo3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B37AC4D2C682461004A42CB /* popo3.mp3 */; };
 		3B37AC612C682939004A42CB /* popo2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B37AC482C682460004A42CB /* popo2.mp3 */; };
@@ -50,11 +50,15 @@
 		3BBD0FF52C69ACB900476E23 /* IntroScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBD0FF42C69ACB900476E23 /* IntroScreen.swift */; };
 		3BBD0FF72C69B31E00476E23 /* MSKAnimatedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBD0FF62C69B31E00476E23 /* MSKAnimatedLabel.swift */; };
 		3BBD0FF92C7299D000476E23 /* LongRangeMissile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBD0FF82C7299D000476E23 /* LongRangeMissile.swift */; };
+		3BBD0FFB2C72B08B00476E23 /* Level8.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3BBD0FFA2C72B08B00476E23 /* Level8.sks */; };
+		3BBD0FFD2C72B51900476E23 /* Enemey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBD0FFC2C72B51900476E23 /* Enemey.swift */; };
 		3BDA785B2BCC584B00CC5618 /* Dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA785A2BCC584B00CC5618 /* Dot.swift */; };
+		3BF04E752C72FE9100C55CF5 /* Sparko.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3BF04E732C72FE9100C55CF5 /* Sparko.sks */; };
+		3BF04E762C72FE9100C55CF5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BF04E742C72FE9100C55CF5 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3B28FD412C03A4F400839B72 /* EnemeyScout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnemeyScout.swift; sourceTree = "<group>"; };
+		3B28FD412C03A4F400839B72 /* EnemeyAttackDrone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnemeyAttackDrone.swift; sourceTree = "<group>"; };
 		3B37AC462C68245E004A42CB /* popo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = popo.mp3; sourceTree = "<group>"; };
 		3B37AC472C682460004A42CB /* star_man-155034.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "star_man-155034.mp3"; sourceTree = "<group>"; };
 		3B37AC482C682460004A42CB /* popo2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = popo2.mp3; sourceTree = "<group>"; };
@@ -98,7 +102,11 @@
 		3BBD0FF42C69ACB900476E23 /* IntroScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroScreen.swift; sourceTree = "<group>"; };
 		3BBD0FF62C69B31E00476E23 /* MSKAnimatedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSKAnimatedLabel.swift; sourceTree = "<group>"; };
 		3BBD0FF82C7299D000476E23 /* LongRangeMissile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongRangeMissile.swift; sourceTree = "<group>"; };
+		3BBD0FFA2C72B08B00476E23 /* Level8.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level8.sks; sourceTree = "<group>"; };
+		3BBD0FFC2C72B51900476E23 /* Enemey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemey.swift; sourceTree = "<group>"; };
 		3BDA785A2BCC584B00CC5618 /* Dot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dot.swift; sourceTree = "<group>"; };
+		3BF04E732C72FE9100C55CF5 /* Sparko.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Sparko.sks; sourceTree = "<group>"; };
+		3BF04E742C72FE9100C55CF5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,7 +156,8 @@
 		3B37AC712C693D72004A42CB /* Enteties */ = {
 			isa = PBXGroup;
 			children = (
-				3B28FD412C03A4F400839B72 /* EnemeyScout.swift */,
+				3B28FD412C03A4F400839B72 /* EnemeyAttackDrone.swift */,
+				3BBD0FFC2C72B51900476E23 /* Enemey.swift */,
 				3B7F20A12BFEE7040034FDDF /* MotherShip.swift */,
 				3BDA785A2BCC584B00CC5618 /* Dot.swift */,
 				3BBD0FF82C7299D000476E23 /* LongRangeMissile.swift */,
@@ -210,6 +219,7 @@
 				3B7F20992BF3096C0034FDDF /* Level1.sks */,
 				3B7F209D2BF30A9A0034FDDF /* Level4.sks */,
 				3B7F209F2BF31CCC0034FDDF /* Level7.sks */,
+				3BBD0FFA2C72B08B00476E23 /* Level8.sks */,
 				3B77DB072BCE1D7C00F9223C /* Level6.sks */,
 			);
 			path = Levels;
@@ -223,6 +233,8 @@
 				3B38090C2BCCE4420046ABA1 /* Smoke.sks */,
 				3B77DB052BCE0ED200F9223C /* spark.sks */,
 				3B77DB012BCE0E9D00F9223C /* magic.sks */,
+				3BF04E732C72FE9100C55CF5 /* Sparko.sks */,
+				3BF04E742C72FE9100C55CF5 /* Assets.xcassets */,
 			);
 			path = Particles;
 			sourceTree = "<group>";
@@ -286,6 +298,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B77DB082BCE1D7C00F9223C /* Level6.sks in Resources */,
+				3BBD0FFB2C72B08B00476E23 /* Level8.sks in Resources */,
 				3B77DB022BCE0E9D00F9223C /* magic.sks in Resources */,
 				3B77DB062BCE0ED200F9223C /* spark.sks in Resources */,
 				3B6CC9E62BCAF56D00DB4CA3 /* Level3.sks in Resources */,
@@ -295,6 +308,8 @@
 				3B6CC9E82BCAF56D00DB4CA3 /* Actions.sks in Resources */,
 				3B7F209A2BF3096C0034FDDF /* Level1.sks in Resources */,
 				3B77DB042BCE0EB600F9223C /* firefiles.sks in Resources */,
+				3BF04E752C72FE9100C55CF5 /* Sparko.sks in Resources */,
+				3BF04E762C72FE9100C55CF5 /* Assets.xcassets in Resources */,
 				3B7F20A02BF31CCC0034FDDF /* Level7.sks in Resources */,
 				3B7F209E2BF30A9A0034FDDF /* Level4.sks in Resources */,
 				3B37AC5E2C682939004A42CB /* blast-37988-2.mp3 in Resources */,
@@ -326,6 +341,7 @@
 				3BBD0FF92C7299D000476E23 /* LongRangeMissile.swift in Sources */,
 				3B37AC6D2C6939FC004A42CB /* CameraHandler.swift in Sources */,
 				3B7F20A22BFEE7040034FDDF /* MotherShip.swift in Sources */,
+				3BBD0FFD2C72B51900476E23 /* Enemey.swift in Sources */,
 				3BBD0FF72C69B31E00476E23 /* MSKAnimatedLabel.swift in Sources */,
 				3B6CC9EC2BCAF56D00DB4CA3 /* GameViewController.swift in Sources */,
 				3BBD0FF32C694AE600476E23 /* UIHandler.swift in Sources */,
@@ -338,7 +354,7 @@
 				3B7F20A62C0144100034FDDF /* SoundHandler.swift in Sources */,
 				3B7594892BD4A78200B94493 /* SharedInfo.swift in Sources */,
 				3B75948B2BD593DE00B94493 /* DotGridManager.swift in Sources */,
-				3B28FD422C03A4F400839B72 /* EnemeyScout.swift in Sources */,
+				3B28FD422C03A4F400839B72 /* EnemeyAttackDrone.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

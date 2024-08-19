@@ -76,7 +76,7 @@ class IntroScreen: SKScene {
             
             self.addChild(quote)
             
-            self.run(SKAction.wait(forDuration: 1), completion:
+            self.run(SKAction.wait(forDuration: 0.01), completion:
                         
                         {
                 
