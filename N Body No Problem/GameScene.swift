@@ -100,7 +100,7 @@ class GameScene: SKScene {
    
     func setSceneOptions(){
         self.view?.showsDrawCount = true
-        self.scene?.view?.showsPhysics = true
+        self.scene?.view?.showsPhysics = SharedInfo.SharedInstance.showPhysics 
         self.scene?.view?.showsFields = false
         
     }
@@ -170,8 +170,15 @@ class GameScene: SKScene {
         */
         
         let savedCameraPos = self.cameraHandler.position
+       // self.gameplayHandler.shipReference.speed = 0.00001
+      //  let savedRotation = self.gameplayHandler.shipReference.zRotation
+        // self.gameplayHandler.shipReference.physicsBody?.isDynamic = false
+        self.view?.scene?.physicsWorld.speed = 0.0001
+      // self.gameplayHandler.shipReference.physicsBody?.pinned = true
+        //self.gameplayHandler.shipReference.zRotation  = savedRotation
         self.run(SKAction.sequence([
-        
+            SKAction.wait(forDuration: 0.15)
+,
             SKAction.run {
               
                 
@@ -195,9 +202,16 @@ class GameScene: SKScene {
                     ])
                 )
                 
+               
+                
+                self.run(SKAction.repeat(SKAction.sequence([SKAction.run {
+                    (self.gameplayHandler.shipReference.childNode(withName: "trail") as! SKEmitterNode).advanceSimulationTime(1)
+                }, SKAction.wait(forDuration: 0.05)]), count: 10), withKey: "AdvanceSim")
+               
+
                 
             },
-            SKAction.wait(forDuration: 0.10)
+            SKAction.wait(forDuration: 0.05)
             ,
             
             SKAction.run {
@@ -208,6 +222,7 @@ class GameScene: SKScene {
                     
                     
                     fireParticles.name = "trail"
+                    
                     fireParticles.position = self.gameplayHandler.shipReference.position
                     
                     self.gameplayHandler.addChild(fireParticles)

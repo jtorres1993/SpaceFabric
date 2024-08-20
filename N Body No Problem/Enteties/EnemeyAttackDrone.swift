@@ -67,6 +67,9 @@ class EnemeyAttackDrone: Enemey {
         }
         
     }
+    override func stopAttackOnPlayer() {
+        removeAction(forKey: "AttackAction")
+    }
     
     override func startAttacktOPlayer(playerPosition: CGPoint) {
         
@@ -127,5 +130,7 @@ class EnemeyAttackDrone: Enemey {
     func endAttackOnPlayer(){
         
     }
+    
+    
     
 }

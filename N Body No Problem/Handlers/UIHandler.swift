@@ -31,7 +31,7 @@ class UIHandler: SKNode {
         
         bottomMenuBar.setup()
         bottomMenuBar.zPosition = 100
-      //  self.addChild(bottomMenuBar)
+        self.addChild(bottomMenuBar)
         
         let commander = SKSpriteNode.init(imageNamed: "Commander")
         commander.position.y = -SharedInfo.SharedInstance.screenSize.height / 2

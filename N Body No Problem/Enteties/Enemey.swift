@@ -8,7 +8,7 @@
 import Foundation
 import SpriteKit
 
-class Enemey: SKSpriteNode {
+class Enemey: SKDestructibleNode {
     
     var health = 10
     var distanceToPlayer : CGFloat = 90000.0
@@ -30,10 +30,17 @@ class Enemey: SKSpriteNode {
         
         
     }
+    
+    func stopAttackOnPlayer(){
+        
+        
+    }
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {
      
         super.init(texture: texture, color: UIColor.clear, size: texture!.size())
       }
+    
+    
     required init?(coder aDecoder: NSCoder) {
            // Initialize all properties
            self.health = 10
@@ -43,5 +50,8 @@ class Enemey: SKSpriteNode {
            // Call the designated initializer of SKSpriteNode
            super.init(coder: aDecoder)
        }
+    
+    
+    
     
 }

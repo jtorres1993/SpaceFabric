@@ -55,6 +55,8 @@
 		3BDA785B2BCC584B00CC5618 /* Dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA785A2BCC584B00CC5618 /* Dot.swift */; };
 		3BF04E752C72FE9100C55CF5 /* Sparko.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3BF04E732C72FE9100C55CF5 /* Sparko.sks */; };
 		3BF04E762C72FE9100C55CF5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BF04E742C72FE9100C55CF5 /* Assets.xcassets */; };
+		3BF04E782C7455F200C55CF5 /* miniSparko.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3BF04E772C7455F200C55CF5 /* miniSparko.sks */; };
+		3BF04E7A2C745F8B00C55CF5 /* SKDestructibleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF04E792C745F8B00C55CF5 /* SKDestructibleNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -107,6 +109,8 @@
 		3BDA785A2BCC584B00CC5618 /* Dot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dot.swift; sourceTree = "<group>"; };
 		3BF04E732C72FE9100C55CF5 /* Sparko.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Sparko.sks; sourceTree = "<group>"; };
 		3BF04E742C72FE9100C55CF5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3BF04E772C7455F200C55CF5 /* miniSparko.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = miniSparko.sks; sourceTree = "<group>"; };
+		3BF04E792C745F8B00C55CF5 /* SKDestructibleNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKDestructibleNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +145,7 @@
 			children = (
 				3B7F208D2BEB4C2C0034FDDF /* LevelCompleteMenu.swift */,
 				3BBD0FF22C694AE600476E23 /* UIHandler.swift */,
+				3BF04E792C745F8B00C55CF5 /* SKDestructibleNode.swift */,
 				3B37AC6E2C693AA3004A42CB /* GameplayHandler.swift */,
 				3B37AC6C2C6939FC004A42CB /* CameraHandler.swift */,
 				3B37AC6A2C6935F2004A42CB /* TrajectoryLineManager.swift */,
@@ -233,6 +238,7 @@
 				3B38090C2BCCE4420046ABA1 /* Smoke.sks */,
 				3B77DB052BCE0ED200F9223C /* spark.sks */,
 				3B77DB012BCE0E9D00F9223C /* magic.sks */,
+				3BF04E772C7455F200C55CF5 /* miniSparko.sks */,
 				3BF04E732C72FE9100C55CF5 /* Sparko.sks */,
 				3BF04E742C72FE9100C55CF5 /* Assets.xcassets */,
 			);
@@ -299,6 +305,7 @@
 			files = (
 				3B77DB082BCE1D7C00F9223C /* Level6.sks in Resources */,
 				3BBD0FFB2C72B08B00476E23 /* Level8.sks in Resources */,
+				3BF04E782C7455F200C55CF5 /* miniSparko.sks in Resources */,
 				3B77DB022BCE0E9D00F9223C /* magic.sks in Resources */,
 				3B77DB062BCE0ED200F9223C /* spark.sks in Resources */,
 				3B6CC9E62BCAF56D00DB4CA3 /* Level3.sks in Resources */,
@@ -339,6 +346,7 @@
 				3B7F208E2BEB4C2C0034FDDF /* LevelCompleteMenu.swift in Sources */,
 				3B7F20902BEB4C530034FDDF /* Menu.swift in Sources */,
 				3BBD0FF92C7299D000476E23 /* LongRangeMissile.swift in Sources */,
+				3BF04E7A2C745F8B00C55CF5 /* SKDestructibleNode.swift in Sources */,
 				3B37AC6D2C6939FC004A42CB /* CameraHandler.swift in Sources */,
 				3B7F20A22BFEE7040034FDDF /* MotherShip.swift in Sources */,
 				3BBD0FFD2C72B51900476E23 /* Enemey.swift in Sources */,

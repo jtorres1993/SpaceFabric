@@ -106,7 +106,11 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                 
             } else if node.name == "EnemeyAttackDrone" {
                 
-                enemies.append(node as! EnemeyAttackDrone)
+                let attackDrone = (node as! EnemeyAttackDrone)
+                attackDrone.nodeScene = self.scene!
+                attackDrone.createRectPieces(imageName: "redtriangle", rectSize: CGSize.init(width: 30, height: 30))
+                
+                enemies.append(attackDrone)
                 
             }
         }
@@ -229,18 +233,42 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
         
         else if ((secondBody.categoryBitMask == PhysicsCategory.enemeyProjectile && firstBody.categoryBitMask == PhysicsCategory.player) || (secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.enemeyProjectile)) {
             
-            //Enemey projectile hit Player
+            if ((secondBody.categoryBitMask == PhysicsCategory.enemeyProjectile && firstBody.categoryBitMask == PhysicsCategory.player) ) {
+                
+                print("secondbody was enemyproj")
+            } else if (secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.enemeyProjectile) {
+                
+                print("firstbody was enemyproj")
+            }
             
+               
             
+            if let fireParticles = SKEmitterNode(fileNamed: "miniSparko") {
+                
+                fireParticles.particleColor = .red
+                fireParticles.particleColorSequence = nil
+                fireParticles.name = "trail"
+                fireParticles.position = secondBody.node!.position
+                self.addChild(fireParticles)
+                fireParticles.targetNode = self
+            }
            
+            
+            
             
             shipReference.currentHealth = shipReference.currentHealth - 1
             
             if (shipReference.currentHealth == 0) {
                 firstBody.node!.removeAllActions()
                 secondBody.node!.removeAllActions()
+                
+                for enemy in enemies {
+                    enemy.stopAttackOnPlayer()
+                  
+                }
                 self.playerDestroyed?()
                 
+              
                 
             }
             
