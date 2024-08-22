@@ -57,6 +57,7 @@
 		3BF04E762C72FE9100C55CF5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BF04E742C72FE9100C55CF5 /* Assets.xcassets */; };
 		3BF04E782C7455F200C55CF5 /* miniSparko.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3BF04E772C7455F200C55CF5 /* miniSparko.sks */; };
 		3BF04E7A2C745F8B00C55CF5 /* SKDestructibleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF04E792C745F8B00C55CF5 /* SKDestructibleNode.swift */; };
+		3BF04E7C2C7707BC00C55CF5 /* ProjectileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF04E7B2C7707BC00C55CF5 /* ProjectileEntity.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -111,6 +112,7 @@
 		3BF04E742C72FE9100C55CF5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3BF04E772C7455F200C55CF5 /* miniSparko.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = miniSparko.sks; sourceTree = "<group>"; };
 		3BF04E792C745F8B00C55CF5 /* SKDestructibleNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKDestructibleNode.swift; sourceTree = "<group>"; };
+		3BF04E7B2C7707BC00C55CF5 /* ProjectileEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectileEntity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +166,7 @@
 				3B28FD412C03A4F400839B72 /* EnemeyAttackDrone.swift */,
 				3BBD0FFC2C72B51900476E23 /* Enemey.swift */,
 				3B7F20A12BFEE7040034FDDF /* MotherShip.swift */,
+				3BF04E7B2C7707BC00C55CF5 /* ProjectileEntity.swift */,
 				3BDA785A2BCC584B00CC5618 /* Dot.swift */,
 				3BBD0FF82C7299D000476E23 /* LongRangeMissile.swift */,
 			);
@@ -355,6 +358,7 @@
 				3BBD0FF32C694AE600476E23 /* UIHandler.swift in Sources */,
 				3B6CC9E42BCAF56D00DB4CA3 /* AppDelegate.swift in Sources */,
 				3BBD0FF52C69ACB900476E23 /* IntroScreen.swift in Sources */,
+				3BF04E7C2C7707BC00C55CF5 /* ProjectileEntity.swift in Sources */,
 				3B7F20A42C0143D00034FDDF /* BackgroundHandler.swift in Sources */,
 				3BDA785B2BCC584B00CC5618 /* Dot.swift in Sources */,
 				3B37AC742C693DA6004A42CB /* JKButtonNode.swift in Sources */,

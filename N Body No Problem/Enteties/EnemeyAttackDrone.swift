@@ -24,6 +24,15 @@ class EnemeyAttackDrone: Enemey {
         super.init(texture: texture, color: UIColor.clear, size: texture.size())
         
         
+        self.physicsBody = SKPhysicsBody.init(rectangleOf: self.size)
+        self.name = "EnemeyAttackDrone"
+        self.physicsBody!.categoryBitMask = PhysicsCategory.enemy
+        self.physicsBody!.mass = 100
+        self.physicsBody?.contactTestBitMask =  PhysicsCategory.playerProjectile | PhysicsCategory.player
+        self.physicsBody?.isDynamic = false
+        self.physicsBody?.usesPreciseCollisionDetection = true
+        
+        
       }
       
       // Required initializer
@@ -38,8 +47,22 @@ class EnemeyAttackDrone: Enemey {
           detectionCircle.lineWidth = 8
           
           self.addChild(detectionCircle)
+          
+          
         
       }
+    
+    func setupPhysicsNode(){
+        
+        
+        self.physicsBody = SKPhysicsBody.init(rectangleOf: self.size)
+        self.name = "EnemeyAttackDrone"
+        self.physicsBody!.categoryBitMask = PhysicsCategory.enemy
+        self.physicsBody!.mass = 100
+        self.physicsBody?.contactTestBitMask =  PhysicsCategory.playerProjectile | PhysicsCategory.player
+        self.physicsBody?.isDynamic = false
+        self.physicsBody?.usesPreciseCollisionDetection = true
+    }
     
     override func detectIfPlayerVisibleToNode(playerPosition: CGPoint, playerVelocity: CGVector){
         

@@ -4,7 +4,6 @@ import GameplayKit
 class GameScene: SKScene {
 
     
-    var shipHasBeenPlaced = false
     let soundHandler = SoundHandler()
     let backgroundHandler = BackgroundHandler()
     let completion = LevelCompleteMenu()
@@ -94,6 +93,10 @@ class GameScene: SKScene {
         
         gameplayHandler.playerDestroyed = self.playerDestroyed
         
+        uiHandler.bottomMenuBar.missileButton?.action = gameplayHandler.missileModeToggled
+        
+        uiHandler.bottomMenuBar.shipButton?.action =
+        gameplayHandler.shipModeToggled
       
     }
     
@@ -262,26 +265,20 @@ class GameScene: SKScene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
+        
+        self.gameplayHandler.touchesBeganPassthrough(touches, with: event)
+        
+        
+        savedVelocity = self.gameplayHandler.currentSelectedEntity.physicsBody!.velocity
+        savedAngularVelocity = self.gameplayHandler.currentSelectedEntity.physicsBody!.angularVelocity
+        
+   
         statisMode = true
         
-        self.gameplayHandler.shipReference = MotherShip.init(imageNamed: "spaceship")
-        self.gameplayHandler.shipReference.setup()
-        
-        
-        
-        self.gameplayHandler.shipReference.position = self.gameplayHandler.earchReference.position
-        self.addChild(self.gameplayHandler.shipReference)
-         
-         
-        
-     //   self.run(scifiwepsound)
-        
-        
-        
+
         self.physicsWorld.speed = 5
-        for star in self.gameplayHandler.starReference {
-                star.isPaused = true
-        }
+      
+            
         for node in self.children {
             if (node.name == "Enemigo") {
                 node.isPaused = true
@@ -289,30 +286,14 @@ class GameScene: SKScene {
             }
         }
         
-        
-        self.gameplayHandler.earchReference.isPaused = true
-        savedVelocity = self.gameplayHandler.shipReference.physicsBody!.velocity
-        savedAngularVelocity = self.gameplayHandler.shipReference.physicsBody!.angularVelocity
-        self.gameplayHandler.shipReference.physicsBody?.fieldBitMask = PhysicsCategory.none
-        self.gameplayHandler.shipReference.physicsBody?.isDynamic = false
-        self.gameplayHandler.shipReference.run(SKAction.scale(to: 1.0, duration: 0.1))
-        
+
         if let touch = touches.first {
             initialTouchLocation = touch.location(in: self)
-            
-            if (shipHasBeenPlaced == false) {
-                
-                
-                shipHasBeenPlaced = true
-                if let fireParticles = SKEmitterNode(fileNamed: "Smoke") {
-                    
-                    
-                    fireParticles.name = "trail"
-                    // fireParticles.position = CGPoint(x: size.width / 2, y: size.height / 2)
-                    self.gameplayHandler.shipReference.addChild(fireParticles)
-                    fireParticles.targetNode = self
-                }}}
+
+           }
+        
     }
+    
     
  
     
@@ -321,64 +302,37 @@ class GameScene: SKScene {
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        if let touch = touches.first, let initialLocation = initialTouchLocation {
-            
-
-            movevmeentreleaseLocation = touch.location(in: self)
-
-            let forceVector = CGVector(dx: self.initialTouchLocation!.x - self.movevmeentreleaseLocation!.x, dy: self.initialTouchLocation!.y - self.movevmeentreleaseLocation!.y)
-            
-            self.gameplayHandler.shipReference.rotateBasedOnMovement(forceVector: forceVector)
-            
-         
-            self.removeAction(forKey: "NodePattern")
-           
-            
-            self.run(SKAction.repeatForever(SKAction.sequence([  SKAction.run {
-                
-                
-                var color = UIColor.white
-               
-                
-                let node = SKSpriteNode.init(texture: nil, color: color, size: CGSize.init(width: 50, height: 50))
+        
+        
      
-                self.addChild(node)
-
-                node.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 15, height: 30))
-                node.physicsBody?.fieldBitMask = PhysicsCategory.gravityStar
-                node.physicsBody?.isDynamic = true
-                node.physicsBody?.collisionBitMask = PhysicsCategory.none
-                node.physicsBody?.contactTestBitMask = PhysicsCategory.gravityStar | PhysicsCategory.earthplanet
-                node.physicsBody?.categoryBitMask = PhysicsCategory.whip
-                node.physicsBody!.velocity = self.savedVelocity
-                node.physicsBody!.angularVelocity = self.savedAngularVelocity
+            if let touch = touches.first, let initialLocation = initialTouchLocation {
                 
                 
-            
-                node.physicsBody!.mass = 100
+                movevmeentreleaseLocation = touch.location(in: self)
+                
+                let forceVector = CGVector(dx: self.initialTouchLocation!.x - self.movevmeentreleaseLocation!.x, dy: self.initialTouchLocation!.y - self.movevmeentreleaseLocation!.y)
+                
+                self.gameplayHandler.currentSelectedEntity.rotateBasedOnMovement(forceVector: forceVector)
+                
+                print(self.gameplayHandler.shipReference.position)
+                print(self.gameplayHandler.currentSelectedEntity.position)
                 
                 
-                node.position = self.self.gameplayHandler.shipReference.position
-                node.alpha = 0.0
-                node.run(SKAction.sequence([SKAction.wait(forDuration: 0.6), SKAction.run {
-                   
-                    if let nodo =  self.trajectoryLineManager.nodesArray.first {
-                            node.removeFromParent()
-                        self.trajectoryLineManager.nodesArray.removeFirst()
-                    }
-                    
-                }]))
-                self.trajectoryLineManager.nodesArray.append(node)
-               
-                self.applyForce(to: node, vector: forceVector)
-
-            }, SKAction.wait(forDuration: 0.016)])), withKey: "NodePattern")
-         }
+                
+                
+                
+                
+                
+                trajectoryLineManager.activateTrajectoryLine(savedVelocity: savedVelocity, forceVector: forceVector, savedAngularVelocity: savedAngularVelocity, nodeReference:  self.gameplayHandler.currentSelectedEntity, sceneReference: self)
+                
+            }
     }
 
  
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        
         for node in self.children {
             if (node.name == "Enemigo") {
                 node.isPaused = false
@@ -389,45 +343,28 @@ class GameScene: SKScene {
         let sound = SKAction.playSoundFileNamed("blast-37988", waitForCompletion: false)
       //  self.run(sound)
         
+        self.trajectoryLineManager.removeTrajectoryLine()
         
         statisMode = false
 
         self.physicsWorld.speed = 0.25
         
         
-        for dot in self.trajectoryLineManager.nodesArray {
-            dot.removeAllActions()
-            dot.removeFromParent()
-            
-        }
-        
-        for dot in self.trajectoryLineManager.dotNodes {
-            dot.removeFromParent()
-        }
-        
-    
-        self.trajectoryLineManager.nodesArray = []
-        
-         self.removeAction(forKey: "NodePattern")
-        if let touch = touches.first, let initialLocation = initialTouchLocation {
+        if let touch = touches.first, let initialLocation =
+            initialTouchLocation {
             
             
          
-             followShip = true
+            followShip = true
+            
             let releaseLocation = touch.location(in: self)
             forceVector = CGVector(dx: initialLocation.x - releaseLocation.x, dy: initialLocation.y - releaseLocation.y)
             
-            self.gameplayHandler.shipReference.physicsBody?.fieldBitMask =  PhysicsCategory.gravityStar
-            self.gameplayHandler.shipReference.physicsBody?.categoryBitMask = PhysicsCategory.player
-            self.gameplayHandler.shipReference.physicsBody?.collisionBitMask = PhysicsCategory.none
-            self.gameplayHandler.shipReference.physicsBody?.isDynamic = true
-            self.gameplayHandler.shipReference.run(SKAction.scale(to: 0.25, duration: 0.01))
             
-            self.gameplayHandler.shipReference.physicsBody!.velocity = savedVelocity
-            self.gameplayHandler.shipReference.physicsBody!.angularVelocity = savedAngularVelocity
+            self.gameplayHandler.touchesEndedPassthrough(savedVelocity: savedVelocity, savedAngularVelocity: savedAngularVelocity)
             
-           
-            applyForce(to: self.gameplayHandler.shipReference, vector: forceVector)
+            
+            applyForce(to: self.gameplayHandler.currentSelectedEntity, vector: forceVector)
                 
             
           
@@ -439,7 +376,8 @@ class GameScene: SKScene {
         
     }
     
-        func applyForce(to sprite: SKSpriteNode, vector: CGVector, _ multipler: CGFloat = 100.0) {
+    
+    func applyForce(to sprite: SKSpriteNode, vector: CGVector, _ multipler: CGFloat = 100.0) {
         
         let impulseVector = CGVector(dx: vector.dx * multipler, dy: vector.dy * multipler )  // Adjust multiplier as needed
        // sprite.physicsBody?.isDynamic = true
@@ -461,11 +399,11 @@ class GameScene: SKScene {
         
         if (!statisMode) {
             
-            if let velocity = self.gameplayHandler.shipReference.physicsBody?.velocity {
+            if let velocity = self.gameplayHandler.currentSelectedEntity.physicsBody?.velocity {
                    // Calculate the angle from the velocity vector
                    let angle = atan2(velocity.dy, velocity.dx) - (CGFloat.pi / 2)
                    // Adjust the sprite's rotation
-                self.gameplayHandler.shipReference.zRotation = angle
+                self.gameplayHandler.currentSelectedEntity.zRotation = angle
                }
         }
         
@@ -478,12 +416,12 @@ class GameScene: SKScene {
             } else {
                 amount = amountInitial
             }
-                // cameraReference.removeAllActions()
-            //cameraReference.setScale( amount + 0.5)
+                cameraHandler.removeAllActions()
+            cameraHandler.setScale( amount + 0.5)
             
         } else {
              
-               // cameraReference.run(SKAction.scale(to: 1.0, duration: 1))
+            cameraHandler.run(SKAction.scale(to: 1.0, duration: 1))
         }
         
             self.gameplayHandler.planets = []
@@ -519,6 +457,7 @@ class GameScene: SKScene {
         
     }
     
+ 
     
     
 }

@@ -19,7 +19,22 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
     var astroCapturedHandler : (() -> Void)? = nil
     var playerTookHealthDamage: ((_ percentage: CGFloat ) -> Void)? = nil
     
+    var shipHasBeenPlaced = false
     var playerDestroyed: (() -> Void)? = nil
+    var currentSelectedEntity = ProjectileEntity()
+    
+    
+    
+    enum GameModes {
+        
+        
+        case ship
+        case missile
+        case camera
+        
+    }
+    
+    var currentGameMode : GameModes = .ship
     
     var requiredAstrosToNextLevel = 0
     var shipReference = MotherShip()
@@ -107,9 +122,8 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
             } else if node.name == "EnemeyAttackDrone" {
                 
                 let attackDrone = (node as! EnemeyAttackDrone)
-                attackDrone.nodeScene = self.scene!
-                attackDrone.createRectPieces(imageName: "redtriangle", rectSize: CGSize.init(width: 30, height: 30))
                 
+                attackDrone.setupPhysicsNode()
                 enemies.append(attackDrone)
                 
             }
@@ -233,6 +247,8 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
         
         else if ((secondBody.categoryBitMask == PhysicsCategory.enemeyProjectile && firstBody.categoryBitMask == PhysicsCategory.player) || (secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.enemeyProjectile)) {
             
+            //Enemey projectile hit player
+            
             if ((secondBody.categoryBitMask == PhysicsCategory.enemeyProjectile && firstBody.categoryBitMask == PhysicsCategory.player) ) {
                 
                 print("secondbody was enemyproj")
@@ -323,6 +339,42 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
      }
     }
     
+    
+    
+    func missileModeToggled(_ sender: JKButtonNode){
+        
+        if (currentGameMode != .missile ) {
+            
+            currentGameMode = .missile
+            
+            
+            
+            
+            
+        }  else {
+            
+            currentGameMode = .camera
+        }
+        
+    }
+    
+    func shipModeToggled(_ sender: JKButtonNode) {
+        
+        if (currentGameMode != .ship
+        ) {
+            
+            currentGameMode = .ship
+            
+            
+            
+            
+            
+        }  else {
+            
+            currentGameMode = .camera
+        }
+    }
+    
     func update(_ currentTime: TimeInterval){
         
         for enemy in enemies {
@@ -330,6 +382,102 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
             enemy.detectIfPlayerVisibleToNode(playerPosition: shipReference.position, playerVelocity: playerPhysicsBody.velocity)
             }
         }
+        
+    }
+    
+    func touchesBeganPassthrough(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        
+        if(currentGameMode == .ship){
+            
+            shipReference = MotherShip.init(imageNamed: "spaceship")
+            shipReference.setup()
+            shipReference.position = earchReference.position
+            currentSelectedEntity = shipReference
+
+            self.addChild(shipReference)
+            
+            for star in starReference {
+                    star.isPaused = true
+            }
+            
+            
+            
+            earchReference.isPaused = true
+            
+            shipReference.physicsBody?.fieldBitMask = PhysicsCategory.none
+            shipReference.physicsBody?.isDynamic = false
+            shipReference.run(SKAction.scale(to: 1.0, duration: 0.1))
+            
+            
+            if (shipHasBeenPlaced == false) {
+                
+                
+                shipHasBeenPlaced = true
+                if let fireParticles = SKEmitterNode(fileNamed: "Smoke") {
+                    
+                    
+                    fireParticles.name = "trail"
+                    shipReference.addChild(fireParticles)
+                    fireParticles.targetNode = self
+                }}
+            
+        } else if ( currentGameMode == .missile ) {
+            
+            
+            
+            let missile = LongRangeMissile()
+          
+            
+            shipReference.physicsBody?.fieldBitMask = PhysicsCategory.none
+            shipReference.physicsBody?.isDynamic = false
+            missile.position = earchReference.position
+            currentSelectedEntity = missile
+            self.addChild(missile)
+            
+            for star in starReference {
+                    star.isPaused = true
+            }
+            
+            
+            
+            earchReference.isPaused = true
+            
+            missile.physicsBody?.fieldBitMask = PhysicsCategory.none
+            missile.physicsBody?.isDynamic = false
+            missile.run(SKAction.scale(to: 1.0, duration: 0.1))
+            
+            
+          
+                
+                if let fireParticles = SKEmitterNode(fileNamed: "Smoke") {
+                    
+                    
+                    fireParticles.name = "trail"
+                    missile.addChild(fireParticles)
+                    fireParticles.targetNode = self
+                }
+            
+        }
+        
+    }
+    
+    func touchesMovedPassthrough(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        
+        
+    }
+    
+    
+    func touchesEndedPassthrough(savedVelocity: CGVector, savedAngularVelocity: CGFloat){
+        
+        
+        self.currentSelectedEntity.recreatePhysicsBody()
+        self.currentSelectedEntity.physicsBody?.isDynamic = true
+        self.currentSelectedEntity.run(SKAction.scale(to: 0.25, duration: 0.01))
+        
+        self.currentSelectedEntity.physicsBody!.velocity = savedVelocity
+        self.currentSelectedEntity.physicsBody!.angularVelocity = savedAngularVelocity
         
     }
    

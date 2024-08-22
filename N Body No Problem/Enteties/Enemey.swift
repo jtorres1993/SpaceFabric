@@ -8,7 +8,7 @@
 import Foundation
 import SpriteKit
 
-class Enemey: SKDestructibleNode {
+class Enemey: SKSpriteNode {
     
     var health = 10
     var distanceToPlayer : CGFloat = 90000.0
@@ -38,6 +38,17 @@ class Enemey: SKDestructibleNode {
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {
      
         super.init(texture: texture, color: UIColor.clear, size: texture!.size())
+        
+        
+        
+        self.physicsBody = SKPhysicsBody.init(rectangleOf: self.size)
+        self.name = "enemey"
+        self.physicsBody!.categoryBitMask = PhysicsCategory.enemy
+        self.physicsBody!.mass = 100
+        self.physicsBody?.contactTestBitMask =  PhysicsCategory.playerProjectile | PhysicsCategory.player 
+        self.physicsBody?.isDynamic = false
+        self.physicsBody?.usesPreciseCollisionDetection = true
+        
       }
     
     

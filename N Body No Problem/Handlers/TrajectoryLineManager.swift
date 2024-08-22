@@ -47,6 +47,57 @@ class TrajectoryLineManager: SKNode {
        }
     
     
+    
+    func activateTrajectoryLine(savedVelocity: CGVector, forceVector: CGVector, savedAngularVelocity : CGFloat, nodeReference: SKNode, sceneReference: GameScene){
+        
+        self.removeAction(forKey: "NodePattern")
+
+        
+        
+        self.run(SKAction.repeatForever(SKAction.sequence([  SKAction.run {
+            
+            
+            var color = UIColor.white
+            
+            
+            let node = SKSpriteNode.init(texture: nil, color: color, size: CGSize.init(width: 50, height: 50))
+            
+            self.addChild(node)
+            
+            node.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 15, height: 30))
+            node.physicsBody?.fieldBitMask = PhysicsCategory.gravityStar
+            node.physicsBody?.isDynamic = true
+            node.physicsBody?.collisionBitMask = PhysicsCategory.none
+            node.physicsBody?.contactTestBitMask = PhysicsCategory.gravityStar | PhysicsCategory.earthplanet
+            node.physicsBody?.categoryBitMask = PhysicsCategory.whip
+            node.physicsBody!.velocity = savedVelocity
+            node.physicsBody!.angularVelocity = savedAngularVelocity
+            
+            
+            
+            node.physicsBody!.mass = 100
+            
+            
+            node.position = nodeReference.position
+            node.alpha = 0.0
+            node.run(SKAction.sequence([SKAction.wait(forDuration: 0.6), SKAction.run {
+                
+                if let nodo =  self.nodesArray.first {
+                    node.removeFromParent()
+                    self.nodesArray.removeFirst()
+                }
+                
+            }]))
+            self.nodesArray.append(node)
+            
+            sceneReference.applyForce(to: node, vector: forceVector)
+            
+        }, SKAction.wait(forDuration: 0.016)])), withKey: "NodePattern")
+        
+        
+        
+    }
+    
     func trajectoryLineIntersectedWithStar(dotNode: SKNode?){
         
         
@@ -76,6 +127,26 @@ class TrajectoryLineManager: SKNode {
                 self.nodesArray.removeFirst()
                 }
             }}
+        
+    }
+    
+    func removeTrajectoryLine(){
+        
+        
+        for dot in self.nodesArray {
+            dot.removeAllActions()
+            dot.removeFromParent()
+            
+        }
+        
+        for dot in self.dotNodes {
+            dot.removeFromParent()
+        }
+        
+    
+        self.nodesArray = []
+        self.removeAction(forKey: "NodePattern")
+        
         
     }
     

@@ -12,23 +12,46 @@ class BottomMenuBar: SKNode {
     
  
     
-    var settingsButton : JKButtonNode? = nil
-    let settingsMenu = SKSpriteNode()
+    var missileButton : JKButtonNode? = nil
+    let missileButtonSprite = SKSpriteNode()
 
+    var shipButton : JKButtonNode? = nil
+    let shipButtonSprite = SKSpriteNode()
+
+    
     var cameraButton : JKButtonNode? = nil
     let missileMenu = SKSpriteNode()
     
+    var settingsButton : JKButtonNode? = nil
+    let settingsMenu = SKSpriteNode()
    
+    
+    var miscButton : JKButtonNode? = nil
+    let miscMenu = SKSpriteNode()
 
 
     func setup(){
         
     
-        settingsButton = setupMenuItem(button: settingsButton, withImage: "MenuBottomBackgroundButton", withOffset: 0, withSettingsMenu: settingsMenu)
-        //setupIconForButton(iconImage: "sybdit", button: settingsButton!)
+        
+        shipButton = setupMenuItem(button: shipButton, withImage: "shipButton", withOffset: 0, withSettingsMenu: shipButtonSprite)
+        
+        let shipHighlightedTexture = SKTexture.init(imageNamed: "shipbutton-selected")
+        shipButton?.highlightedBG = shipHighlightedTexture
+
+        missileButton = setupMenuItem(button: missileButton, withImage: "missilebutton", withOffset: 1, withSettingsMenu: missileButtonSprite)
         
      
-        cameraButton = setupMenuItem(button: cameraButton, withImage: "camerabutton", withOffset: 1, withSettingsMenu: missileMenu)
+        cameraButton = setupMenuItem(button: cameraButton, withImage: "shipButton", withOffset: 2, withSettingsMenu: missileMenu)
+        
+        
+        settingsButton = setupMenuItem(button: settingsButton, withImage: "shipButton", withOffset: 3, withSettingsMenu: settingsMenu)
+           
+        
+        miscButton = setupMenuItem(button: miscButton, withImage: "shipButton", withOffset: 4, withSettingsMenu: miscMenu)
+           
+        
+        
         //setupIconForButton(iconImage: "sybdit", button: missileButton!)
         
         
@@ -43,13 +66,13 @@ class BottomMenuBar: SKNode {
        
         button.anchorPoint = CGPoint.init(x: 1, y: 0.0)
         
-        let screenBorder = SharedInfo.SharedInstance.screenSize.width / 2.0
+        let screenBorder = -SharedInfo.SharedInstance.screenSize.width / 2.0
         let buttonOffset = button.size.width * CGFloat(withOffset)
         let buttonMargin = 10 * withOffset + 50
        
-        button.position.x = screenBorder  - 50 - (button.size.width / 2
-        )
-        button.position.y = -SharedInfo.SharedInstance.screenSize.height / 2 + CGFloat(buttonOffset) + 50
+        button.position.x = screenBorder  + 100 + (button.size.width
+        ) + CGFloat(buttonOffset)
+        button.position.y = -SharedInfo.SharedInstance.screenSize.height / 2 + 50
         self.addChild(button)
         button.zPosition = 10
         self.addChild(withSettingsMenu)

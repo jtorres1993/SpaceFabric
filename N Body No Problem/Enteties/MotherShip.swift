@@ -8,7 +8,7 @@
 import Foundation
 import SpriteKit
 
-class MotherShip: SKSpriteNode {
+class MotherShip: ProjectileEntity {
     
     var isLockedOn = false
     var totalHealth = 2
@@ -33,11 +33,13 @@ class MotherShip: SKSpriteNode {
         
     }
     
-    func rotateBasedOnMovement(forceVector: CGVector){
+    override func recreatePhysicsBody(){
         
-        let angle = atan2(forceVector.dy, forceVector.dx) - (CGFloat.pi / 2)
-        self.zRotation = angle
+        self.physicsBody?.fieldBitMask =  PhysicsCategory.gravityStar
+        self.physicsBody?.categoryBitMask = PhysicsCategory.player
+        self.physicsBody?.collisionBitMask = PhysicsCategory.none
     }
+    
     
     func lockedOnEnemeyDestroyed(){
         
