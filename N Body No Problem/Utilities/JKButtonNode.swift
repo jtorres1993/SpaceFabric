@@ -15,10 +15,23 @@ public enum JKButtonState {
     /**Disabled state of a button. User interactions with disabled button have no effect
      and the control draws itself with a specific background noting it's disabled.*/
     case disabled
+    
+   
+}
+
+enum JKButtonSelectedState {
+    
+    case selected
+    
+    case unselected
 }
 
 /**A JKButtonNode is used to display a button in SpriteKit that is composed of an SKSpriteNode and an SKLabelNode.*/
 class JKButtonNode: SKSpriteNode {
+    
+    var selected = JKButtonSelectedState.unselected
+    
+    var enableSelectionState = false
     
     //--------------------
     //-----Properties-----
@@ -371,6 +384,21 @@ class JKButtonNode: SKSpriteNode {
             
             guard self.contains(userTouch) else { return }
             if canPlaySounds { play(releasedSounds) }
+            
+           
+            
+            if (enableSelectionState) {
+                if selected == .selected {
+                    selected = .unselected
+                    set(state: .normal)
+                    
+                    
+                } else {
+                    selected = .selected
+                    set(state: .highlighted)
+                }
+            }
+            
             buttonAction(self)
             return
         }

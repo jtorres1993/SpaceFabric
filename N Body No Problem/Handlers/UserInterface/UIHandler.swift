@@ -14,6 +14,8 @@ class UIHandler: SKNode {
     var astros : [SKSpriteNode] = []
     var textbackgroundReferece = SKSpriteNode()
     var healthBar = SKSpriteNode()
+    let shootByWireMenu = ShootByWireMenu()
+    
     
     func setup(){
         
@@ -43,6 +45,16 @@ class UIHandler: SKNode {
         
         self.handleDialog()
         self.setupHealthBar()
+        
+        shootByWireMenu.setup()
+        
+        shootByWireMenu.position.y = -SharedInfo.SharedInstance.self.screenSize.height / 2 + (shootByWireMenu.movementJoystick.diameter * 1.3)
+        
+        shootByWireMenu.position.y =
+        
+        shootByWireMenu.position.y - SharedInfo.SharedInstance.screenSize.height
+        self.addChild(shootByWireMenu)
+        
     }
     
     func setupHealthBar(){
@@ -92,4 +104,17 @@ class UIHandler: SKNode {
         
         
     }
+    
+    func shootByWireActivated() {
+        
+        shootByWireMenu.run(SKAction.moveBy(x: 0, y: SharedInfo.SharedInstance.screenSize.height, duration: 0.5))
+        
+    }
+    
+    func shootByWireDissmissed(){
+        
+        
+        shootByWireMenu.run(SKAction.moveBy(x: 0, y: -SharedInfo.SharedInstance.screenSize.height, duration: 0.5))
+    }
+    
 }

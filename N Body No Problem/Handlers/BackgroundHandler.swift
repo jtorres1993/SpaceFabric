@@ -33,21 +33,6 @@ class BackgroundHandler: SKSpriteNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // background.run(SKAction.colorize(with: self.colors[self.backgroundColorIndex], colorBlendFactor: 1.0, duration: 0.01))
-     
-     /*background.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 5),
-                                                              
-                                                              SKAction.run {
-         background.run(SKAction.colorize(with: self.colors[self.backgroundColorIndex], colorBlendFactor: 0.5, duration: 5))
-     }
-                                                             
-                                                             
-                                                          , SKAction.run {
-         if(self.backgroundColorIndex < self.colors.count - 1) {
-             self.backgroundColorIndex = self.backgroundColorIndex + 1} else {
-                 self.backgroundColorIndex = 0
-             }
-     }])))
-      */ 
+   
     
 }

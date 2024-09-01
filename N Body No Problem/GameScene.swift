@@ -2,15 +2,27 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
-
+    
+    
+   
+    
     
     let soundHandler = SoundHandler()
+    
+    
+    
     let backgroundHandler = BackgroundHandler()
+    
+    
     let completion = LevelCompleteMenu()
+    
+   
     var dotGridManager = DotGridManager()
     let trajectoryLineManager = TrajectoryLineManager()
-   
+    
     var cameraHandler = CameraHandler()
+    
+    
     var gameplayHandler = GameplayHandler()
     var uiHandler = UIHandler()
     var planetPoints : [(position: CGPoint, radius: CGFloat)] = []
@@ -21,17 +33,17 @@ class GameScene: SKScene {
     var savedVelocity : CGVector = CGVector(dx: 0, dy: 0)
     var savedAngularVelocity = 1.0
     var movevmeentreleaseLocation : CGPoint?
-    var statisMode = false
     var isCameraZoomToggled = false
     let cameraZoomSpeed = 0.05
-
-   
+    
+    
     
     var initialEnemeyPosition : CGPoint = CGPoint.zero
     
     override func didMove(to view: SKView) {
         
-       
+        
+        
         
         SharedInfo.SharedInstance.safeAreaLayoutSize = self.view!.safeAreaLayoutGuide.layoutFrame.size
         SharedInfo.SharedInstance.screenSize = self.size
@@ -45,48 +57,47 @@ class GameScene: SKScene {
         cameraHandler.addChild(uiHandler)
         self.addChild(dotGridManager)
         uiHandler.bottomMenuBar.cameraButton?.action = self.cameraHandler.zoomTogglePressed
-     
-
+        
         self.physicsWorld.contactDelegate = self.gameplayHandler
-
+        
         setSceneOptions()
-       
+        
         self.backgroundColor = SharedInfo.SharedInstance.backgroundColor
         
-       
+        
         
         self.camera = cameraHandler
         
-       
+        
         //soundHandler.playInitialSound()
-
+        
         cameraHandler.position.y = SharedInfo.SharedInstance.safeAreaLayoutSize.height / 4
         
-       
+        
         uiHandler.setup()
         
         dotGridManager.setupDots( scene: self, withCameraPos: cameraHandler.position)
-  
+        
         self.run(SKAction.sequence([SKAction.wait(forDuration: 1.5), SKAction.run {
             
             self.gameplayHandler.updateSceneNodes(withNodes: self.children)
-         
-
+            
+            
         }]))
         
         physicsWorld.gravity = CGVector(dx:0, dy: 0);
         self.physicsWorld.speed = 0.01
-
+        
         completion.setup()
         completion.continueButton.action = self.nextLevelButtonPressed
         
         gameplayHandler.trajectoryLineIntersectionWithStarCallback = self.trajectoryLineManager.trajectoryLineIntersectedWithStar
-         
+        
         gameplayHandler.sameLevelTriggered = self.sameLevelTriggered
         
         gameplayHandler.astroCapturedHandler = uiHandler.runCapturedAstro
         
-       
+        
         gameplayHandler.requiredAstrosToNextLevel = self.userData?["astrosRequiredForNextLevel"] as! Int
         
         gameplayHandler.playerTookHealthDamage = uiHandler.playerTookHealthHit
@@ -97,9 +108,34 @@ class GameScene: SKScene {
         
         uiHandler.bottomMenuBar.shipButton?.action =
         gameplayHandler.shipModeToggled
-      
+        
+        
+        uiHandler.bottomMenuBar.lazerButton?.action = self.shootByWireButtonPressed
+        
+        uiHandler.shootByWireMenu.shootButton.action =
+        self.gameplayHandler.shootByWireAttackButtonPressed
+        
+        uiHandler.shootByWireMenu.movementJoystick.trackingHandler =
+        self.gameplayHandler.shootByWireJoystickHandleMovement
+        
+        uiHandler.shootByWireMenu.movementJoystick.beginHandler =
+        self.gameplayHandler.shootByWireJoystickStarted
+        
+        uiHandler.shootByWireMenu.movementJoystick.stopHandler =
+        self.gameplayHandler.shootByWireJoystickEnded
+        
+        
     }
     
+    
+    func shootByWireButtonPressed(button: JKButtonNode ) {
+        
+        gameplayHandler.shootByWireActivated()
+        self.uiHandler.shootByWireActivated()
+        
+    }
+    
+  
    
     func setSceneOptions(){
         self.view?.showsDrawCount = true
@@ -273,7 +309,7 @@ class GameScene: SKScene {
         savedAngularVelocity = self.gameplayHandler.currentSelectedEntity.physicsBody!.angularVelocity
         
    
-        statisMode = true
+        self.gameplayHandler.statisMode = true
         
 
         self.physicsWorld.speed = 5
@@ -345,7 +381,7 @@ class GameScene: SKScene {
         
         self.trajectoryLineManager.removeTrajectoryLine()
         
-        statisMode = false
+        self.gameplayHandler.statisMode = false
 
         self.physicsWorld.speed = 0.25
         
@@ -397,14 +433,8 @@ class GameScene: SKScene {
           //  cameraReference.position.y = self.gameplayHandler.shipReference.position.y
         }
         
-        if (!statisMode) {
-            
-            if let velocity = self.gameplayHandler.currentSelectedEntity.physicsBody?.velocity {
-                   // Calculate the angle from the velocity vector
-                   let angle = atan2(velocity.dy, velocity.dx) - (CGFloat.pi / 2)
-                   // Adjust the sprite's rotation
-                self.gameplayHandler.currentSelectedEntity.zRotation = angle
-               }
+        if (!self.gameplayHandler.statisMode) {
+            self.gameplayHandler.handleSelectedObjectsZRotation()
         }
         
         if (self.gameplayHandler.shipReference.position.x > SharedInfo.SharedInstance.safeAreaLayoutSize.width  - 200 || self.gameplayHandler.shipReference.position.x < -SharedInfo.SharedInstance.safeAreaLayoutSize.width  + 200  ) {
@@ -446,7 +476,7 @@ class GameScene: SKScene {
             
             self.trajectoryLineManager.updateTrajectory = true
             self.trajectoryLineManager.updateTrajectoryLine()
-            if(!statisMode){
+            if(!self.gameplayHandler.statisMode){
              
                 self.dotGridManager.updateDotPositions(planets: self.gameplayHandler.planets, playerPos: self.gameplayHandler.shipReference.position)
             }
@@ -458,6 +488,6 @@ class GameScene: SKScene {
     }
     
  
-    
+ 
     
 }

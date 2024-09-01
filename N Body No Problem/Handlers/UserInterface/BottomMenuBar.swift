@@ -20,35 +20,39 @@ class BottomMenuBar: SKNode {
 
     
     var cameraButton : JKButtonNode? = nil
-    let missileMenu = SKSpriteNode()
+    let cameraButtonMenu = SKSpriteNode()
     
     var settingsButton : JKButtonNode? = nil
     let settingsMenu = SKSpriteNode()
    
     
-    var miscButton : JKButtonNode? = nil
-    let miscMenu = SKSpriteNode()
+    var lazerButton : JKButtonNode? = nil
+    let lazerButtonMenu = SKSpriteNode()
 
 
     func setup(){
         
     
         
-        shipButton = setupMenuItem(button: shipButton, withImage: "shipButton", withOffset: 0, withSettingsMenu: shipButtonSprite)
+        shipButton = setupMenuItem(button: shipButton, withImage: "shipButton", withOffset: 2, withSettingsMenu: shipButtonSprite)
         
         let shipHighlightedTexture = SKTexture.init(imageNamed: "shipbutton-selected")
         shipButton?.highlightedBG = shipHighlightedTexture
+        
+        shipButton?.enableSelectionState = true
+        shipButton?.selected = .selected
+        shipButton?.set(state: .highlighted)
 
         missileButton = setupMenuItem(button: missileButton, withImage: "missilebutton", withOffset: 1, withSettingsMenu: missileButtonSprite)
         
      
-        cameraButton = setupMenuItem(button: cameraButton, withImage: "shipButton", withOffset: 2, withSettingsMenu: missileMenu)
+        lazerButton = setupMenuItem(button: cameraButton, withImage: "lazerbutton", withOffset: 0, withSettingsMenu: lazerButtonMenu)
         
         
-        settingsButton = setupMenuItem(button: settingsButton, withImage: "shipButton", withOffset: 3, withSettingsMenu: settingsMenu)
+        settingsButton = setupMenuItem(button: settingsButton, withImage: "Dronebutton", withOffset: 3, withSettingsMenu: settingsMenu)
            
         
-        miscButton = setupMenuItem(button: miscButton, withImage: "shipButton", withOffset: 4, withSettingsMenu: miscMenu)
+        cameraButton = setupMenuItem(button: cameraButton, withImage: "camerabutton", withOffset: 4, withSettingsMenu: cameraButtonMenu)
            
         
         

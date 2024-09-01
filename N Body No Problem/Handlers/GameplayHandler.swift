@@ -22,6 +22,8 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
     var shipHasBeenPlaced = false
     var playerDestroyed: (() -> Void)? = nil
     var currentSelectedEntity = ProjectileEntity()
+    var statisMode = false
+    var playerIsControllingRotation = false
     
     
     
@@ -31,6 +33,7 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
         case ship
         case missile
         case camera
+        case shootByWire
         
     }
     
@@ -41,7 +44,13 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
     var enemies : [Enemey] = []
 
     
+
+    
     func updateSceneNodes(withNodes: [SKNode]){
+        
+        
+        
+        
         for node in withNodes {
             if node.name == "gravitystar"
             {
@@ -51,15 +60,15 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                 
                 earchReference = node as! SKSpriteNode
                 node.physicsBody!.categoryBitMask =  PhysicsCategory.earthplanet
-
-
+                
+                
                 let shape = SKShapeNode.init(circleOfRadius: 100)
                 shape.strokeColor = UIColor.cyan
                 shape.run(SKAction.repeatForever(SKAction.sequence([
                     SKAction.group([SKAction.scale(to: 0.0, duration: 4), SKAction.fadeAlpha(to: 0.0, duration: 4.0)]),
                     SKAction.wait(forDuration: 1),
                     SKAction.group([SKAction.scale(to: 1.0, duration: 0.001), SKAction.fadeAlpha(to: 1.0, duration: 0.001)])
-                   
+                    
                     
                 ])))
                 node.addChild(shape)
@@ -69,7 +78,17 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                 
                 
                 
-            } else if node.name == "astro" {
+            } else if node.name == "startingPos" {
+                earchReference = node as! SKSpriteNode
+                let startingLine = SKShapeNode.init(rectOf: CGSize.init(width: SharedInfo.SharedInstance.screenSize.width, height: 1    ))
+                
+                startingLine.strokeColor = .white
+                startingLine.position = earchReference.position
+                self.addChild(startingLine)
+                
+                
+            }
+            else if node.name == "astro" {
                 node.position.y = node.position.y + 25
                 node.run(SKAction.group([SKAction.moveBy(x: 0, y: -25, duration: 1.0),  SKAction.fadeAlpha(to: 1.0, duration: 0.5)]))
                 node.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 30, height: 50))
@@ -79,7 +98,7 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                 node.physicsBody!.contactTestBitMask = PhysicsCategory.player
                 
                 
-               
+                
             } else if node.name == "alien" {
                 
                 
@@ -99,18 +118,18 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                 }
             } else if node.name == "Enemigo" {
                 
-                 
-                 
-                 node.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 10, height: 10))
-                 node.name = "Enemigo"
-                 node.physicsBody?.fieldBitMask = PhysicsCategory.gravityStar
+                
+                
+                node.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize.init(width: 10, height: 10))
+                node.name = "Enemigo"
+                node.physicsBody?.fieldBitMask = PhysicsCategory.gravityStar
                 node.physicsBody?.categoryBitMask = PhysicsCategory.enemy
                 node.physicsBody?.usesPreciseCollisionDetection = true
-                 node.physicsBody?.mass = 10000000
+                node.physicsBody?.mass = 10000000
                 
                 
                 self.run(SKAction.repeatForever(SKAction.sequence([
-                
+                    
                     SKAction.wait(forDuration: 60 ),
                     
                     SKAction.run {
@@ -136,17 +155,17 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
     func setupStarWithNode(node: SKNode){
         
         node.physicsBody!.categoryBitMask =  PhysicsCategory.gravityStar
-
+        
         starReference.append(node as! SKSpriteNode)
         planets.append((position: node.position, radius: 200, strength: 1500))
-    
+        
         let lightNode = SKLightNode()
         lightNode.categoryBitMask = 1
         lightNode.falloff = 1
         node.addChild(lightNode)
         
         
-    
+        
         let shape = SKShapeNode.init(circleOfRadius: 200)
         
         shape.lineWidth = 10
@@ -158,7 +177,7 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
             SKAction.group([SKAction.scale(to: 0.0, duration: 2), SKAction.fadeAlpha(to: 0.8, duration: 2.0)]),
             SKAction.wait(forDuration: 1),
             SKAction.group([SKAction.scale(to: 1.0, duration: 0.001), SKAction.fadeAlpha(to: 0.0, duration: 0.001)])
-           
+            
             
         ])))
         
@@ -167,25 +186,25 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
         node.position.y = node.position.y + 25
         
         node.run(SKAction.group([SKAction.moveBy(x: 0, y: -25, duration: 1.0),  SKAction.fadeAlpha(to: 1.0, duration: 0.5)]))
-
+        
         
         let shape2 = SKShapeNode.init(circleOfRadius: 200)
         shape2.strokeColor = UIColor.yellow
         
         shape2.alpha = 0.5
         
+        
+        for i in 0...7 {
             
-            for i in 0...7 {
+            if let spark = SKEmitterNode(fileNamed: "spark") {
                 
-                if let spark = SKEmitterNode(fileNamed: "spark") {
-                    
-                    spark.particleTexture = SharedInfo.SharedInstance.dotTexture
-                   // node.addChild(spark)
-                   // spark.targetNode = node
-                    spark.emissionAngle = CGFloat(degreesToradians( Float(i) * 45 ))
-                    
-                }
+                spark.particleTexture = SharedInfo.SharedInstance.dotTexture
+                // node.addChild(spark)
+                // spark.targetNode = node
+                spark.emissionAngle = CGFloat(degreesToradians( Float(i) * 45 ))
+                
             }
+        }
         
         
         
@@ -194,15 +213,15 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
         sunLensFlare.strokeColor = .systemYellow
         sunLensFlare.alpha = 0.15
         sunLensFlare.run(SKAction.repeatForever( SKAction.sequence([
-          
+            
             SKAction.scale(to: 1.2, duration: 0.4),
             SKAction.scale(to: 1.0, duration: 0.4) ]) ))
-               
-            
-            
-           
-       node.addChild(sunLensFlare)
-                            
+        
+        
+        
+        
+        node.addChild(sunLensFlare)
+        
         for child in node.children {
             if child.name == "SunGravityField" {
             }
@@ -214,7 +233,7 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
         
         var firstBody: SKPhysicsBody
         var secondBody: SKPhysicsBody
-
+        
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
             firstBody = contact.bodyA
             secondBody = contact.bodyB
@@ -222,28 +241,28 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
             firstBody = contact.bodyB
             secondBody = contact.bodyA
         }
-     
-     if secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.gravityStar {
-             
-         //Player crashed into a star
-       
-         self.sameLevelTriggered?()
-     
         
-         
-     } else if ((secondBody.categoryBitMask == PhysicsCategory.playerProjectile && firstBody.categoryBitMask == PhysicsCategory.enemy) || (secondBody.categoryBitMask == PhysicsCategory.enemy && firstBody.categoryBitMask == PhysicsCategory.playerProjectile)) {
-         
-         //Player projectile hit enemey
-         
-         if let secondbody_node = secondBody.node {
-             secondbody_node.removeFromParent()
-         }
-         if let firstbody_node = firstBody.node {
-             firstbody_node.removeFromParent()
-         }
-         
-         
-     }
+        if secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.gravityStar {
+            
+            //Player crashed into a star
+            
+            self.sameLevelTriggered?()
+            
+            
+            
+        } else if ((secondBody.categoryBitMask == PhysicsCategory.playerProjectile && firstBody.categoryBitMask == PhysicsCategory.enemy) || (secondBody.categoryBitMask == PhysicsCategory.enemy && firstBody.categoryBitMask == PhysicsCategory.playerProjectile)) {
+            
+            //Player projectile hit enemey
+            
+            if let secondbody_node = secondBody.node {
+                secondbody_node.removeFromParent()
+            }
+            if let firstbody_node = firstBody.node {
+                firstbody_node.removeFromParent()
+            }
+            
+            
+        }
         
         else if ((secondBody.categoryBitMask == PhysicsCategory.enemeyProjectile && firstBody.categoryBitMask == PhysicsCategory.player) || (secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.enemeyProjectile)) {
             
@@ -257,7 +276,7 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                 print("firstbody was enemyproj")
             }
             
-               
+            
             
             if let fireParticles = SKEmitterNode(fileNamed: "miniSparko") {
                 
@@ -268,7 +287,7 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                 self.addChild(fireParticles)
                 fireParticles.targetNode = self
             }
-           
+            
             
             
             
@@ -280,63 +299,63 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                 
                 for enemy in enemies {
                     enemy.stopAttackOnPlayer()
-                  
+                    
                 }
                 self.playerDestroyed?()
                 
-              
+                
                 
             }
             
             self.playerTookHealthDamage?(CGFloat(shipReference.currentHealth /  shipReference.totalHealth ))
-           
+            
             
         }
-     
-     else if ( secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.earthplanet || secondBody.categoryBitMask == PhysicsCategory.earthplanet && firstBody.categoryBitMask == PhysicsCategory.player ) {
-         
-         
-         //player hit earth planet
-      
         
-         
-         
-     } else if ( secondBody.categoryBitMask == PhysicsCategory.whip && firstBody.categoryBitMask == PhysicsCategory.gravityStar ) {
-         
-         // End of Trajectory line hit a star object, remove the last dot node
-
-             if let dotNode = secondBody.node {
-                 self.trajectoryLineIntersectionWithStarCallback?( dotNode )
-                }
-             
-         
-         
-     }  else if ( secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.astronaut || secondBody.categoryBitMask == PhysicsCategory.astronaut && firstBody.categoryBitMask == PhysicsCategory.player )  {
-         
-         //Astro was captured by the player
-         
-         let node =  secondBody.node!
-         node.run(SKAction.sequence([SKAction.group([
-             
-             SKAction.scale(to: 1.3, duration: 0.2),
-             SKAction.fadeAlpha(to: 0.0, duration: 0.2)]),
-        
-                                     SKAction.run {
-             node.removeFromParent()
-             
-             self.astroCapturedHandler?()
-             
-         }
-         ])
-         
-         )
-         
-         
-         node.physicsBody = nil
-             
-        
-         
-     }
+        else if ( secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.earthplanet || secondBody.categoryBitMask == PhysicsCategory.earthplanet && firstBody.categoryBitMask == PhysicsCategory.player ) {
+            
+            
+            //player hit earth planet
+            
+            
+            
+            
+        } else if ( secondBody.categoryBitMask == PhysicsCategory.whip && firstBody.categoryBitMask == PhysicsCategory.gravityStar ) {
+            
+            // End of Trajectory line hit a star object, remove the last dot node
+            
+            if let dotNode = secondBody.node {
+                self.trajectoryLineIntersectionWithStarCallback?( dotNode )
+            }
+            
+            
+            
+        }  else if ( secondBody.categoryBitMask == PhysicsCategory.player && firstBody.categoryBitMask == PhysicsCategory.astronaut || secondBody.categoryBitMask == PhysicsCategory.astronaut && firstBody.categoryBitMask == PhysicsCategory.player )  {
+            
+            //Astro was captured by the player
+            
+            let node =  secondBody.node!
+            node.run(SKAction.sequence([SKAction.group([
+                
+                SKAction.scale(to: 1.3, duration: 0.2),
+                SKAction.fadeAlpha(to: 0.0, duration: 0.2)]),
+                                        
+                                        SKAction.run {
+                node.removeFromParent()
+                
+                self.astroCapturedHandler?()
+                
+            }
+            ])
+                     
+            )
+            
+            
+            node.physicsBody = nil
+            
+            
+            
+        }
     }
     
     
@@ -379,7 +398,7 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
         
         for enemy in enemies {
             if let playerPhysicsBody = shipReference.physicsBody {
-            enemy.detectIfPlayerVisibleToNode(playerPosition: shipReference.position, playerVelocity: playerPhysicsBody.velocity)
+                enemy.detectIfPlayerVisibleToNode(playerPosition: shipReference.position, playerVelocity: playerPhysicsBody.velocity)
             }
         }
         
@@ -388,17 +407,19 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
     func touchesBeganPassthrough(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         
+        
         if(currentGameMode == .ship){
             
             shipReference = MotherShip.init(imageNamed: "spaceship")
             shipReference.setup()
-            shipReference.position = earchReference.position
+            
+            
             currentSelectedEntity = shipReference
-
+            
             self.addChild(shipReference)
             
             for star in starReference {
-                    star.isPaused = true
+                star.isPaused = true
             }
             
             
@@ -427,16 +448,15 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
             
             
             let missile = LongRangeMissile()
-          
+            
             
             shipReference.physicsBody?.fieldBitMask = PhysicsCategory.none
             shipReference.physicsBody?.isDynamic = false
-            missile.position = earchReference.position
             currentSelectedEntity = missile
             self.addChild(missile)
             
             for star in starReference {
-                    star.isPaused = true
+                star.isPaused = true
             }
             
             
@@ -448,17 +468,27 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
             missile.run(SKAction.scale(to: 1.0, duration: 0.1))
             
             
-          
+            
+            
+            if let fireParticles = SKEmitterNode(fileNamed: "Smoke") {
                 
-                if let fireParticles = SKEmitterNode(fileNamed: "Smoke") {
-                    
-                    
-                    fireParticles.name = "trail"
-                    missile.addChild(fireParticles)
-                    fireParticles.targetNode = self
-                }
+                
+                fireParticles.name = "trail"
+                missile.addChild(fireParticles)
+                fireParticles.targetNode = self
+            }
             
         }
+        
+        if let touch = touches.first {
+            
+            let touchLocation = touch.location(in: self)
+            currentSelectedEntity.position.x = touchLocation.x
+            
+        }
+        
+        currentSelectedEntity.position.y = earchReference.position.y
+        
         
     }
     
@@ -467,6 +497,12 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
         
         
     }
+    
+    
+    
+    
+    
+    
     
     
     func touchesEndedPassthrough(savedVelocity: CGVector, savedAngularVelocity: CGFloat){
@@ -480,5 +516,57 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
         self.currentSelectedEntity.physicsBody!.angularVelocity = savedAngularVelocity
         
     }
-   
+    
+    func shootByWireActivated( ){
+        
+        
+        
+        
+    }
+    
+    func shootByWireAttackButtonPressed(button: JKButtonNode){
+        
+        
+    }
+    
+    
+    func shootByWireJoystickStarted(){
+        
+        playerIsControllingRotation = true
+    }
+    
+    func shootByWireJoystickEnded(){
+        
+        playerIsControllingRotation = false
+        
+    }
+    
+    
+    
+    func shootByWireJoystickHandleMovement(data: AnalogJoystickData){
+        
+        
+        currentSelectedEntity.zRotation = data.angular
+        
+    }
+    
+    func handleSelectedObjectsZRotation(){
+        
+        
+        if(!playerIsControllingRotation){
+            if let velocity = self.currentSelectedEntity.physicsBody?.velocity {
+                // Calculate the angle from the velocity vector
+                let angle = atan2(velocity.dy, velocity.dx) - (CGFloat.pi / 2)
+                // Adjust the sprite's rotation
+                
+                
+                self.currentSelectedEntity.zRotation = angle
+                
+                
+                
+                
+            }}
+        
+    }
+    
 }

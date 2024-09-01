@@ -58,6 +58,9 @@
 		3BF04E782C7455F200C55CF5 /* miniSparko.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3BF04E772C7455F200C55CF5 /* miniSparko.sks */; };
 		3BF04E7A2C745F8B00C55CF5 /* SKDestructibleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF04E792C745F8B00C55CF5 /* SKDestructibleNode.swift */; };
 		3BF04E7C2C7707BC00C55CF5 /* ProjectileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF04E7B2C7707BC00C55CF5 /* ProjectileEntity.swift */; };
+		3BF04E7E2C83E4D000C55CF5 /* Level9.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3BF04E7D2C83E4D000C55CF5 /* Level9.sks */; };
+		3BF04E802C83EFD800C55CF5 /* ShootByWireMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF04E7F2C83EFD800C55CF5 /* ShootByWireMenu.swift */; };
+		3BF04E822C83F02700C55CF5 /* AnalogJoystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF04E812C83F02700C55CF5 /* AnalogJoystick.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -113,6 +116,9 @@
 		3BF04E772C7455F200C55CF5 /* miniSparko.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = miniSparko.sks; sourceTree = "<group>"; };
 		3BF04E792C745F8B00C55CF5 /* SKDestructibleNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKDestructibleNode.swift; sourceTree = "<group>"; };
 		3BF04E7B2C7707BC00C55CF5 /* ProjectileEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectileEntity.swift; sourceTree = "<group>"; };
+		3BF04E7D2C83E4D000C55CF5 /* Level9.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level9.sks; sourceTree = "<group>"; };
+		3BF04E7F2C83EFD800C55CF5 /* ShootByWireMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShootByWireMenu.swift; sourceTree = "<group>"; };
+		3BF04E812C83F02700C55CF5 /* AnalogJoystick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AnalogJoystick.swift; path = "../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Ultimate Boss Battles/Ultimate Boss Battles/Helpers/AnalogJoystick.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,17 +151,16 @@
 		3B37AC702C693D63004A42CB /* Handlers */ = {
 			isa = PBXGroup;
 			children = (
-				3B7F208D2BEB4C2C0034FDDF /* LevelCompleteMenu.swift */,
-				3BBD0FF22C694AE600476E23 /* UIHandler.swift */,
-				3BF04E792C745F8B00C55CF5 /* SKDestructibleNode.swift */,
 				3B37AC6E2C693AA3004A42CB /* GameplayHandler.swift */,
+				3BF04E832C83F55000C55CF5 /* UserInterface */,
 				3B37AC6C2C6939FC004A42CB /* CameraHandler.swift */,
+				3B75948A2BD593DD00B94493 /* DotGridManager.swift */,
+				3B7F20A52C0144100034FDDF /* SoundHandler.swift */,
+				3B7F208D2BEB4C2C0034FDDF /* LevelCompleteMenu.swift */,
+				3BF04E792C745F8B00C55CF5 /* SKDestructibleNode.swift */,
 				3B37AC6A2C6935F2004A42CB /* TrajectoryLineManager.swift */,
 				3B7F20A32C0143CF0034FDDF /* BackgroundHandler.swift */,
-				3B75948A2BD593DD00B94493 /* DotGridManager.swift */,
-				3B7594862BD4A65A00B94493 /* BottomMenuBar.swift */,
 				3B7F208F2BEB4C530034FDDF /* Menu.swift */,
-				3B7F20A52C0144100034FDDF /* SoundHandler.swift */,
 			);
 			path = Handlers;
 			sourceTree = "<group>";
@@ -176,6 +181,7 @@
 		3B37AC722C693D96004A42CB /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				3BF04E812C83F02700C55CF5 /* AnalogJoystick.swift */,
 				3B37AC732C693D9B004A42CB /* JKButtonNode.swift */,
 			);
 			path = Utilities;
@@ -228,6 +234,7 @@
 				3B7F209D2BF30A9A0034FDDF /* Level4.sks */,
 				3B7F209F2BF31CCC0034FDDF /* Level7.sks */,
 				3BBD0FFA2C72B08B00476E23 /* Level8.sks */,
+				3BF04E7D2C83E4D000C55CF5 /* Level9.sks */,
 				3B77DB072BCE1D7C00F9223C /* Level6.sks */,
 			);
 			path = Levels;
@@ -246,6 +253,16 @@
 				3BF04E742C72FE9100C55CF5 /* Assets.xcassets */,
 			);
 			path = Particles;
+			sourceTree = "<group>";
+		};
+		3BF04E832C83F55000C55CF5 /* UserInterface */ = {
+			isa = PBXGroup;
+			children = (
+				3BBD0FF22C694AE600476E23 /* UIHandler.swift */,
+				3B7594862BD4A65A00B94493 /* BottomMenuBar.swift */,
+				3BF04E7F2C83EFD800C55CF5 /* ShootByWireMenu.swift */,
+			);
+			path = UserInterface;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -332,6 +349,7 @@
 				3B37AC662C682939004A42CB /* popo4.mp3 in Resources */,
 				3B37AC672C682939004A42CB /* Galactic Swing (Singularity Mix).mp3 in Resources */,
 				3B6CC9F42BCAF56E00DB4CA3 /* Base in Resources */,
+				3BF04E7E2C83E4D000C55CF5 /* Level9.sks in Resources */,
 				3B38090D2BCCE4420046ABA1 /* Smoke.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -352,10 +370,12 @@
 				3BF04E7A2C745F8B00C55CF5 /* SKDestructibleNode.swift in Sources */,
 				3B37AC6D2C6939FC004A42CB /* CameraHandler.swift in Sources */,
 				3B7F20A22BFEE7040034FDDF /* MotherShip.swift in Sources */,
+				3BF04E822C83F02700C55CF5 /* AnalogJoystick.swift in Sources */,
 				3BBD0FFD2C72B51900476E23 /* Enemey.swift in Sources */,
 				3BBD0FF72C69B31E00476E23 /* MSKAnimatedLabel.swift in Sources */,
 				3B6CC9EC2BCAF56D00DB4CA3 /* GameViewController.swift in Sources */,
 				3BBD0FF32C694AE600476E23 /* UIHandler.swift in Sources */,
+				3BF04E802C83EFD800C55CF5 /* ShootByWireMenu.swift in Sources */,
 				3B6CC9E42BCAF56D00DB4CA3 /* AppDelegate.swift in Sources */,
 				3BBD0FF52C69ACB900476E23 /* IntroScreen.swift in Sources */,
 				3BF04E7C2C7707BC00C55CF5 /* ProjectileEntity.swift in Sources */,
