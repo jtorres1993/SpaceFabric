@@ -35,6 +35,8 @@ class MotherShip: ProjectileEntity {
     
     override func recreatePhysicsBody(){
         
+        self.physicsBody!.mass = 100
+
         self.physicsBody?.fieldBitMask =  PhysicsCategory.gravityStar
         self.physicsBody?.categoryBitMask = PhysicsCategory.player
         self.physicsBody?.collisionBitMask = PhysicsCategory.none

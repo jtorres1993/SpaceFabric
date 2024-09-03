@@ -47,9 +47,24 @@ class BottomMenuBar: SKNode {
         
     
         
-        shipButton = setupMenuItem(button: shipButton, withImage: "shipButton", withOffset: 2, withSettingsMenu: shipButtonSprite)
+        lazerButton = setupMenuItem(button: lazerButton, withImage: "lazerbutton-selected", withOffset: 0, withSettingsMenu: lazerButtonMenu)
+        lazerButton?.name = "shootByWire"
+        lazerButton?.menuCallback = self.modeMenuButtonPressed
         
-        let shipHighlightedTexture = SKTexture.init(imageNamed: "shipbutton-selected")
+        lazerButton?.highlightedBG = SKTexture.init(imageNamed: "lazerbutton")
+        
+        missileButton = setupMenuItem(button: missileButton, withImage: "missilebutton-selected", withOffset: 1, withSettingsMenu: missileButtonSprite)
+        missileButton?.name = "missile"
+        missileButton?.menuCallback = self.modeMenuButtonPressed
+    
+        missileButton?.highlightedBG = SKTexture.init(imageNamed: "missilebutton")
+        
+        
+        
+        
+        shipButton = setupMenuItem(button: shipButton, withImage: "shipbutton-selected", withOffset: 2, withSettingsMenu: shipButtonSprite)
+        
+        let shipHighlightedTexture = SKTexture.init(imageNamed: "shipbutton")
         shipButton?.highlightedBG = shipHighlightedTexture
         
         shipButton?.name = "ship"
@@ -62,38 +77,25 @@ class BottomMenuBar: SKNode {
         shipButton?.canChangeState = false
         shipButton?.menuCallback = self.modeMenuButtonPressed
         
-        missileButton = setupMenuItem(button: missileButton, withImage: "missilebutton", withOffset: 1, withSettingsMenu: missileButtonSprite)
-        missileButton?.name = "missile"
-        missileButton?.menuCallback = self.modeMenuButtonPressed
-    
-        missileButton?.highlightedBG = SKTexture.init(imageNamed: "missilebutton-selected")
+        
+   
         
         
-        
-        
-        lazerButton = setupMenuItem(button: lazerButton, withImage: "lazerbutton", withOffset: 0, withSettingsMenu: lazerButtonMenu)
-        lazerButton?.name = "shootByWire"
-        lazerButton?.menuCallback = self.modeMenuButtonPressed
-        
-        lazerButton?.highlightedBG = SKTexture.init(imageNamed: "lazerButton-selected")
-        
-        
-        
-        settingsButton = setupMenuItem(button: settingsButton, withImage: "Dronebutton", withOffset: 3, withSettingsMenu: settingsMenu)
+        settingsButton = setupMenuItem(button: settingsButton, withImage: "Dronebutton-selected", withOffset: 3, withSettingsMenu: settingsMenu)
         settingsButton?.name = "settings"
         settingsButton?.menuCallback = self.modeMenuButtonPressed
         
-        settingsButton?.highlightedBG = SKTexture.init(imageNamed: "Dronebutton-selected")
+        settingsButton?.highlightedBG = SKTexture.init(imageNamed: "Dronebutton")
         
         
         
-        cameraButton = setupMenuItem(button: cameraButton, withImage: "camerabutton", withOffset: 4, withSettingsMenu: cameraButtonMenu)
+        cameraButton = setupMenuItem(button: cameraButton, withImage: "camerabutton-selected", withOffset: 4, withSettingsMenu: cameraButtonMenu)
            
         cameraButton?.name = "camera"
         cameraButton?.menuCallback = self.modeMenuButtonPressed
         //setupIconForButton(iconImage: "sybdit", button: missileButton!)
         
-        cameraButton?.highlightedBG = SKTexture.init(imageNamed: "camerabutton-selected")
+        cameraButton?.highlightedBG = SKTexture.init(imageNamed: "camerabutton")
         
         
         

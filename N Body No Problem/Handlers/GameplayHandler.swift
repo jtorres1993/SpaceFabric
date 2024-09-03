@@ -400,92 +400,103 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
         
     }
     
+    
+    var hasShippedBeenLaunched = false
+    
     func touchesBeganPassthrough(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         
-        
-        if(currentGameMode == .ship){
-            
-            shipReference = MotherShip.init(imageNamed: "spaceship")
-            shipReference.setup()
-            
-            
-            currentSelectedEntity = shipReference
-            
-            self.addChild(shipReference)
-            
-            for star in starReference {
-                star.isPaused = true
-            }
-            
-            
-            
-            earchReference.isPaused = true
-            
-            shipReference.physicsBody?.fieldBitMask = PhysicsCategory.none
-            shipReference.physicsBody?.isDynamic = false
-            shipReference.run(SKAction.scale(to: 1.0, duration: 0.1))
-            
-            
-            if (shipHasBeenPlaced == false) {
+        if ( !hasShippedBeenLaunched){
+            if(currentGameMode == .ship){
+                
+                shipReference = MotherShip.init(imageNamed: "spaceship")
+                shipReference.setup()
                 
                 
-                shipHasBeenPlaced = true
+                currentSelectedEntity = shipReference
+                
+                self.addChild(shipReference)
+                
+                for star in starReference {
+                    star.isPaused = true
+                }
+                
+                
+                
+                earchReference.isPaused = true
+                
+                shipReference.physicsBody?.fieldBitMask = PhysicsCategory.none
+                shipReference.physicsBody?.isDynamic = false
+                shipReference.run(SKAction.scale(to: 1.0, duration: 0.1))
+                
+                
+                if (shipHasBeenPlaced == false) {
+                    
+                    
+                    shipHasBeenPlaced = true
+                    if let fireParticles = SKEmitterNode(fileNamed: "Smoke") {
+                        
+                        
+                        fireParticles.name = "trail"
+                        shipReference.addChild(fireParticles)
+                        fireParticles.targetNode = self
+                    }}
+                
+                hasShippedBeenLaunched = true
+            } else if ( currentGameMode == .missile ) {
+                
+                
+                
+                let missile = LongRangeMissile()
+                
+                
+                shipReference.physicsBody?.fieldBitMask = PhysicsCategory.none
+                shipReference.physicsBody?.isDynamic = false
+                currentSelectedEntity = missile
+                self.addChild(missile)
+                
+                for star in starReference {
+                    star.isPaused = true
+                }
+                
+                
+                
+                earchReference.isPaused = true
+                
+                missile.physicsBody?.fieldBitMask = PhysicsCategory.none
+                missile.physicsBody?.isDynamic = false
+                missile.run(SKAction.scale(to: 1.0, duration: 0.1))
+                
+                
+                
+                
                 if let fireParticles = SKEmitterNode(fileNamed: "Smoke") {
                     
                     
                     fireParticles.name = "trail"
-                    shipReference.addChild(fireParticles)
+                    missile.addChild(fireParticles)
                     fireParticles.targetNode = self
-                }}
-            
-        } else if ( currentGameMode == .missile ) {
-            
-            
-            
-            let missile = LongRangeMissile()
-            
-            
-            shipReference.physicsBody?.fieldBitMask = PhysicsCategory.none
-            shipReference.physicsBody?.isDynamic = false
-            currentSelectedEntity = missile
-            self.addChild(missile)
-            
-            for star in starReference {
-                star.isPaused = true
+                }
+                
             }
             
-            
-            
-            earchReference.isPaused = true
-            
-            missile.physicsBody?.fieldBitMask = PhysicsCategory.none
-            missile.physicsBody?.isDynamic = false
-            missile.run(SKAction.scale(to: 1.0, duration: 0.1))
-            
-            
-            
-            
-            if let fireParticles = SKEmitterNode(fileNamed: "Smoke") {
+            if let touch = touches.first {
                 
+                let touchLocation = touch.location(in: self)
+                currentSelectedEntity.position.x = touchLocation.x
                 
-                fireParticles.name = "trail"
-                missile.addChild(fireParticles)
-                fireParticles.targetNode = self
             }
+            
+            currentSelectedEntity.position.y = earchReference.position.y
+            
+        } else {
+            shipReference.isPaused = true
+            shipReference.physicsBody!.isDynamic = false 
+            
             
         }
         
-        if let touch = touches.first {
-            
-            let touchLocation = touch.location(in: self)
-            currentSelectedEntity.position.x = touchLocation.x
-            
-        }
-        
-        currentSelectedEntity.position.y = earchReference.position.y
-        
-        
+        self.statisMode = true
     }
     
     func touchesMovedPassthrough(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -506,10 +517,9 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
         
         self.currentSelectedEntity.recreatePhysicsBody()
         self.currentSelectedEntity.physicsBody?.isDynamic = true
-        self.currentSelectedEntity.run(SKAction.scale(to: 0.25, duration: 0.01))
+        self.currentSelectedEntity.setScale(0.25) 
         
-        self.currentSelectedEntity.physicsBody!.velocity = savedVelocity
-        self.currentSelectedEntity.physicsBody!.angularVelocity = savedAngularVelocity
+        
         
     }
     

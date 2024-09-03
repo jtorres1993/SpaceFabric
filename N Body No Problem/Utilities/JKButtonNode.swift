@@ -370,7 +370,7 @@ class JKButtonNode: SKSpriteNode {
                 }
                 
                 if shouldDisableChangeStateAfterPress == true {
-                    canChangeState = false 
+                    canChangeState = false
                 }
                 
             }
@@ -442,6 +442,15 @@ class JKButtonNode: SKSpriteNode {
             }
             
             buttonAction(self)
+            } else if ( shouldDisableChangeStateAfterPress == true ) {
+                triggered = false
+                //Allows the action to be complete only if they let go of the button
+                guard isUserInteractionEnabled, let buttonAction = action, let touch = touches.first else { return }
+                let userTouch = touch.location(in: parent!)
+                
+                guard self.contains(userTouch) else { return }
+                buttonAction(self)
+
             }
             return
             

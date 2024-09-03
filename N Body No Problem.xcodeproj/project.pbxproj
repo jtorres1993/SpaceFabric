@@ -61,6 +61,7 @@
 		3BF04E7E2C83E4D000C55CF5 /* Level9.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3BF04E7D2C83E4D000C55CF5 /* Level9.sks */; };
 		3BF04E802C83EFD800C55CF5 /* ShootByWireMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF04E7F2C83EFD800C55CF5 /* ShootByWireMenu.swift */; };
 		3BF04E822C83F02700C55CF5 /* AnalogJoystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF04E812C83F02700C55CF5 /* AnalogJoystick.swift */; };
+		3BF04E852C86DF2700C55CF5 /* ChargeUp.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3BF04E842C86DF2700C55CF5 /* ChargeUp.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -119,6 +120,7 @@
 		3BF04E7D2C83E4D000C55CF5 /* Level9.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level9.sks; sourceTree = "<group>"; };
 		3BF04E7F2C83EFD800C55CF5 /* ShootByWireMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShootByWireMenu.swift; sourceTree = "<group>"; };
 		3BF04E812C83F02700C55CF5 /* AnalogJoystick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AnalogJoystick.swift; path = "../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Ultimate Boss Battles/Ultimate Boss Battles/Helpers/AnalogJoystick.swift"; sourceTree = "<group>"; };
+		3BF04E842C86DF2700C55CF5 /* ChargeUp.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ChargeUp.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,6 +251,7 @@
 				3B77DB052BCE0ED200F9223C /* spark.sks */,
 				3B77DB012BCE0E9D00F9223C /* magic.sks */,
 				3BF04E772C7455F200C55CF5 /* miniSparko.sks */,
+				3BF04E842C86DF2700C55CF5 /* ChargeUp.sks */,
 				3BF04E732C72FE9100C55CF5 /* Sparko.sks */,
 				3BF04E742C72FE9100C55CF5 /* Assets.xcassets */,
 			);
@@ -327,6 +330,7 @@
 				3BBD0FFB2C72B08B00476E23 /* Level8.sks in Resources */,
 				3BF04E782C7455F200C55CF5 /* miniSparko.sks in Resources */,
 				3B77DB022BCE0E9D00F9223C /* magic.sks in Resources */,
+				3BF04E852C86DF2700C55CF5 /* ChargeUp.sks in Resources */,
 				3B77DB062BCE0ED200F9223C /* spark.sks in Resources */,
 				3B6CC9E62BCAF56D00DB4CA3 /* Level3.sks in Resources */,
 				3B6CC9EF2BCAF56D00DB4CA3 /* Base in Resources */,

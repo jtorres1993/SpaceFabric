@@ -80,7 +80,7 @@ class IntroScreen: SKScene {
                         
                         {
                 
-                let scene = SKScene(fileNamed: "Level9" )
+                let scene = SKScene(fileNamed: "Level6" )
                     scene!.scaleMode = .aspectFill
                 self.view?.presentScene(scene!)
                 

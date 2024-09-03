@@ -314,27 +314,39 @@ class GameScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         
-        self.gameplayHandler.touchesBeganPassthrough(touches, with: event)
+        
+        self.physicsWorld.speed = 5
+        
+        
+        if(!self.gameplayHandler.hasShippedBeenLaunched){
+            
+            
+            
+            self.gameplayHandler.touchesBeganPassthrough(touches, with: event)
         
         
         savedVelocity = self.gameplayHandler.currentSelectedEntity.physicsBody!.velocity
         savedAngularVelocity = self.gameplayHandler.currentSelectedEntity.physicsBody!.angularVelocity
         
-   
-        self.gameplayHandler.statisMode = true
-        
 
-        self.physicsWorld.speed = 5
+
+        
       
             
+   
+        
+        } else {
+            self.gameplayHandler.touchesBeganPassthrough(touches, with: event)
+            
+        }
+        
         for node in self.children {
             if (node.name == "Enemigo") {
                 node.isPaused = true
-                node.physicsBody!.isDynamic = false 
+                node.physicsBody!.isDynamic = false
             }
         }
         
-
         if let touch = touches.first {
             initialTouchLocation = touch.location(in: self)
 
@@ -411,10 +423,10 @@ class GameScene: SKScene {
             
             self.gameplayHandler.touchesEndedPassthrough(savedVelocity: savedVelocity, savedAngularVelocity: savedAngularVelocity)
             
-            
-            applyForce(to: self.gameplayHandler.currentSelectedEntity, vector: forceVector)
                 
-            
+                
+            applyForce(to: self.gameplayHandler.currentSelectedEntity, vector: forceVector)
+             
           
         }
         
