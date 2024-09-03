@@ -27,15 +27,7 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
     
     
     
-    enum GameModes {
-        
-        
-        case ship
-        case missile
-        case camera
-        case shootByWire
-        
-    }
+    
     
     var currentGameMode : GameModes = .ship
     
@@ -148,6 +140,10 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
             }
         }
         
+    }
+    
+    func returnCurrentGameMode()->GameModes{
+        return currentGameMode
     }
     
     
@@ -522,22 +518,79 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
         
         
         
-    }
-    
-    func shootByWireAttackButtonPressed(button: JKButtonNode){
         
         
     }
     
+    func shootByWireAttackButtonStarted(){
+        
+        
+        self.run(SKAction.repeatForever(
+            SKAction.sequence([
+            
+            
+        
+            SKAction.run {
+            
+                
+                let fireNode = SKSpriteNode.init(color: .white , size: CGSize.init(width: 2, height: 50))
+                
+                fireNode.physicsBody = SKPhysicsBody.init(rectangleOf: fireNode.size , center: CGPoint.zero)
+                  
+                fireNode.physicsBody?.categoryBitMask = PhysicsCategory.playerProjectile
+                fireNode.physicsBody?.contactTestBitMask = PhysicsCategory.enemy
+                
+                fireNode.physicsBody?.isDynamic = false
+                fireNode.physicsBody?.usesPreciseCollisionDetection = true
+                
+                  // Rotate the sprite to face the target point
+                
+               
+                
+                
+                self.addChild(fireNode)
+                fireNode.position = self.shipReference.position
+               
+                // Calculate the direction based on the ship's zRotation
+                let direction = CGVector(dx: cos(self.shipReference.zRotation + .pi / 2), dy: sin(self.shipReference.zRotation + .pi / 2))
+                       
+                       // Define the distance to move the node (e.g., 500 points)
+                       let distance: CGFloat = 2000.0
+                       let moveAction = SKAction.move(by: CGVector(dx: direction.dx * distance, dy: direction.dy * distance), duration: 1.0)
+                       
+                
+               
+                
+                let angle = atan2(direction.dy, direction.dx)
+                fireNode.zRotation = angle - .pi  / 2
+                
+                
+                
+                fireNode.run(moveAction)
+                
+                    //fireNode.run(moveAction)
+                
+            }, SKAction.wait(forDuration: 0.2) ] )
+        ), withKey: "ShootByWireAction")
+        
+    }
+    
+    func shootByWireAttackButtonEnded(){
+        
+        
+        self.removeAction(forKey: "ShootByWireAction")
+    }
     
     func shootByWireJoystickStarted(){
         
         playerIsControllingRotation = true
+       
     }
     
     func shootByWireJoystickEnded(){
         
         playerIsControllingRotation = false
+       
         
     }
     
@@ -563,9 +616,14 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                 self.currentSelectedEntity.zRotation = angle
                 
                 
+            }} else {
                 
                 
-            }}
+                
+                print(shipReference.zRotation)
+                //0-3.14 left up, down
+                //-3.14 to 0 down, up
+            }
         
     }
     

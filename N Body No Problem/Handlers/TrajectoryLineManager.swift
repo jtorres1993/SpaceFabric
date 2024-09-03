@@ -90,7 +90,7 @@ class TrajectoryLineManager: SKNode {
             }]))
             self.nodesArray.append(node)
             
-          //  sceneReference.applyForce(to: node, vector: forceVector)
+            sceneReference.applyForce(to: node, vector: forceVector)
             
         }, SKAction.wait(forDuration: 0.016)])), withKey: "NodePattern")
         

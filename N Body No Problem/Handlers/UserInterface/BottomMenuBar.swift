@@ -29,6 +29,19 @@ class BottomMenuBar: SKNode {
     var lazerButton : JKButtonNode? = nil
     let lazerButtonMenu = SKSpriteNode()
 
+    
+    var currentlySelectedButton : JKButtonNode? = nil
+    var allButtons :  [JKButtonNode] = []
+    
+    
+    let buttonGameModeMap: [String: GameModes] = [
+        "camera": .camera,
+        "missile": .missile,
+        "ship": .ship,
+        "shootByWire": .shootByWire,
+        "settings" : .settings 
+    ]
+
 
     func setup(){
         
@@ -39,26 +52,86 @@ class BottomMenuBar: SKNode {
         let shipHighlightedTexture = SKTexture.init(imageNamed: "shipbutton-selected")
         shipButton?.highlightedBG = shipHighlightedTexture
         
+        shipButton?.name = "ship"
         shipButton?.enableSelectionState = true
+        
+        currentlySelectedButton = shipButton
+        
         shipButton?.selected = .selected
         shipButton?.set(state: .highlighted)
-
-        missileButton = setupMenuItem(button: missileButton, withImage: "missilebutton", withOffset: 1, withSettingsMenu: missileButtonSprite)
+        shipButton?.canChangeState = false
+        shipButton?.menuCallback = self.modeMenuButtonPressed
         
-     
-        lazerButton = setupMenuItem(button: cameraButton, withImage: "lazerbutton", withOffset: 0, withSettingsMenu: lazerButtonMenu)
+        missileButton = setupMenuItem(button: missileButton, withImage: "missilebutton", withOffset: 1, withSettingsMenu: missileButtonSprite)
+        missileButton?.name = "missile"
+        missileButton?.menuCallback = self.modeMenuButtonPressed
+    
+        missileButton?.highlightedBG = SKTexture.init(imageNamed: "missilebutton-selected")
+        
+        
+        
+        
+        lazerButton = setupMenuItem(button: lazerButton, withImage: "lazerbutton", withOffset: 0, withSettingsMenu: lazerButtonMenu)
+        lazerButton?.name = "shootByWire"
+        lazerButton?.menuCallback = self.modeMenuButtonPressed
+        
+        lazerButton?.highlightedBG = SKTexture.init(imageNamed: "lazerButton-selected")
+        
         
         
         settingsButton = setupMenuItem(button: settingsButton, withImage: "Dronebutton", withOffset: 3, withSettingsMenu: settingsMenu)
-           
+        settingsButton?.name = "settings"
+        settingsButton?.menuCallback = self.modeMenuButtonPressed
+        
+        settingsButton?.highlightedBG = SKTexture.init(imageNamed: "Dronebutton-selected")
+        
+        
         
         cameraButton = setupMenuItem(button: cameraButton, withImage: "camerabutton", withOffset: 4, withSettingsMenu: cameraButtonMenu)
            
-        
-        
+        cameraButton?.name = "camera"
+        cameraButton?.menuCallback = self.modeMenuButtonPressed
         //setupIconForButton(iconImage: "sybdit", button: missileButton!)
         
+        cameraButton?.highlightedBG = SKTexture.init(imageNamed: "camerabutton-selected")
         
+        
+        
+        allButtons.append(shipButton!)
+        allButtons.append(lazerButton!)
+        allButtons.append(missileButton!)
+        allButtons.append(cameraButton!)
+        allButtons.append(settingsButton!)
+        
+        
+        
+    }
+    
+    func modeMenuButtonPressed(button: JKButtonNode){
+        
+        if let currentlySelectedButton {
+            
+            if currentlySelectedButton != button {
+                
+                //Disallow the state change of the menu button so its not disabled
+                button.shouldDisableChangeStateAfterPress = true
+                
+                self.currentlySelectedButton?.set(state: .normal)
+                self.currentlySelectedButton = button
+               
+                for all_button in allButtons {
+                    //Allow the other buttons to still be changed in state
+                    if (all_button != button){
+                        all_button.canChangeState = true
+                        all_button.shouldDisableChangeStateAfterPress = false
+
+                        
+                    }
+                }
+                
+                
+            }
+        }
         
     }
     

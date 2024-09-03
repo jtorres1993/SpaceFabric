@@ -31,6 +31,9 @@ class JKButtonNode: SKSpriteNode {
     
     var selected = JKButtonSelectedState.unselected
     
+    
+    var shouldDisableChangeStateAfterPress = false
+    
     var enableSelectionState = false
     
     //--------------------
@@ -71,6 +74,11 @@ class JKButtonNode: SKSpriteNode {
     
     /**The function to call after the button has been pressed successfully.*/
     var action:((_ sender: JKButtonNode) -> Void)?
+    var menuCallback:((_ sender: JKButtonNode) -> Void)?
+    
+    
+    var startAction:(()->Void)?
+    var endAction:(()->Void)?
     
     //The state of the button only accessed by the class.
     var state: JKButtonState = .normal
@@ -330,12 +338,27 @@ class JKButtonNode: SKSpriteNode {
     //-------------------------
     //-----Touch Functions-----
     //-------------------------
+    
+    var triggered = false
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        
+        if let menuCallback {
+            menuCallback(self)
+        }
+        
+        triggered = true
+        
         if enabled {
             
           
             if canChangeState {
                 
+                
+                if let startAction {
+                    startAction()
+                }
                 
                 set(state: .highlighted)
                 guard isUserInteractionEnabled, let buttonAction = action else { return; }
@@ -344,6 +367,10 @@ class JKButtonNode: SKSpriteNode {
                 if canPlaySounds {
                         play(pressedSound)
                     
+                }
+                
+                if shouldDisableChangeStateAfterPress == true {
+                    canChangeState = false 
                 }
                 
             }
@@ -359,25 +386,40 @@ class JKButtonNode: SKSpriteNode {
             let userTouch = touch.location(in: parent!)
             
             //Cancels the touch if the user moved their finger out of the button's frame
-            guard !self.contains(userTouch) else { return }
+            guard !self.contains(userTouch) else { 
+                
+                print("inside touch")
+                if (self.state != .highlighted && canChangeState && triggered)
+                 { set(state: .highlighted) }
+                return }
             
-            if(self.contains(userTouch)) {
-                if canChangeState { set(state: .highlighted) }
-                
-                
+            print("outside touch")
+            
+            if(state != .normal){
+                triggered = false
+                if let endAction {
+                    endAction()
+                }
+                set(state: .normal)
             }
-            set(state: .normal)
             
-            isUserInteractionEnabled = false
-            isUserInteractionEnabled = true
             return
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard !enabled else {
-            if canChangeState { set(state: .normal) }
+            if canChangeState { 
+                
+                if(state != .normal){
+                    set(state: .normal)
+                    
+                    if let endAction {
+                        endAction()
+                    }
+                }
             
+            triggered = false
             //Allows the action to be complete only if they let go of the button
             guard isUserInteractionEnabled, let buttonAction = action, let touch = touches.first else { return }
             let userTouch = touch.location(in: parent!)
@@ -400,7 +442,9 @@ class JKButtonNode: SKSpriteNode {
             }
             
             buttonAction(self)
+            }
             return
+            
         }
     }
     

@@ -112,8 +112,7 @@ class GameScene: SKScene {
         
         uiHandler.bottomMenuBar.lazerButton?.action = self.shootByWireButtonPressed
         
-        uiHandler.shootByWireMenu.shootButton.action =
-        self.gameplayHandler.shootByWireAttackButtonPressed
+      
         
         uiHandler.shootByWireMenu.movementJoystick.trackingHandler =
         self.gameplayHandler.shootByWireJoystickHandleMovement
@@ -124,10 +123,23 @@ class GameScene: SKScene {
         uiHandler.shootByWireMenu.movementJoystick.stopHandler =
         self.gameplayHandler.shootByWireJoystickEnded
         
+        uiHandler.shootByWireMenu.shootButton.startAction =
+        self.gameplayHandler.shootByWireAttackButtonStarted
         
+        uiHandler.shootByWireMenu.shootButton.endAction = self.gameplayHandler.shootByWireAttackButtonEnded
+        
+        
+        uiHandler.getCurrentGameModeHandler = self.gameplayHandler.returnCurrentGameMode 
+        
+        uiHandler.bottomMenuBar.cameraButton?.action = self.catchButtonAction
+        uiHandler.bottomMenuBar.settingsButton?.action = self.catchButtonAction
     }
     
-    
+  
+    func catchButtonAction(button: JKButtonNode) {
+        
+        
+    }
     func shootByWireButtonPressed(button: JKButtonNode ) {
         
         gameplayHandler.shootByWireActivated()

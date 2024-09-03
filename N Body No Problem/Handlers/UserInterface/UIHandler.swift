@@ -15,7 +15,7 @@ class UIHandler: SKNode {
     var textbackgroundReferece = SKSpriteNode()
     var healthBar = SKSpriteNode()
     let shootByWireMenu = ShootByWireMenu()
-    
+    var getCurrentGameModeHandler: (()->GameModes)?
     
     func setup(){
         
@@ -89,6 +89,9 @@ class UIHandler: SKNode {
         
         
     }
+    
+    
+
     
     func runCapturedAstro()
     {
