@@ -406,8 +406,11 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
     func touchesBeganPassthrough(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         
-        if ( !hasShippedBeenLaunched){
-            if(currentGameMode == .ship){
+     
+        if(currentGameMode == .ship){
+            
+            if(!shipHasBeenPlaced){
+                
                 
                 shipReference = MotherShip.init(imageNamed: "spaceship")
                 shipReference.setup()
@@ -429,21 +432,41 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                 shipReference.physicsBody?.isDynamic = false
                 shipReference.run(SKAction.scale(to: 1.0, duration: 0.1))
                 
+                shipReference.boostChargeUpAnimation()
                 
-                if (shipHasBeenPlaced == false) {
+                
+                
+                
+                shipHasBeenPlaced = true
+                if let fireParticles = SKEmitterNode(fileNamed: "Smoke") {
                     
                     
-                    shipHasBeenPlaced = true
-                    if let fireParticles = SKEmitterNode(fileNamed: "Smoke") {
+                    fireParticles.name = "trail"
+                    shipReference.addChild(fireParticles)
+                    fireParticles.position = CGPoint.init(x: 0, y:  -shipReference.size.height )
+                    
+                    fireParticles.targetNode = self
+                    
+                    
+                    hasShippedBeenLaunched = true
+                    if let touch = touches.first {
                         
+                        let touchLocation = touch.location(in: self)
+                        shipReference.position.x = touchLocation.x
                         
-                        fireParticles.name = "trail"
-                        shipReference.addChild(fireParticles)
-                        fireParticles.targetNode = self
-                    }}
+                    }
+                    
+                    shipReference.position.y = earchReference.position.y
+                }
                 
-                hasShippedBeenLaunched = true
-            } else if ( currentGameMode == .missile ) {
+            } else {
+                
+                currentSelectedEntity = shipReference
+                shipReference.physicsBody?.isDynamic = false
+                shipReference.boostChargeUpAnimation()
+            }} 
+            
+            else if ( currentGameMode == .missile ) {
                 
                 
                 
@@ -478,23 +501,28 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                     fireParticles.targetNode = self
                 }
                 
+                if(shipHasBeenPlaced){
+                    
+                    missile.position = shipReference.position
+                    
+                } else {
+                    
+                
+                    if let touch = touches.first {
+                        
+                        let touchLocation = touch.location(in: self)
+                        missile.position.x = touchLocation.x
+                        
+                    }
+                    
+                    missile.position.y = earchReference.position.y
+                }
+                
             }
             
-            if let touch = touches.first {
-                
-                let touchLocation = touch.location(in: self)
-                currentSelectedEntity.position.x = touchLocation.x
-                
-            }
+           
             
-            currentSelectedEntity.position.y = earchReference.position.y
-            
-        } else {
-            shipReference.isPaused = true
-            shipReference.physicsBody!.isDynamic = false 
-            
-            
-        }
+        
         
         self.statisMode = true
     }
@@ -514,10 +542,19 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
     
     func touchesEndedPassthrough(savedVelocity: CGVector, savedAngularVelocity: CGFloat){
         
+        shipReference.shipLaunchedAnimation()
+
+        let speedmuliplier = 2.0
+        self.currentSelectedEntity.run(SKAction.sequence([ SKAction.scale(to: 0.15, duration: 0.05 * speedmuliplier),
+            SKAction.scale(to: 0.35, duration: 0.025 * speedmuliplier),
+            SKAction.scale(to: 0.15, duration: 0.025 * speedmuliplier),
+            SKAction.scale(to: 0.25, duration: 0.025 * speedmuliplier)
+                                                         ]))
         
         self.currentSelectedEntity.recreatePhysicsBody()
         self.currentSelectedEntity.physicsBody?.isDynamic = true
-        self.currentSelectedEntity.setScale(0.25) 
+   
+                                                         
         
         
         

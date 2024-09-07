@@ -76,6 +76,8 @@ class GameScene: SKScene {
         
         uiHandler.setup()
         
+        backgroundHandler.setup()
+        
         dotGridManager.setupDots( scene: self, withCameraPos: cameraHandler.position)
         
         self.run(SKAction.sequence([SKAction.wait(forDuration: 1.5), SKAction.run {
@@ -290,10 +292,10 @@ class GameScene: SKScene {
         
     }
     
-    func shakeCamera(duration:Float) {
+    func shakeCamera(duration:Float, _ amplitudeMultipler: CGFloat = 1.0) {
         
-           let amplitudeX:Float = 25;
-           let amplitudeY:Float = 25;
+        let amplitudeX:Float = Float(25 * amplitudeMultipler);
+        let amplitudeY:Float = Float(25 * amplitudeMultipler) ;
            let numberOfShakes = duration / 0.02;
            var actionsArray: [SKAction] = [];
         
@@ -400,8 +402,9 @@ class GameScene: SKScene {
             }
         }
         
-        let sound = SKAction.playSoundFileNamed("blast-37988", waitForCompletion: false)
+        //let sound = SKAction.playSoundFileNamed("blast-37988", waitForCompletion: false)
       //  self.run(sound)
+        self.shakeCamera(duration: 0.05, 1.5) 
         
         self.trajectoryLineManager.removeTrajectoryLine()
         
@@ -461,6 +464,8 @@ class GameScene: SKScene {
             self.gameplayHandler.handleSelectedObjectsZRotation()
         }
         
+        self.cameraHandler.position.y = self.gameplayHandler.shipReference.position.y
+        
         if (self.gameplayHandler.shipReference.position.x > SharedInfo.SharedInstance.safeAreaLayoutSize.width  - 200 || self.gameplayHandler.shipReference.position.x < -SharedInfo.SharedInstance.safeAreaLayoutSize.width  + 200  ) {
             
             let amountInitial = self.gameplayHandler.shipReference.position.x / (SharedInfo.SharedInstance.safeAreaLayoutSize.width )
@@ -473,7 +478,7 @@ class GameScene: SKScene {
                 cameraHandler.removeAllActions()
             cameraHandler.setScale( amount + 0.5)
             
-        } else {
+        }  else {
              
             cameraHandler.run(SKAction.scale(to: 1.0, duration: 1))
         }
