@@ -20,6 +20,15 @@ class BackgroundHandler: SKSpriteNode {
         super.init(texture: nil, color: SharedInfo.SharedInstance.backgroundColor , size:SharedInfo.SharedInstance.screenSize )
         
               
+        
+        let backgroundTexture = SKTexture.init(imageNamed: "background2")
+        
+        let backgroundSprite = SKSpriteNode.init(texture: backgroundTexture)
+        backgroundSprite.setScale(2.0)
+        backgroundSprite.zPosition = -100
+        backgroundSprite.alpha = 0.25
+        self.addChild(backgroundSprite)
+        
               self.backgroundColorIndex = Int.random(in: 1...9)
              
         
@@ -32,7 +41,7 @@ class BackgroundHandler: SKSpriteNode {
     func setup(){
         
         
-             
+             /*
    for _ in 0...50 {
        
        let star = SKSpriteNode.init(imageNamed: "shinestar")
@@ -45,6 +54,8 @@ class BackgroundHandler: SKSpriteNode {
        
        self.addChild(star)
    }
+              */ 
+              
         
     }
     required init?(coder aDecoder: NSCoder) {

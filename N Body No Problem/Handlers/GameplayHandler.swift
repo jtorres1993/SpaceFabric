@@ -26,7 +26,8 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
     var playerIsControllingRotation = false
     
     
-    
+    var startingLine = SKShapeNode()
+
     
     
     var currentGameMode : GameModes = .ship
@@ -72,7 +73,7 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                 
             } else if node.name == "startingPos" {
                 earchReference = node as! SKSpriteNode
-                let startingLine = SKShapeNode.init(rectOf: CGSize.init(width: SharedInfo.SharedInstance.screenSize.width, height: 1    ))
+                startingLine = SKShapeNode.init(rectOf: CGSize.init(width: SharedInfo.SharedInstance.screenSize.width, height: 1    ))
                 
                 startingLine.strokeColor = .white
                 startingLine.position = earchReference.position
@@ -543,7 +544,7 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
     func touchesEndedPassthrough(savedVelocity: CGVector, savedAngularVelocity: CGFloat){
         
         shipReference.shipLaunchedAnimation()
-
+        startingLine.removeFromParent()
         let speedmuliplier = 2.0
         self.currentSelectedEntity.run(SKAction.sequence([ SKAction.scale(to: 0.15, duration: 0.05 * speedmuliplier),
             SKAction.scale(to: 0.35, duration: 0.025 * speedmuliplier),

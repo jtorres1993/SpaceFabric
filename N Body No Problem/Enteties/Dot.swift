@@ -28,7 +28,7 @@ class DotNode: SKSpriteNode {
         
     
         
-        super.init(texture: nil, color: colors[backgroundColorIndex], size: size)
+        super.init(texture: nil, color: color, size: size)
        // self.position = withCameraPos
         self.name = "dot"
        
@@ -92,7 +92,7 @@ class DotNode: SKSpriteNode {
             SKAction.wait(forDuration: randomWaitTime),
            
             SKAction.group([
-                SKAction.fadeAlpha(to: alphaRand, duration: waittime),
+                SKAction.fadeAlpha(to: 1.0, duration: waittime),
                 moveAction,
                 SKAction.scale(to: 1.0, duration: waittime)]),
                 SKAction.run {

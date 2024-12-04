@@ -7,6 +7,9 @@
 
 import Foundation
 import SpriteKit
+import AudioToolbox
+
+
 
 class MotherShip: ProjectileEntity {
     
@@ -111,8 +114,39 @@ class MotherShip: ProjectileEntity {
         
     }
     
+    
+    func startAnimation() {
+         // Load the texture atlas
+         let textureAtlas = SKTextureAtlas(named: "ShipAnimation")
+         
+         // Create an array to hold the textures
+         var frames: [SKTexture] = []
+         
+         // Load all 16 frames from the atlas
+         for i in 1...16 {
+             let textureName = "000\(i)"
+             frames.append(textureAtlas.textureNamed(textureName))
+         }
+         
+         // Create the animation action
+         let animation = SKAction.animate(with: frames, timePerFrame: 0.025, resize: true, restore: false)
+         
+         // Repeat the animation forever
+         let repeatAnimation = SKAction.repeatForever(animation)
+         
+         // Run the animation on the sprite
+        self.run(repeatAnimation)
+        
+     }
+    
+    
     func shipLaunchedAnimation(){
         
+        
+        AudioServicesPlayAlertSoundWithCompletion(SystemSoundID(kSystemSoundID_Vibrate)) { }
+
+
+       // startAnimation()
         //  self.chargeNode.removeAllActions()
         self.chargeNode.run(SKAction.scale(to: 0.0, duration: 0.5), completion: {self.chargeNode.removeAllActions()})
         

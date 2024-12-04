@@ -410,7 +410,7 @@ class GameScene: SKScene {
         
         self.gameplayHandler.statisMode = false
 
-        self.physicsWorld.speed = 0.25
+        self.physicsWorld.speed = 0.32
         
         
         if let touch = touches.first, let initialLocation =
@@ -464,7 +464,7 @@ class GameScene: SKScene {
             self.gameplayHandler.handleSelectedObjectsZRotation()
         }
         
-        self.cameraHandler.position.y = self.gameplayHandler.shipReference.position.y
+        //self.cameraHandler.position.y = self.gameplayHandler.shipReference.position.y
         
         if (self.gameplayHandler.shipReference.position.x > SharedInfo.SharedInstance.safeAreaLayoutSize.width  - 200 || self.gameplayHandler.shipReference.position.x < -SharedInfo.SharedInstance.safeAreaLayoutSize.width  + 200  ) {
             
