@@ -16,7 +16,7 @@ class MotherShip: ProjectileEntity {
     var isLockedOn = false
     var totalHealth = 2
     var currentHealth  = 2
-    
+    var shipOutline = SKSpriteNode(imageNamed: "shipoutline")
     let chargeNode = SKShapeNode.init(circleOfRadius: 5)
 
     
@@ -46,7 +46,8 @@ class MotherShip: ProjectileEntity {
         
         ])))
         
-        
+        self.addChild(shipOutline)
+    
         
     }
     
@@ -97,23 +98,130 @@ class MotherShip: ProjectileEntity {
         
         for node in randomNodes {
             
-            node.run(SKAction.sequence([SKAction.wait(forDuration: CGFloat.random(in: 0...0.5)), SKAction.group([ SKAction.move(to: CGPoint.init(x: 0, y:  -self.size.height * 1)  , duration: animation_speed), SKAction.fadeAlpha(to: 1.0, duration: animation_speed)]),SKAction.fadeAlpha(to: 0.0, duration: 0.01)]), completion: buildUpChargeNode)
+            node.run(SKAction.sequence([SKAction.wait(forDuration: CGFloat.random(in: 0...0.5)), SKAction.group([ SKAction.move(to: CGPoint.init(x: 0, y:  -self.size.height * 1)  , duration: animation_speed), SKAction.fadeAlpha(to: 1.0, duration: animation_speed)]),SKAction.fadeAlpha(to: 0.0, duration: 0.01)]))
             
             
             
             
         }
-        
+        self.chargeNode.run(SKAction.scale(to: 0.75, duration: 0.01))
+
         self.run(SKAction.playSoundFileNamed("sci-fi-charge-up-37395", waitForCompletion: false))
+     
+        shipOutline.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.scale(by: 1.5, duration: 0.1),
+            SKAction.scale(by: 1 / 1.5, duration: 0.1)])))
         
     }
     
+    func stopChargingUp(){
+        
+        shipOutline.removeAllActions()
+    
+    }
+    
+    func chargeParticlesAnimation(){
+        
+        
+        var randomNodes : [SKSpriteNode] =  []
+        for x in 1...3{
+            
+                for y in 1...3 {
+            
+                    let randomNode = SKSpriteNode.init(texture: SharedInfo.SharedInstance.dotTexture)
+                    self.addChild(randomNode)
+                    
+                    randomNode.setScale(0.25)
+                    randomNode.position.y = -CGFloat.random(in: CGFloat(0.0)...(SharedInfo.SharedInstance.screenSize.height/2))
+                    
+                    randomNode.position.x = CGFloat.random(in: -SharedInfo.SharedInstance.screenSize.width/2...SharedInfo.SharedInstance.screenSize.width/2)
+                    
+                    randomNodes.append(randomNode)
+                    randomNode.alpha = 0.0
+                }
+        }
+        
+        
+        let animation_speed = 0.15
+        
+        for node in randomNodes {
+            
+            node.run(SKAction.sequence([SKAction.wait(forDuration: CGFloat.random(in: 0...0.25)), SKAction.group([ SKAction.move(to: CGPoint.init(x: 0, y:  -self.size.height * 1)  , duration: animation_speed), SKAction.fadeAlpha(to: 1.0, duration: animation_speed)]),SKAction.fadeAlpha(to: 0.0, duration: 0.01)]))
+            
+            
+            
+            
+        }
+    }
+    
+    func dischargeParticleAnimation(){
+        
+    
+            
+            
+            var randomNodes : [SKSpriteNode] =  []
+            for x in 1...3{
+                
+                    for y in 1...3 {
+                
+                        let randomNode = SKSpriteNode.init(texture: SharedInfo.SharedInstance.dotTexture)
+                        self.addChild(randomNode)
+                        
+                        randomNode.setScale(0.25)
+                        randomNode.position.y =   -self.size.height * 1
+                        
+                        randomNode.position.x = 0
+                        randomNodes.append(randomNode)
+                        randomNode.alpha = 1.0
+                    }
+            }
+            
+            
+            let animation_speed = 0.15
+            
+            for node in randomNodes {
+                
+                node.run(SKAction.sequence([SKAction.wait(forDuration: CGFloat.random(in: 0...0.25)), SKAction.group([ SKAction.move(to: CGPoint.init(x: CGFloat.random(in: -SharedInfo.SharedInstance.screenSize.width/2...SharedInfo.SharedInstance.screenSize.width/2), y: -CGFloat.random(in: CGFloat(0.0)...(SharedInfo.SharedInstance.screenSize.height/2)))  , duration: animation_speed), SKAction.fadeAlpha(to: 0.0, duration: animation_speed)])]))
+                
+                
+                
+                
+            }
+        
+    }
     
     func buildUpChargeNode(){
-        self.chargeNode.run(SKAction.scale(by: 1.017, duration: 0.01))
+        self.chargeNode.run(SKAction.scale(by: 1.005, duration: 0.01))
         
     }
     
+    
+    var currentScaleFactor = 1
+    
+    func scaleChargeNode(byFactor: Int){
+        
+        if(currentScaleFactor != byFactor) {
+            
+            
+            self.chargeNode.run(SKAction.scale(to: CGFloat(byFactor) * 0.75, duration: 0.05))
+            
+           
+            if ( currentScaleFactor < byFactor ) {
+                //add particles
+                chargeParticlesAnimation()
+                
+                
+            } else {
+                dischargeParticleAnimation()
+                //remove particles
+            }
+            
+            currentScaleFactor = byFactor
+            
+        }
+        
+       
+    }
     
     func startAnimation() {
          // Load the texture atlas
@@ -142,6 +250,8 @@ class MotherShip: ProjectileEntity {
     
     func shipLaunchedAnimation(){
         
+        
+        stopChargingUp()
         
         AudioServicesPlayAlertSoundWithCompletion(SystemSoundID(kSystemSoundID_Vibrate)) { }
 

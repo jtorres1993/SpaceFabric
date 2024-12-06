@@ -292,7 +292,10 @@ class GameScene: SKScene {
         
     }
     
-    func shakeCamera(duration:Float, _ amplitudeMultipler: CGFloat = 1.0) {
+    
+    
+    
+    func shakeCamera(duration:Float, _ amplitudeMultipler: CGFloat = 3.0) {
         
         let amplitudeX:Float = Float(25 * amplitudeMultipler);
         let amplitudeY:Float = Float(25 * amplitudeMultipler) ;
@@ -404,9 +407,22 @@ class GameScene: SKScene {
                             print(forceVector)
                             // Apply the force
                         trajectoryLineManager.activateTrajectoryLine(savedVelocity: savedVelocity, forceVector: forceVector, savedAngularVelocity: savedAngularVelocity, nodeReference:  self.gameplayHandler.currentSelectedEntity, sceneReference: self)
+                        
+                        print("distance")
+                        print(distance)
+                        let maxDistance = 300
+                        let scaledValue = min(max(Int(Int(distance) / (maxDistance / 9)) + 1, 1), 10)
+
+                        // Use the scaled value
+                        print("Mapped Value: \(scaledValue)")
+                        
+                        gameplayHandler.shipReference.scaleChargeNode(byFactor: scaledValue)
+                        
                     }}  else {
                 
                 
+                        
+                        
                 
                 trajectoryLineManager.activateTrajectoryLine(savedVelocity: savedVelocity, forceVector: forceVector, savedAngularVelocity: savedAngularVelocity, nodeReference:  self.gameplayHandler.currentSelectedEntity, sceneReference: self)
                         
@@ -429,13 +445,13 @@ class GameScene: SKScene {
         
         //let sound = SKAction.playSoundFileNamed("blast-37988", waitForCompletion: false)
       //  self.run(sound)
-        self.shakeCamera(duration: 0.05, 1.5) 
+      
         
         self.trajectoryLineManager.removeTrajectoryLine()
         
         self.gameplayHandler.statisMode = false
 
-        self.physicsWorld.speed = 0.32
+       
         
         
         if let touch = touches.first, let initialLocation =
@@ -449,8 +465,7 @@ class GameScene: SKScene {
             forceVector = CGVector(dx: initialLocation.x - releaseLocation.x, dy: initialLocation.y - releaseLocation.y)
             
             
-            self.gameplayHandler.touchesEndedPassthrough(savedVelocity: savedVelocity, savedAngularVelocity: savedAngularVelocity)
-            
+        
 
             if(SharedInfo.SharedInstance.initialSwingAutoRotation){
                 // Calculate the distance between the initial and release positions
@@ -467,8 +482,41 @@ class GameScene: SKScene {
                         print("Aplpying force on true")
 
                         print(forceVector)
+                    
+                    
+                    self.shakeCamera(duration: 0.05, 1.5)
+                    
+                    var savedCameraPosition = self.cameraHandler.position
+                    
+                    self.cameraHandler.run(SKAction.move(by: CGVector(dx:( (self.gameplayHandler.shipReference.position.x  - self.cameraHandler.position.x  ) * 0.50), dy: (( self.gameplayHandler.shipReference.position.y - self.cameraHandler.position.y  ) * 0.50)), duration: 0.10))
+                    var savedForceVector = forceVector
+                    
+                    
+                    self.gameplayHandler.shipReference.isPaused = true
+                    
+                    self.cameraHandler.run(SKAction.sequence([ SKAction.scale(to: 0.90, duration: 0.10), SKAction.wait(forDuration: 0.25), SKAction.run {
+                        self.shakeCamera(duration: 0.20)
+                    },  SKAction.scale(to: 1.10, duration: 0.05)]), completion: {
+                        self.gameplayHandler.shipReference.isPaused = false
+                        
+                        var count = 0.0
+                        self.physicsWorld.speed = 1.00
+
+                        self.run(SKAction.repeat( SKAction.sequence([ SKAction.run {
+                            
+                            
+                            
+                            self.physicsWorld.speed = 1.00 - count
+                            count = count + 0.01
+
+                        }, SKAction.wait(forDuration: 0.02)]), count: 50))
+                        
+                        self.gameplayHandler.touchesEndedPassthrough(savedVelocity: self.savedVelocity, savedAngularVelocity: self.savedAngularVelocity)
+                        
                         // Apply the force
-                        applyForce(to: gameplayHandler.currentSelectedEntity, vector: forceVector)
+                        self.applyForce(to: self.gameplayHandler.currentSelectedEntity, vector: savedForceVector)
+                        
+                    } )
                     }}  else {
             print("Aplpying force")
                         print(forceVector)
@@ -524,12 +572,14 @@ class GameScene: SKScene {
             } else {
                 amount = amountInitial
             }
-                cameraHandler.removeAllActions()
-            cameraHandler.setScale( amount + 0.5)
+            
+            //Camera handler zoom out
+            //cameraHandler.removeAllActions()
+            //cameraHandler.setScale( amount + 0.5)
             
         }  else {
              
-            cameraHandler.run(SKAction.scale(to: 1.0, duration: 1))
+            //cameraHandler.run(SKAction.scale(to: 1.0, duration: 1))
         }
         
             self.gameplayHandler.planets = []

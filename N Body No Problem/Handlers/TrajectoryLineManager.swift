@@ -102,7 +102,6 @@ class TrajectoryLineManager: SKNode {
     func trajectoryLineIntersectedWithStar(dotNode: SKNode?){
         
         
-        print("dot collision")
         var count = 0
         for nodo in self.nodesArray {
             if let second = dotNode

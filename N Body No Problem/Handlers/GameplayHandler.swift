@@ -93,10 +93,10 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                 shipGuide.name = "angle-guide"
                 shipGuide.setScale(0.05)
                 earchReference.addChild(shipGuide)
-                shipGuide.position.y = 10
+                shipGuide.position.y = 1
 
                 
-                shipReference.setScale(0.5)
+                shipReference.setScale(0.25)
                 shipReference.zPosition = 100
                 shipReference.position.y = 140
                 //shipReference.zRotation = CGFloat(degreesToradians(90))
@@ -751,8 +751,7 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                 
                 
                 
-                print(shipReference.zRotation)
-                //0-3.14 left up, down
+                         //0-3.14 left up, down
                 //-3.14 to 0 down, up
             }
         
