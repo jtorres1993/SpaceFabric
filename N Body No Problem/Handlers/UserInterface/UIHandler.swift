@@ -17,6 +17,9 @@ class UIHandler: SKNode {
     let shootByWireMenu = ShootByWireMenu()
     var getCurrentGameModeHandler: (()->GameModes)?
     
+    let completion = LevelCompleteMenu()
+
+    
     func setup(){
         
         
@@ -33,7 +36,11 @@ class UIHandler: SKNode {
         
         bottomMenuBar.setup()
         bottomMenuBar.zPosition = 100
-        self.addChild(bottomMenuBar)
+        
+        if(SharedInfo.SharedInstance.bottomMenuBarEnabled) {
+            self.addChild(bottomMenuBar)
+        }
+    
         
         let commander = SKSpriteNode.init(imageNamed: "Commander")
         commander.position.y = -SharedInfo.SharedInstance.screenSize.height / 2
@@ -43,8 +50,15 @@ class UIHandler: SKNode {
         
        // self.addChild(commander)
         
+        
+        
         self.handleDialog()
         self.setupHealthBar()
+        
+        completion.setup()
+        completion.alpha = 0.0
+        completion.hide()
+        self.addChild(completion)
         
         shootByWireMenu.setup()
         
@@ -93,7 +107,7 @@ class UIHandler: SKNode {
     
 
     
-    func runCapturedAstro()
+    func runCapturedAstro( hasPassedLevel: Bool )
     {
         
         let astro = SKSpriteNode.init(imageNamed: "astro")
@@ -105,6 +119,13 @@ class UIHandler: SKNode {
         let popOut = SKAction.sequence([SKAction.scale(to: 0.8, duration: 0.05), SKAction.scale(to: 0.5, duration: 0.05) ])
         astro.run( SKAction.sequence([initialfadein, popOut]) )
         
+        if(hasPassedLevel){
+            
+            //Present the completion screen and next level
+            //Continue button only for now
+            
+            completion.show() 
+        }
         
     }
     

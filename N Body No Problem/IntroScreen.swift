@@ -26,6 +26,17 @@ class IntroScreen: SKScene {
         tapToPlayReference.run(SKAction.repeatForever(SKAction.sequence([SKAction.scale(to: 1.3, duration: 0.1), SKAction.scale(to: 1.0, duration: 0.1), SKAction.wait(forDuration: 0.5)])))
         self.addChild(tapToPlayReference)
         
+        //skip tap to play for now
+        
+        self.run(SKAction.wait(forDuration: 0.01), completion:
+                    
+                    {
+            
+            let scene = SKScene(fileNamed: "Level" + SharedInfo.SharedInstance.startingLevel )
+                scene!.scaleMode = .aspectFill
+            self.view?.presentScene(scene!)
+            
+        } )
         
        
     }
@@ -80,7 +91,7 @@ class IntroScreen: SKScene {
                         
                         {
                 
-                let scene = SKScene(fileNamed: "Level3" )
+                let scene = SKScene(fileNamed: "Level1" )
                     scene!.scaleMode = .aspectFill
                 self.view?.presentScene(scene!)
                 

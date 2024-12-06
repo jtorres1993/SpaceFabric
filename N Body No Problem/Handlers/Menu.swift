@@ -19,6 +19,7 @@ class Menu : SKNode {
     
     func show(){
         showing = true
+        self.alpha = 1.0 
         self.run(SKAction.move(to: CGPoint.zero, duration: menuSpeed))
    
     }

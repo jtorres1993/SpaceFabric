@@ -15,6 +15,7 @@ class TrajectoryLineManager: SKNode {
     var updateTrajectory = false
     let lineSegmentWidth = 10
     let lineSegmentHeight = 5
+    let segmentCount = 15
     func updateTrajectoryLine() {
         let path = CGMutablePath()
         guard let firstNode = self.nodesArray.first else { return }
@@ -31,7 +32,7 @@ class TrajectoryLineManager: SKNode {
                var nextNode: SKNode? = nil  // This will be the node each dot points to
 
             for (index, node) in self.nodesArray.enumerated().reversed() {
-                   if self.dotNodes.count < 20 {
+                   if self.dotNodes.count < segmentCount {
                        if self.nodesArray.indices.contains(index - 1 ) {
                            nextNode = self.nodesArray[index - 1]
                        }
@@ -151,7 +152,12 @@ class TrajectoryLineManager: SKNode {
     }
     
     func addTrajectoryPathDot(at position: CGPoint, nextNode: SKNode) -> SKSpriteNode {
-        let dot = SKSpriteNode(color: .white, size: CGSize(width: lineSegmentWidth, height: lineSegmentHeight))  // Appearance as a line
+        
+        
+        
+        let dot = SKSpriteNode.init(texture: SharedInfo.SharedInstance.chevronTexture)
+        
+        //SKSpriteNode(color: .white, size: CGSize(width: lineSegmentWidth, height: lineSegmentHeight))  // Appearance as a line
         dot.position = position
         dot.lightingBitMask = 1
         let dx = nextNode.position.x - position.x

@@ -17,7 +17,7 @@ class LevelCompleteMenu: Menu {
     let routeName = SKLabelNode()
     
     var achievementLabels : [SKLabelNode] = []
-    var continueButton =  JKButtonNode(backgroundNamed: "ContinueBUtton")
+    var continueButton =  JKButtonNode(backgroundNamed: "ContinueButton")
     var continueDelegateMethod : (()->Void)? = nil
     var uiContinueDelegateMethod : (()->Void)? = nil
     

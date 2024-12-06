@@ -14,7 +14,6 @@ class GameScene: SKScene {
     let backgroundHandler = BackgroundHandler()
     
     
-    let completion = LevelCompleteMenu()
     
    
     var dotGridManager = DotGridManager()
@@ -35,7 +34,8 @@ class GameScene: SKScene {
     var movevmeentreleaseLocation : CGPoint?
     var isCameraZoomToggled = false
     let cameraZoomSpeed = 0.05
-    
+    let force_multiplier = 2.0
+
     
     
     var initialEnemeyPosition : CGPoint = CGPoint.zero
@@ -90,8 +90,8 @@ class GameScene: SKScene {
         physicsWorld.gravity = CGVector(dx:0, dy: 0);
         self.physicsWorld.speed = 0.01
         
-        completion.setup()
-        completion.continueButton.action = self.nextLevelButtonPressed
+        
+        self.uiHandler.completion.continueButton.action = self.nextLevelButtonPressed
         
         gameplayHandler.trajectoryLineIntersectionWithStarCallback = self.trajectoryLineManager.trajectoryLineIntersectedWithStar
         
@@ -162,7 +162,7 @@ class GameScene: SKScene {
  
     func nextLevelButtonPressed(button: JKButtonNode){
         
-        self.completion.hide()
+        self.uiHandler.completion.hide()
         let calcuatedNumber = Int(self.name!)! + 1
         let scene = SKScene(fileNamed: "Level" + String(calcuatedNumber))
       
@@ -374,18 +374,43 @@ class GameScene: SKScene {
                 
                 let forceVector = CGVector(dx: self.initialTouchLocation!.x - self.movevmeentreleaseLocation!.x, dy: self.initialTouchLocation!.y - self.movevmeentreleaseLocation!.y)
                 
-                self.gameplayHandler.currentSelectedEntity.rotateBasedOnMovement(forceVector: forceVector)
-                
+                if(SharedInfo.SharedInstance.initialSwingAutoRotation == false )  {
+                    
+                    self.gameplayHandler.currentSelectedEntity.rotateBasedOnMovement(forceVector: forceVector)
+                    
+                    
+                }
                 print(self.gameplayHandler.shipReference.position)
                 print(self.gameplayHandler.currentSelectedEntity.position)
                 
                 
                 
                 
+                if(SharedInfo.SharedInstance.initialSwingAutoRotation){
+                    // Calculate the distance between the initial and release positions
+                    let distance = hypot(movevmeentreleaseLocation!.x - initialLocation.x, movevmeentreleaseLocation!.y - initialLocation.y)
+                    
+                    if let _ = gameplayHandler.currentSelectedEntity.physicsBody {
+                        // Ensure the sprite has a velocity vector
+                      
+                        let zRotation = gameplayHandler.currentSelectedEntity.zRotation + .pi / 2
+
+                        let direction = CGVector(dx: cos(zRotation), dy: sin(zRotation))
+
+                            // Scale the direction by the touch distance
+                            let forceVector = CGVector(dx: direction.dx * distance * force_multiplier , dy: direction.dy * distance * force_multiplier)
+                            print("Aplpying force on true")
+
+                            print(forceVector)
+                            // Apply the force
+                        trajectoryLineManager.activateTrajectoryLine(savedVelocity: savedVelocity, forceVector: forceVector, savedAngularVelocity: savedAngularVelocity, nodeReference:  self.gameplayHandler.currentSelectedEntity, sceneReference: self)
+                    }}  else {
                 
                 
                 
                 trajectoryLineManager.activateTrajectoryLine(savedVelocity: savedVelocity, forceVector: forceVector, savedAngularVelocity: savedAngularVelocity, nodeReference:  self.gameplayHandler.currentSelectedEntity, sceneReference: self)
+                        
+                    }
                 
             }
     }
@@ -426,10 +451,29 @@ class GameScene: SKScene {
             
             self.gameplayHandler.touchesEndedPassthrough(savedVelocity: savedVelocity, savedAngularVelocity: savedAngularVelocity)
             
-                
-                
+
+            if(SharedInfo.SharedInstance.initialSwingAutoRotation){
+                // Calculate the distance between the initial and release positions
+                let distance = hypot(releaseLocation.x - initialLocation.x, releaseLocation.y - initialLocation.y)
+                if let physicsBody = gameplayHandler.currentSelectedEntity.physicsBody {
+                    // Ensure the sprite has a velocity vector
+                  
+                    let zRotation = gameplayHandler.currentSelectedEntity.zRotation + .pi / 2
+
+                    let direction = CGVector(dx: cos(zRotation), dy: sin(zRotation))
+
+                        // Scale the direction by the touch distance
+                        let forceVector = CGVector(dx: direction.dx * distance * force_multiplier, dy: direction.dy * distance * force_multiplier )
+                        print("Aplpying force on true")
+
+                        print(forceVector)
+                        // Apply the force
+                        applyForce(to: gameplayHandler.currentSelectedEntity, vector: forceVector)
+                    }}  else {
+            print("Aplpying force")
+                        print(forceVector)
             applyForce(to: self.gameplayHandler.currentSelectedEntity, vector: forceVector)
-             
+                    }
           
         }
         
@@ -442,9 +486,14 @@ class GameScene: SKScene {
     
     func applyForce(to sprite: SKSpriteNode, vector: CGVector, _ multipler: CGFloat = 100.0) {
         
+        
+        
+        
         let impulseVector = CGVector(dx: vector.dx * multipler, dy: vector.dy * multipler )  // Adjust multiplier as needed
        // sprite.physicsBody?.isDynamic = true
         sprite.physicsBody?.applyImpulse(impulseVector)
+        
+        
     }
    
 

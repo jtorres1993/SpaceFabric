@@ -21,6 +21,7 @@ class DotNode: SKSpriteNode {
         let colorChance = Int.random(in: 1...10)
         var backgroundColorIndex = 0
         
+        
         if colorChance == 1 {
             backgroundColorIndex = Int.random(in: 1...10)
 
@@ -28,10 +29,10 @@ class DotNode: SKSpriteNode {
         
     
         
-        super.init(texture: nil, color: color, size: size)
+        super.init(texture: SharedInfo.SharedInstance.dotTexture, color: color, size: size)
        // self.position = withCameraPos
         self.name = "dot"
-       
+        self.alpha = 0.50
         /*
         let randWaitTIme = Double.random(in: 0.0 ... 0.5)
 
@@ -92,7 +93,7 @@ class DotNode: SKSpriteNode {
             SKAction.wait(forDuration: randomWaitTime),
            
             SKAction.group([
-                SKAction.fadeAlpha(to: 1.0, duration: waittime),
+                SKAction.fadeAlpha(to: 0.5, duration: waittime),
                 moveAction,
                 SKAction.scale(to: 1.0, duration: waittime)]),
                 SKAction.run {

@@ -27,7 +27,9 @@ class BackgroundHandler: SKSpriteNode {
         backgroundSprite.setScale(2.0)
         backgroundSprite.zPosition = -100
         backgroundSprite.alpha = 0.25
-        self.addChild(backgroundSprite)
+        
+        
+        //self.addChild(backgroundSprite)
         
               self.backgroundColorIndex = Int.random(in: 1...9)
              

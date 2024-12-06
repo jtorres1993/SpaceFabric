@@ -16,8 +16,11 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
     var earchReference = SKSpriteNode()
     var trajectoryLineIntersectionWithStarCallback : ((_ dotNode: SKNode?) -> Void)? = nil
     var sameLevelTriggered : (() -> Void )? = nil
-    var astroCapturedHandler : (() -> Void)? = nil
+    var astroCapturedHandler : ((_ hasPassedLevel: Bool) -> Void)? = nil
     var playerTookHealthDamage: ((_ percentage: CGFloat ) -> Void)? = nil
+    let startingPositionReferenceNode = SKNode()
+    let shipGuide = SKSpriteNode.init(imageNamed: "angle-guide")
+
     
     var shipHasBeenPlaced = false
     var playerDestroyed: (() -> Void)? = nil
@@ -33,6 +36,10 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
     var currentGameMode : GameModes = .ship
     
     var requiredAstrosToNextLevel = 0
+    var currentCapturedAstros = 0 
+    
+    
+    
     var shipReference = MotherShip()
     var enemies : [Enemey] = []
 
@@ -51,6 +58,8 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                 
             } else if node.name == "earth" {
                 
+                playerIsControllingRotation = true
+                
                 earchReference = node as! SKSpriteNode
                 node.physicsBody!.categoryBitMask =  PhysicsCategory.earthplanet
                 
@@ -64,20 +73,54 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                     
                     
                 ])))
-                node.addChild(shape)
+              
+                //node.addChild(shape)
+                
                 node.position.y = node.position.y + 25
                 node.run(SKAction.group([SKAction.moveBy(x: 0, y: -25, duration: 1.0),  SKAction.fadeAlpha(to: 1.0, duration: 0.5)]))
                 
+                shipReference = MotherShip.init(imageNamed: "spaceship")
+                shipReference.setup()
+            
+            
+                currentSelectedEntity = shipReference
+            
+               
+                startingPositionReferenceNode.position = earchReference.position
+                startingPositionReferenceNode.addChild(shipReference)
+                self.addChild(startingPositionReferenceNode)
                 
+                shipGuide.name = "angle-guide"
+                shipGuide.setScale(0.05)
+                earchReference.addChild(shipGuide)
+                shipGuide.position.y = 10
+
                 
+                shipReference.setScale(0.5)
+                shipReference.zPosition = 100
+                shipReference.position.y = 140
+                //shipReference.zRotation = CGFloat(degreesToradians(90))
+                
+                startingPositionReferenceNode.run(SKAction.sequence([
+                    SKAction.rotate(toAngle: CGFloat(degreesToradians(-65)), duration: 0.5),
+                    
+                    SKAction.repeatForever(SKAction.sequence([
+                    SKAction.rotate(toAngle: CGFloat(degreesToradians(65)), duration: 1),
+                    SKAction.rotate(toAngle: CGFloat(degreesToradians(-65)), duration: 1),
+                    ]))
+                
+                ] ), withKey: "StartingRotationAction")
                 
             } else if node.name == "startingPos" {
-                earchReference = node as! SKSpriteNode
+               // earchReference = node as! SKSpriteNode
                 startingLine = SKShapeNode.init(rectOf: CGSize.init(width: SharedInfo.SharedInstance.screenSize.width, height: 1    ))
                 
                 startingLine.strokeColor = .white
                 startingLine.position = earchReference.position
-                self.addChild(startingLine)
+                //self.addChild(startingLine)
+                
+                
+                
                 
                 
             }
@@ -331,6 +374,19 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
             
             //Astro was captured by the player
             
+            
+            currentCapturedAstros = currentCapturedAstros + 1
+            
+            var hasPassedLevel = false
+            
+            if(currentCapturedAstros == requiredAstrosToNextLevel){
+                
+                hasPassedLevel = true
+                //We've captured all the Astros, we need to present the final level screen and go to the next level here
+                
+            }
+            
+            
             let node =  secondBody.node!
             node.run(SKAction.sequence([SKAction.group([
                 
@@ -340,7 +396,11 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                                         SKAction.run {
                 node.removeFromParent()
                 
-                self.astroCapturedHandler?()
+                
+                
+                
+                
+                self.astroCapturedHandler?(hasPassedLevel)
                 
             }
             ])
@@ -412,29 +472,36 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
             
             if(!shipHasBeenPlaced){
                 
+                if(SharedInfo.SharedInstance.initialSwingAutoRotation == false ) {
+                    shipReference = MotherShip.init(imageNamed: "spaceship")
+                    shipReference.setup()
                 
-                shipReference = MotherShip.init(imageNamed: "spaceship")
-                shipReference.setup()
                 
+                    currentSelectedEntity = shipReference
                 
-                currentSelectedEntity = shipReference
-                
-                self.addChild(shipReference)
-                
+                    self.addChild(shipReference)
+                    
+                    
+                    
+                    
+                    
+                } else {
+                    
+                    startingPositionReferenceNode.removeAction(forKey: "StartingRotationAction")
+                }
                 for star in starReference {
                     star.isPaused = true
                 }
                 
                 
-                
-                earchReference.isPaused = true
+                shipGuide.run(SKAction.fadeAlpha(to: 0.0, duration: 0.135))
+
+                //earchReference.isPaused = true
                 
                 shipReference.physicsBody?.fieldBitMask = PhysicsCategory.none
                 shipReference.physicsBody?.isDynamic = false
                 shipReference.run(SKAction.scale(to: 1.0, duration: 0.1))
-                
                 shipReference.boostChargeUpAnimation()
-                
                 
                 
                 
@@ -450,18 +517,30 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                     
                     
                     hasShippedBeenLaunched = true
-                    if let touch = touches.first {
+                    
+                    if(SharedInfo.SharedInstance.initialSwingAutoRotation == false ) {
+                        if let touch = touches.first {
+                            
+                            let touchLocation = touch.location(in: self)
+                            shipReference.position.x = touchLocation.x
+                            
+                        }
                         
-                        let touchLocation = touch.location(in: self)
-                        shipReference.position.x = touchLocation.x
+                        shipReference.position.y = earchReference.position.y
+                    } else {
                         
+                        let savedPosition = shipReference.position
+                        shipReference.removeFromParent()
+                        let newPosition = convert(savedPosition, from: startingPositionReferenceNode)
+                        shipReference.position = newPosition
+                        self.addChild(shipReference)
+                        shipReference.zRotation = startingPositionReferenceNode.zRotation
                     }
                     
-                    shipReference.position.y = earchReference.position.y
                 }
                 
             } else {
-                
+
                 currentSelectedEntity = shipReference
                 shipReference.physicsBody?.isDynamic = false
                 shipReference.boostChargeUpAnimation()
@@ -545,6 +624,8 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
         
         shipReference.shipLaunchedAnimation()
         startingLine.removeFromParent()
+        earchReference.isPaused = false
+        earchReference.run(SKAction.scale(to: 1.0, duration: 0.3))
         let speedmuliplier = 2.0
         self.currentSelectedEntity.run(SKAction.sequence([ SKAction.scale(to: 0.15, duration: 0.05 * speedmuliplier),
             SKAction.scale(to: 0.35, duration: 0.025 * speedmuliplier),
@@ -556,7 +637,8 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
         self.currentSelectedEntity.physicsBody?.isDynamic = true
    
                                                          
-        
+        playerIsControllingRotation = false
+
         
         
     }
@@ -661,6 +743,7 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                 // Adjust the sprite's rotation
                 
                 
+                //TODO: There needs to be check before player launched here
                 self.currentSelectedEntity.zRotation = angle
                 
                 
