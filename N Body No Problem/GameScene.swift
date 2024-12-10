@@ -489,14 +489,14 @@ class GameScene: SKScene {
                     var savedCameraPosition = self.cameraHandler.position
                     
                     self.cameraHandler.run(SKAction.move(by: CGVector(dx:( (self.gameplayHandler.shipReference.position.x  - self.cameraHandler.position.x  ) * 0.50), dy: (( self.gameplayHandler.shipReference.position.y - self.cameraHandler.position.y  ) * 0.50)), duration: 0.10))
-                    var savedForceVector = forceVector
+                    let savedForceVector = forceVector
                     
                     
                     self.gameplayHandler.shipReference.isPaused = true
                     
                     self.cameraHandler.run(SKAction.sequence([ SKAction.scale(to: 0.90, duration: 0.10), SKAction.wait(forDuration: 0.25), SKAction.run {
                         self.shakeCamera(duration: 0.20)
-                    },  SKAction.scale(to: 1.10, duration: 0.05)]), completion: {
+                    }, SKAction.group([ SKAction.scale(to: 1.10, duration: 0.05), SKAction.move(to: savedCameraPosition, duration: 0.05)])]), completion: {
                         self.gameplayHandler.shipReference.isPaused = false
                         
                         var count = 0.0
@@ -553,15 +553,17 @@ class GameScene: SKScene {
         
         if (followShip && self.gameplayHandler.shipReference.position.y > SharedInfo.SharedInstance.safeAreaLayoutSize.height / 4  ) {
             // Called before each frame is rendered
-           
-          //  cameraReference.position.y = self.gameplayHandler.shipReference.position.y
+            
+            //  cameraReference.position.y = self.gameplayHandler.shipReference.position.y
         }
         
         if (!self.gameplayHandler.statisMode) {
             self.gameplayHandler.handleSelectedObjectsZRotation()
         }
         
-        //self.cameraHandler.position.y = self.gameplayHandler.shipReference.position.y
+        if(  self.gameplayHandler.shipReference.position.y > SharedInfo.SharedInstance.safeAreaLayoutSize.height / 4){
+            self.cameraHandler.position.y = self.gameplayHandler.shipReference.position.y
+        }
         
         if (self.gameplayHandler.shipReference.position.x > SharedInfo.SharedInstance.safeAreaLayoutSize.width  - 200 || self.gameplayHandler.shipReference.position.x < -SharedInfo.SharedInstance.safeAreaLayoutSize.width  + 200  ) {
             
@@ -572,6 +574,11 @@ class GameScene: SKScene {
             } else {
                 amount = amountInitial
             }
+            
+            //player is out of bounds
+            
+            
+            
             
             //Camera handler zoom out
             //cameraHandler.removeAllActions()

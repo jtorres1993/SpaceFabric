@@ -79,7 +79,8 @@ class UIHandler: SKNode {
         
         healthBar.position.y =   (SharedInfo.SharedInstance.screenSize.height / 2) - healthBar.size.height - SharedInfo.SharedInstance.safeAreaInserts.top
         
-        self.addChild(healthBar)
+        //Removing health bar for now
+        //self.addChild(healthBar)
         healthBar.anchorPoint = CGPoint.init(x: 0, y: 0.5)
         
         healthBar.position.x = healthBar.position.x -  healthBar.size.width / 2

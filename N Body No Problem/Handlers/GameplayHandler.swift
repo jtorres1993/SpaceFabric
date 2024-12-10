@@ -56,6 +56,9 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
             {
                 setupStarWithNode(node: node)
                 
+                applyPocketSVGPathToSprite(sprite: node as! SKSpriteNode, svgResourceName: "Untitled-5", duration: 15.0, node: node.parent!, offsetX: -150, offsetY: -500)
+                ///
+                
             } else if node.name == "earth" {
                 
                 playerIsControllingRotation = true
@@ -93,12 +96,11 @@ class GameplayHandler : SKNode, SKPhysicsContactDelegate {
                 shipGuide.name = "angle-guide"
                 shipGuide.setScale(0.05)
                 earchReference.addChild(shipGuide)
-                shipGuide.position.y = 1
 
                 
                 shipReference.setScale(0.25)
                 shipReference.zPosition = 100
-                shipReference.position.y = 140
+                shipReference.position.y = 100
                 //shipReference.zRotation = CGFloat(degreesToradians(90))
                 
                 startingPositionReferenceNode.run(SKAction.sequence([

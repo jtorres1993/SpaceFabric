@@ -1,6 +1,8 @@
 
 import SpriteKit
 import GameplayKit
+import PocketSVG
+import CoreGraphics
 
 class IntroScreen: SKScene {
 
@@ -26,7 +28,7 @@ class IntroScreen: SKScene {
         tapToPlayReference.run(SKAction.repeatForever(SKAction.sequence([SKAction.scale(to: 1.3, duration: 0.1), SKAction.scale(to: 1.0, duration: 0.1), SKAction.wait(forDuration: 0.5)])))
         self.addChild(tapToPlayReference)
         
-        //skip tap to play for now
+
         
         self.run(SKAction.wait(forDuration: 0.01), completion:
                     
@@ -41,8 +43,7 @@ class IntroScreen: SKScene {
        
     }
     
-    
-  
+   
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
        
@@ -91,7 +92,7 @@ class IntroScreen: SKScene {
                         
                         {
                 
-                let scene = SKScene(fileNamed: "Level1" )
+                let scene = SKScene(fileNamed: "Level" + SharedInfo.SharedInstance.startingLevel )
                     scene!.scaleMode = .aspectFill
                 self.view?.presentScene(scene!)
                 

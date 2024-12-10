@@ -55,6 +55,13 @@
 		3BDA785B2BCC584B00CC5618 /* Dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA785A2BCC584B00CC5618 /* Dot.swift */; };
 		3BE61BF32D0247B7000B7465 /* Level2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3BE61BF22D0247B7000B7465 /* Level2.sks */; };
 		3BE61BF52D024A7A000B7465 /* Level4.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3BE61BF42D024A7A000B7465 /* Level4.sks */; };
+		3BE61BFA2D07D781000B7465 /* PocketSVG in Frameworks */ = {isa = PBXBuildFile; productRef = 3BE61BF92D07D781000B7465 /* PocketSVG */; };
+		3BE61BFF2D07D7F3000B7465 /* TestSVG.svg in Resources */ = {isa = PBXBuildFile; fileRef = 3BE61BFE2D07D7E8000B7465 /* TestSVG.svg */; };
+		3BE61C032D07E6C2000B7465 /* InfiniteSVG2.svg in Resources */ = {isa = PBXBuildFile; fileRef = 3BE61C022D07E6C2000B7465 /* InfiniteSVG2.svg */; };
+		3BE61C052D07E743000B7465 /* Untitled-3.svg in Resources */ = {isa = PBXBuildFile; fileRef = 3BE61C042D07E743000B7465 /* Untitled-3.svg */; };
+		3BE61C072D07E7AC000B7465 /* Untitled-4.svg in Resources */ = {isa = PBXBuildFile; fileRef = 3BE61C062D07E7AC000B7465 /* Untitled-4.svg */; };
+		3BE61C092D07E87E000B7465 /* Untitled-5.svg in Resources */ = {isa = PBXBuildFile; fileRef = 3BE61C082D07E87E000B7465 /* Untitled-5.svg */; };
+		3BE61C0B2D07E8F2000B7465 /* SVGHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE61C0A2D07E8F2000B7465 /* SVGHelper.swift */; };
 		3BF04E752C72FE9100C55CF5 /* Sparko.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3BF04E732C72FE9100C55CF5 /* Sparko.sks */; };
 		3BF04E762C72FE9100C55CF5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BF04E742C72FE9100C55CF5 /* Assets.xcassets */; };
 		3BF04E782C7455F200C55CF5 /* miniSparko.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3BF04E772C7455F200C55CF5 /* miniSparko.sks */; };
@@ -116,6 +123,12 @@
 		3BDA785A2BCC584B00CC5618 /* Dot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dot.swift; sourceTree = "<group>"; };
 		3BE61BF22D0247B7000B7465 /* Level2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level2.sks; sourceTree = "<group>"; };
 		3BE61BF42D024A7A000B7465 /* Level4.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level4.sks; sourceTree = "<group>"; };
+		3BE61BFE2D07D7E8000B7465 /* TestSVG.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TestSVG.svg; sourceTree = "<group>"; };
+		3BE61C022D07E6C2000B7465 /* InfiniteSVG2.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = InfiniteSVG2.svg; path = ../../../../../Downloads/InfiniteSVG2.svg; sourceTree = "<group>"; };
+		3BE61C042D07E743000B7465 /* Untitled-3.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "Untitled-3.svg"; path = "../../../../../Downloads/Untitled-3.svg"; sourceTree = "<group>"; };
+		3BE61C062D07E7AC000B7465 /* Untitled-4.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "Untitled-4.svg"; path = "../../../../../Downloads/Untitled-4.svg"; sourceTree = "<group>"; };
+		3BE61C082D07E87E000B7465 /* Untitled-5.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "Untitled-5.svg"; path = "../../../../../Downloads/Untitled-5.svg"; sourceTree = "<group>"; };
+		3BE61C0A2D07E8F2000B7465 /* SVGHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGHelper.swift; sourceTree = "<group>"; };
 		3BF04E732C72FE9100C55CF5 /* Sparko.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Sparko.sks; sourceTree = "<group>"; };
 		3BF04E742C72FE9100C55CF5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3BF04E772C7455F200C55CF5 /* miniSparko.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = miniSparko.sks; sourceTree = "<group>"; };
@@ -132,6 +145,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BE61BFA2D07D781000B7465 /* PocketSVG in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				3BF04E812C83F02700C55CF5 /* AnalogJoystick.swift */,
+				3BE61C0A2D07E8F2000B7465 /* SVGHelper.swift */,
 				3B37AC732C693D9B004A42CB /* JKButtonNode.swift */,
 			);
 			path = Utilities;
@@ -219,6 +234,7 @@
 				3BBD0FF62C69B31E00476E23 /* MSKAnimatedLabel.swift */,
 				3B37AC702C693D63004A42CB /* Handlers */,
 				3B37AC712C693D72004A42CB /* Enteties */,
+				3BE61BFD2D07D79F000B7465 /* SVGFiles */,
 				3B37AC722C693D96004A42CB /* Utilities */,
 				3B37AC452C68245A004A42CB /* Sounds */,
 				3B7594832BD4471500B94493 /* Particles */,
@@ -263,6 +279,18 @@
 			path = Particles;
 			sourceTree = "<group>";
 		};
+		3BE61BFD2D07D79F000B7465 /* SVGFiles */ = {
+			isa = PBXGroup;
+			children = (
+				3BE61C082D07E87E000B7465 /* Untitled-5.svg */,
+				3BE61C042D07E743000B7465 /* Untitled-3.svg */,
+				3BE61C062D07E7AC000B7465 /* Untitled-4.svg */,
+				3BE61BFE2D07D7E8000B7465 /* TestSVG.svg */,
+				3BE61C022D07E6C2000B7465 /* InfiniteSVG2.svg */,
+			);
+			path = SVGFiles;
+			sourceTree = "<group>";
+		};
 		3BF04E832C83F55000C55CF5 /* UserInterface */ = {
 			isa = PBXGroup;
 			children = (
@@ -290,6 +318,9 @@
 			dependencies = (
 			);
 			name = "N Body No Problem";
+			packageProductDependencies = (
+				3BE61BF92D07D781000B7465 /* PocketSVG */,
+			);
 			productName = "N Body No Problem";
 			productReference = 3B6CC9E02BCAF56D00DB4CA3 /* N Body No Problem.app */;
 			productType = "com.apple.product-type.application";
@@ -318,6 +349,9 @@
 				Base,
 			);
 			mainGroup = 3B6CC9D72BCAF56D00DB4CA3;
+			packageReferences = (
+				3BE61BF82D07D781000B7465 /* XCRemoteSwiftPackageReference "PocketSVG" */,
+			);
 			productRefGroup = 3B6CC9E12BCAF56D00DB4CA3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -343,18 +377,23 @@
 				3B3F79432BD2483E007991C1 /* bokeh.sks in Resources */,
 				3B6CC9F12BCAF56E00DB4CA3 /* Assets.xcassets in Resources */,
 				3B6CC9E82BCAF56D00DB4CA3 /* Actions.sks in Resources */,
+				3BE61C052D07E743000B7465 /* Untitled-3.svg in Resources */,
+				3BE61C032D07E6C2000B7465 /* InfiniteSVG2.svg in Resources */,
 				3B7F209A2BF3096C0034FDDF /* Level1.sks in Resources */,
 				3B77DB042BCE0EB600F9223C /* firefiles.sks in Resources */,
 				3BF04E752C72FE9100C55CF5 /* Sparko.sks in Resources */,
 				3BF04E762C72FE9100C55CF5 /* Assets.xcassets in Resources */,
 				3B7F20A02BF31CCC0034FDDF /* Level7.sks in Resources */,
 				3B7F209E2BF30A9A0034FDDF /* Level3.sks in Resources */,
+				3BE61C092D07E87E000B7465 /* Untitled-5.svg in Resources */,
 				3B37AC5E2C682939004A42CB /* blast-37988-2.mp3 in Resources */,
 				3B37AC602C682939004A42CB /* popo3.mp3 in Resources */,
 				3BE61BF32D0247B7000B7465 /* Level2.sks in Resources */,
+				3BE61BFF2D07D7F3000B7465 /* TestSVG.svg in Resources */,
 				3B37AC612C682939004A42CB /* popo2.mp3 in Resources */,
 				3B37AC622C682939004A42CB /* star_man-155034.mp3 in Resources */,
 				3B37AC632C682939004A42CB /* blast-37988.mp3 in Resources */,
+				3BE61C072D07E7AC000B7465 /* Untitled-4.svg in Resources */,
 				3B37AC642C682939004A42CB /* scifiwep.mp3 in Resources */,
 				3B37AC652C682939004A42CB /* popo.mp3 in Resources */,
 				3B37AC662C682939004A42CB /* popo4.mp3 in Resources */,
@@ -389,6 +428,7 @@
 				3BBD0FF32C694AE600476E23 /* UIHandler.swift in Sources */,
 				3BF04E802C83EFD800C55CF5 /* ShootByWireMenu.swift in Sources */,
 				3B6CC9E42BCAF56D00DB4CA3 /* AppDelegate.swift in Sources */,
+				3BE61C0B2D07E8F2000B7465 /* SVGHelper.swift in Sources */,
 				3BBD0FF52C69ACB900476E23 /* IntroScreen.swift in Sources */,
 				3BF04E7C2C7707BC00C55CF5 /* ProjectileEntity.swift in Sources */,
 				3B7F20A42C0143D00034FDDF /* BackgroundHandler.swift in Sources */,
@@ -625,6 +665,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3BE61BF82D07D781000B7465 /* XCRemoteSwiftPackageReference "PocketSVG" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pocketsvg/PocketSVG.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3BE61BF92D07D781000B7465 /* PocketSVG */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3BE61BF82D07D781000B7465 /* XCRemoteSwiftPackageReference "PocketSVG" */;
+			productName = PocketSVG;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3B6CC9D82BCAF56D00DB4CA3 /* Project object */;
 }
